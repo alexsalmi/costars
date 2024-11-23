@@ -1,0 +1,36 @@
+:root {
+	--background-primary: #252E3F;
+	--background-secondary: #909CC2;
+	--background-hover: #2c374d;
+	--text-primary: #252E3F;
+	--text-secondary: #E39E27;
+	--highlight-primary: #E39E27;
+	--highlight-secondary: #7A2010;
+	--highlight-text: #FABB07;
+
+	--max-width-desktop: 770px;
+	--max-width-mobile: 425px;
+}
+
+[data-light-mode] {
+	--background-primary: #DFE4F5;
+	--background-secondary: #909CC2;
+	--background-hover: #cad0e3;
+	--text-primary: #DFE4F5;
+	--text-secondary: #7A2010;
+	--highlight-primary: #7A2010;
+	--highlight-secondary: #E39E27;
+	--highlight-text: #7A2010;
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		--background-primary: #DFE4F5;
+		--background-secondary: #909CC2;
+		--text-primary: #DFE4F5;
+		--text-secondary: #7A2010;
+		--highlight-primary: #7A2010;
+		--highlight-secondary: #E39E27;
+		--highlight-text: #7A2010;
+	}
+}
