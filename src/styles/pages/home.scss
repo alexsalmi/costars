@@ -1,0 +1,15 @@
+.home-page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 100px;
+	gap: 48px;
+}
+
+.home-page-button-container {
+	width: 100%;
+	max-width: 230px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}

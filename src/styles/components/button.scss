@@ -1,0 +1,24 @@
+.cs-button {
+	width: 100%;
+	height: min-content;
+	padding: 6px 32px;
+	border-radius: 50ch;
+	border: 3px solid var(--highlight-primary);
+	font-weight: 600;
+	transition: all 250ms ease-in-out;
+}
+
+.cs-button.primary {
+	background-color: var(--highlight-primary);
+	color: var(--text-primary);
+}
+
+.cs-button.secondary {
+	background-color: inherit;
+	color: var(--highlight-text);
+}
+
+.cs-button:hover {
+	background-color: var(--highlight-secondary);
+	color: var(--highlight-text);
+}
