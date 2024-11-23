@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { Quicksand } from 'next/font/google';
 import "@/styles/resets.scss";
@@ -26,6 +28,8 @@ export default function RootLayout({
         <AntdRegistry>
           {children}
         </AntdRegistry>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
