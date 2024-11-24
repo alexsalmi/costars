@@ -1,7 +1,8 @@
 :root {
 	--background-primary: #252E3F;
 	--background-secondary: #909CC2;
-	--background-hover: #2c374d;
+	--background-faded: rgba(144, 156, 194, 0.5);
+	--background-hover: #cad0e3;
 	--text-primary: #252E3F;
 	--text-secondary: #E39E27;
 	--highlight-primary: #E39E27;
@@ -14,9 +15,6 @@
 
 [data-light-mode] {
 	--background-primary: #DFE4F5;
-	--background-secondary: #909CC2;
-	--background-hover: #cad0e3;
-	--text-primary: #DFE4F5;
 	--text-secondary: #7A2010;
 	--highlight-primary: #7A2010;
 	--highlight-secondary: #E39E27;
@@ -26,8 +24,6 @@
 @media (prefers-color-scheme: light) {
 	:root {
 		--background-primary: #DFE4F5;
-		--background-secondary: #909CC2;
-		--text-primary: #DFE4F5;
 		--text-secondary: #7A2010;
 		--highlight-primary: #7A2010;
 		--highlight-secondary: #E39E27;

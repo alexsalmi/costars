@@ -12,6 +12,8 @@ main {
 	width: 100%;
 	max-width: var(--max-width-desktop);
 	padding: 0 16px;
+	display: flex;
+	flex-direction: column;
 }
 
 header {
@@ -52,20 +54,21 @@ header {
 	background-color: inherit;
 	outline: none;
 	transition: background-color ease-in-out 250ms;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .header-menu-button:hover {
-	background-color: var(--highlight-secondary);
+	background-color: var(--background-faded);
 }
 
 .header-menu-button.header-menu-open {
-	background-color: var(--highlight-secondary);
-	border: var(--highlight-primary) 2px solid;
+	background-color: var(--background-faded);
 }
 
 .header-menu-icon {
-	font-size: 25px;
-	opacity: 100%;
+	font-size: 30px !important;
 }
 
 .header-menu {

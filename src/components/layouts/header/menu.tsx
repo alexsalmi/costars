@@ -1,14 +1,20 @@
 'use client'
 import { useEffect, useState } from 'react';
-import { Switch } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
+import Switch from '@mui/material/Switch';
+import { MenuOutlined } from '@mui/icons-material';
+
+let initialValue = true;
 
 export default function Menu() {
 	const [open, setOpen] = useState(false);
 	const [toggle, setToggle] = useState(true);
 
 	useEffect(() => {
-		setToggle(!document.querySelector('html')?.hasAttribute('data-light-mode'));
+		initialValue = !document.querySelector('html')?.hasAttribute('data-light-mode');
+
+		setToggle(initialValue);
+
+		document.querySelector('html')?.toggleAttribute('data-light-mode', !initialValue);
 	}, []);
 
 	const toggleTheme = () => {
@@ -17,7 +23,9 @@ export default function Menu() {
 	}
 
   return (
-		<div className='header-menu-container'>
+		<div className='header-menu-container'
+			onBlur={() => setOpen(false)}
+		>
 			<button className={`header-menu-button ${open ? 'header-menu-open' : ''}`}
 				onClick={() => setOpen(!open)}
 			>
@@ -25,10 +33,9 @@ export default function Menu() {
 			</button>
 			<menu className={`header-menu ${open ? 'header-menu-open' : ''}`}>
 				<span className='header-menu-item'>
-					<Switch value={toggle} onChange={toggleTheme} />
+					<Switch value={toggle} onClick={() => setOpen(true)} onChange={toggleTheme} defaultChecked={initialValue}/>
 					Dark mode
 				</span>
-				<span>Test</span>
 			</menu>
 		</div>
   );
