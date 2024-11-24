@@ -14,5 +14,5 @@ export const  search = async (query: string, type: SearchType) => {
 		cache: 'force-cache'
 	}).then(res => res.json());
 
-	console.log(JSON.stringify(response));
+	return response.results.filter((a: { popularity: number; }) => a.popularity > 5).map((a: { name: string; id: number; }) => ({label: a.name, value: a.id}));
 }

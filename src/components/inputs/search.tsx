@@ -3,16 +3,23 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import '@/styles/components/search.scss'
 import { SearchOutlined} from '@mui/icons-material';
-import { SyntheticEvent, useState } from "react";
+import { useState } from "react";
 import { search } from '@/services/tmdbService';
+import { debounce } from '@/services/utils';
 
 interface ICSSearchBarProps {
 	value: string,
 }
 
 export default function CSSearchBar({}: ICSSearchBarProps) {
-	const [value, setValue] = useState('');
+	const [options, setOptions] = useState([]);
 
+	const debouncedSearch = debounce(async (query: string) => {
+		const res = await search(query, 'person');
+
+		if(res)
+			setOptions(res);
+	}, 300);
 
   return (
 		<div className='search-bar-container'>
@@ -23,11 +30,8 @@ export default function CSSearchBar({}: ICSSearchBarProps) {
 				selectOnFocus
 				clearOnBlur
 				handleHomeEndKeys
-				options={['a', 'ab', 'abc']}
-				inputValue={value}
-				onInputChange={(event: SyntheticEvent, newValue: string | null) => {
-          setValue(newValue || '');
-        }}
+				options={options}
+				onInputChange={(e, value) => debouncedSearch(value || '')}
 				onChange={(e, value) => search(value || '', 'person')}
 				renderInput={(params) => <TextField {...params}/>}
 			/>
