@@ -20,7 +20,7 @@ export default function CSCard({image, label, actor, movie, target, condensed}: 
 		`}>
 			{ !condensed ? 
 				<Image className='card-image' 
-					src={image} alt={`Picture of ${label}`} width={80} height={120}/>
+					src={`https://image.tmdb.org/t/p/w500${image}`} alt={`Picture of ${label}`} width={80} height={120}/>
 				: <></>
 			}
 			<span className='card-label'>

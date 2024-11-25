@@ -2,7 +2,7 @@ import CSCard from './card';
 import '@/styles/components/cardTrack.scss'
 
 interface ICSCardTrackProps {
-	values: Array<CardContent>,
+	values: Array<GameEntity>,
 	prompt?: string
 }
 
@@ -17,7 +17,7 @@ export default function CSCardTrack({values, prompt}: ICSCardTrackProps) {
 			}
 			{
 				values.map((content, ind) => {
-					return <CSCard {...content} key={ind}/>
+					return <CSCard {...content} movie={content?.type === 'movie'} key={ind}/>
 				})
 			}
 		</div>
