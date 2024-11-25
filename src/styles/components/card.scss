@@ -1,0 +1,33 @@
+.card-container {
+	width: 300px;
+	background-color: var(--background-secondary);
+	border-radius: 10px;
+	padding: 6px 12px;
+	font-weight: 600;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 2px solid var(--background-secondary);
+}
+
+.card-container.reverse {
+	flex-direction: row-reverse;
+}
+
+.card-container.target {
+	border: 2px solid var(--highlight-primary);
+}
+
+.card-container.condensed {
+	min-height: 2.25lh;
+	justify-content: flex-end;
+	padding: 0 18px;
+}
+
+.card-image {
+	border-radius: 5px;
+}
+
+.card-label {
+	padding: 12px;
+}

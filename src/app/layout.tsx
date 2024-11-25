@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { AntdRegistry } from '@ant-design/nextjs-registry';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { Quicksand } from 'next/font/google';
 import "@/styles/resets.scss";
 import "@/styles/variables.scss";
@@ -25,9 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={quicksand.className}>
       <body className="app">
-        <AntdRegistry>
+        <AppRouterCacheProvider>
           {children}
-        </AntdRegistry>
+        </AppRouterCacheProvider>
         <Analytics />
         <SpeedInsights />
       </body>

@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
         search: '',
       },
     ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'image.tmdb.org',
+        port: '',
+        pathname: '/t/p/w500/**',
+        search: '',
+      },
+    ],
   },
   sassOptions: {
     silenceDeprecations: ["legacy-js-api"],
