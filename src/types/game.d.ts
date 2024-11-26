@@ -1,3 +1,5 @@
+type GameType = 'daily' | 'custom' | 'unlimited'
+
 interface GameEntity {
   id: number,
   type: TmdbType,

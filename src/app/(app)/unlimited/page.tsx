@@ -1,28 +1,15 @@
 'use client'
 import CSSearchBar from '@/components/inputs/search';
-import CSCardTrack from '@/components/presentation/cardTrack';
+import CSCardTrack from '@/components/presentation/card-track';
 import CSTextDisplay from '@/components/presentation/display';
+import useGameState from '@/store/game.state';
 import '@/styles/pages/unlimited.scss';
-import { useEffect, useState } from 'react';
 
 export default function UnlimitedGame() {
-	const [streak, setStreak] = useState([] as GameEntity[]);
-	const [highScore, setHighScore] = useState(0);
-
-	useEffect(() => {
-		setHighScore(parseInt(localStorage.getItem('costars-highscore') || '0'))
-	}, []);
-
-	const addNew = (guess: GameEntity) => {
-		setStreak([guess, ...streak]);
-		if (streak.length >= highScore) {
-			localStorage.setItem('costars-highscore', (highScore + 1).toString());
-			setHighScore(highScore + 1);
-		}
-	}
+	const { history, score, highScore, addEntity } = useGameState();
 
 	const getPrompt = () => {
-		const current = streak[0];
+		const current = history[0];
 		if (!current)
 			return 'Enter any actor to begin!';
 
@@ -33,16 +20,16 @@ export default function UnlimitedGame() {
 
   return (
     <div className='unlimited-page'>
-			<CSSearchBar current={streak[0]} add={addNew}></CSSearchBar>
+			<CSSearchBar current={history[0]} add={addEntity}></CSSearchBar>
 			<div className='unlimited-page-scores'>
 				<CSTextDisplay>
-					Current Score: {streak.length}
+					Current Score: {score}
 				</CSTextDisplay>
 				<CSTextDisplay>
 					High Score: {highScore}
 				</CSTextDisplay>
 			</div>
-			<CSCardTrack values={streak} prompt={getPrompt()} />
+			<CSCardTrack values={history} prompt={getPrompt()} />
     </div>
   );
 }

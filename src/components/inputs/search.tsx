@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import '@/styles/components/search.scss'
 import { SearchOutlined} from '@mui/icons-material';
 import { useState } from "react";
-import { search, submit } from '@/services/tmdbService';
+import { search, submit } from '@/services/tmdb.service';
 import { debounce } from '@/services/utils';
 
 interface ICSSearchBarProps {
