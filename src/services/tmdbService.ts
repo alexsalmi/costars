@@ -1,53 +1,46 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server'
 
 const BASE_URL = 'https://api.themoviedb.org';
 const headers = {
-	'Authorization': `Bearer ${process.env.TMDB_API_KEY}`
+	'Authorization': `Bearer ${process.env.Tmdb_API_KEY}`
 }
 
-export const search = async (query: string, type: SearchType = 'person') => {
-	if (query.length < 3)
+export const search = async (query: string, type: TmdbType = 'person')
+		: Promise<Array<GameEntity>> => {
+	if (query.length === 0)
 		return [];
+
 	const url = `${BASE_URL}/3/search/${type}?query=${encodeURIComponent(query)}`;
 
-	const response = await fetch(url, {
+	const response: TmdbSearchResult<Movie | Person> = await fetch(url, {
 		headers,
 		cache: 'force-cache'
 	}).then(res => res.json());
 
-	return response.results.filter((a: { popularity: number; }) => a.popularity > 5).map((a: {
-		title: string;
-		profile_path: any;
-		poster_path: any; name: string; id: number; 
-}) => ({label: a.name || a.title, id: a.id, type, image: a.profile_path?.replace(".png", ".svg") || a.poster_path?.replace(".png", ".svg")}));
+	return response.results
+		.filter((a) => a.popularity > 5)
+		.sort((a, b) => a.popularity - b.popularity)
+		.map(a => ({
+			type,
+			id: a.id,
+			label: (<Person> a).name || (<Movie> a).title, 
+			image: (<Person> a).profile_path?.replace(".png", ".svg") || 
+						 (<Movie> a).poster_path?.replace(".png", ".svg")
+		}));
 }
 
 export const submit = async (guess: GameEntity, current?: GameEntity) => {
-	if (!guess)
-		return;
 	if(!current)
 		return true;
 
-	let personid: number;
-	let content: GameEntity;
+	const suffix = guess.type === 'person' ? 'movie_credits' : 'credits';
+	const url = `${BASE_URL}/3/${guess.type}/${guess.id}/${suffix}`;
 
-	if(guess.type === 'person'){
-		personid = guess.id;
-		content = current;
-	} else {
-		personid = current.id;
-		content = guess;
-	}
-
-	const url = `${BASE_URL}/3/${content.type}/${content.id}/credits`;
-
-	const res = await fetch(url, {
+	const response: TmdbCreditsResult<PersonCredit | MovieCredit> = await fetch(url, {
 		headers,
 		cache: 'force-cache'
-	})
+	}).then(res => res.json());
 
-	const data = await res.json();
-
-	return data.cast.find((person: any) => person.id === personid) !== undefined;
+	return response.cast
+		.find((a) => a.id === current.id) !== undefined;
 }

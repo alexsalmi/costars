@@ -16,7 +16,7 @@ export default function CSSearchBar({ current, add }: ICSSearchBarProps) {
 	const [value, setValue] = useState('');
 	const [options, setOptions] = useState([] as GameEntity[]);
 
-	const debouncedSearch = debounce(async (query: string, type: SearchType) => {
+	const debouncedSearch = debounce(async (query: string, type: TmdbType) => {
 		const res = await search(query, type);
 
 		if(res)

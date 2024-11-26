@@ -1,8 +1,6 @@
-type SearchType = 'person' | 'movie';
-
 interface GameEntity {
   id: number,
-  type: SearchType,
+  type: TmdbType,
   label: string,
   image: string
 }
