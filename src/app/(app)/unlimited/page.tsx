@@ -5,9 +5,14 @@ import CSCardTrack from '@/components/presentation/card-track';
 import CSTextDisplay from '@/components/presentation/display';
 import useGameState from '@/store/game.state';
 import '@/styles/pages/unlimited.scss';
+import { useEffect } from 'react';
 
 export default function UnlimitedGame() {
-	const { score, highScore } = useGameState();
+	const { score, highScore, initUnlimitedGame } = useGameState();
+
+	useEffect(() => {
+		initUnlimitedGame();
+	}, []);
 
   return (
 		<div className='unlimited-page'>
