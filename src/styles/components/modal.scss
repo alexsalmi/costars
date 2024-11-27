@@ -16,7 +16,7 @@
 	background-color: pink;
 	width: fit-content;
 	max-width: var(--max-width-mobile);
-	padding: 16px;
+	padding: 24px 16px;
 	background-color: var(--background-primary);
 	color: var(--highlight-text);
 	border: 3px solid var(--highlight-primary); 
@@ -25,6 +25,6 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	gap: 12px;
+	gap: 16px;
 	text-align: center;
 }

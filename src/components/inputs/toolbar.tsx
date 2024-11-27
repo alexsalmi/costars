@@ -8,6 +8,11 @@ import { useState } from 'react';
 export default function CSToolbar() {
   const { history, undoCache, expandAll, collapseAll, undo, redo } = useGameState();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    if(history.length > 0)
+      setIsModalOpen(true);
+  }
   
   return (
     <>
@@ -27,7 +32,7 @@ export default function CSToolbar() {
           <UnfoldMoreOutlined />
         </CSButton>
         <CSButton
-          onClick={() => setIsModalOpen(true)}
+          onClick={openModal}
         >
           <ReplayOutlined />
         </CSButton>
