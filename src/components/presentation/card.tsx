@@ -2,29 +2,26 @@ import '@/styles/components/card.scss'
 import Image from 'next/image';
 
 interface ICSCardProps {
-	image: string,
-	label: string,
-	actor?: boolean,
-	movie?: boolean,
-	target?: boolean,
-	condensed?: boolean
+	entity: GameEntity,
+	reverse?: boolean,
+	target?: boolean
 }
 
-export default function CSCard({image, label, actor, movie, target, condensed}: ICSCardProps) {
+export default function CSCard({entity, reverse, target}: ICSCardProps) {
   return (
 		<div className={`
 			card-container 
-			${actor || !movie ? 'reverse ' : ''}
+			${reverse ? 'reverse ' : ''}
 			${target ? 'target ' : ''}
-			${condensed ? 'condensed' : ''}
+			${entity.collapsed ? 'condensed' : ''}
 		`}>
-			{ !condensed ? 
+			{ !entity.collapsed ? 
 				<Image className='card-image' 
-					src={`https://image.tmdb.org/t/p/w500${image}`} alt={`Picture of ${label}`} width={80} height={120}/>
+					src={`https://image.tmdb.org/t/p/w500${entity.image}`} alt={`Picture of ${entity.label}`} width={80} height={120}/>
 				: <></>
 			}
 			<span className='card-label'>
-				{label}
+				{entity.label}
 			</span>
 		</div>
   );

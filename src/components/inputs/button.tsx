@@ -7,12 +7,18 @@ interface ICSButtonProps {
 	value?: string,
 	onClick?: MouseEventHandler<HTMLButtonElement>,
 	children?: React.ReactNode,
+	disabled?: boolean
 }
 
-export default function CSbutton({primary, secondary, onClick, children}: ICSButtonProps) {
+export default function CSButton({primary, secondary, onClick, children, disabled}: ICSButtonProps) {
   return (
-		<button className={`cs-button primary ${primary || ! secondary ? 'primary' : 'secondary'}`}
+		<button
+			className={
+				`cs-button primary 
+				${primary || !secondary ? 'primary' : 'secondary'} 
+				${disabled ? 'disabled' : ''}`}
 			onClick={onClick}
+			disabled={disabled}
 		>
 			{ children || 'Button'}
 		</button>

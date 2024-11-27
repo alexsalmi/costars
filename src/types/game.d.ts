@@ -1,8 +1,9 @@
-type SearchType = 'person' | 'movie';
+type GameType = 'daily' | 'custom' | 'unlimited'
 
 interface GameEntity {
   id: number,
-  type: SearchType,
+  type: TmdbType,
   label: string,
-  image: string
+  image: string,
+  collapsed?: boolean
 }

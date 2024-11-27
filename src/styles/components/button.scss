@@ -22,3 +22,13 @@
 	background-color: var(--highlight-secondary);
 	color: var(--highlight-text);
 }
+
+.cs-button.disabled {
+	color: var(--text-faded);
+	cursor: auto;
+}
+
+.cs-button.disabled:hover {
+	background-color: var(--background-faded);
+	color: var(--text-faded);
+}
