@@ -4,19 +4,18 @@ import Image from 'next/image';
 interface ICSCardProps {
 	entity: GameEntity,
 	reverse?: boolean,
-	target?: boolean,
-	condensed?: boolean
+	target?: boolean
 }
 
-export default function CSCard({entity, reverse, target, condensed}: ICSCardProps) {
+export default function CSCard({entity, reverse, target}: ICSCardProps) {
   return (
 		<div className={`
 			card-container 
 			${reverse ? 'reverse ' : ''}
 			${target ? 'target ' : ''}
-			${condensed ? 'condensed' : ''}
+			${entity.collapsed ? 'condensed' : ''}
 		`}>
-			{ !condensed ? 
+			{ !entity.collapsed ? 
 				<Image className='card-image' 
 					src={`https://image.tmdb.org/t/p/w500${entity.image}`} alt={`Picture of ${entity.label}`} width={80} height={120}/>
 				: <></>

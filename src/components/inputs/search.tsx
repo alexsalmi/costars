@@ -21,6 +21,8 @@ export default function CSSearchBar() {
 	}, 300);
 
 	const submit = async (value: GameEntity) => {
+		if (!value) return;
+
 		setValue('');
 
 		const match = await isMatch(value, current);
@@ -46,7 +48,9 @@ export default function CSSearchBar() {
 				onChange={async (e, value) => 
 					submit(value as GameEntity)
 				}
-				renderInput={(params) => <TextField {...params}/>}
+				renderInput={(params) =>
+					<TextField {...params} placeholder='Search...' />
+				}
 			/>
 		</div>
   );

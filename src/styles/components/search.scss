@@ -6,7 +6,6 @@
 	color: var(--text-primary);
 	background-color: var(--background-secondary);
 	border-radius: 5px;
-	padding: 5px 0;
 }
 
 .search-bar-icon {
@@ -24,6 +23,7 @@
 	}
 
 	input {
+		margin-top: 5px;
 		padding-left: 40px !important;
 		padding-right: 40px !important;
 	}

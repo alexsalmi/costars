@@ -2,7 +2,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin: 50px 0;
+	margin: 20px 0;
 	gap: 32px;
 	flex-grow: 1;
 }
@@ -11,12 +11,13 @@
 	width: 100%;
 	max-width: var(--max-width-mobile);
 	display: flex;
-	justify-content: center;
+	justify-content: space-evenly;
 	gap: 16px;
 }
 
 .unlimited-page-scores > div {
-	width: 40%;
+	width: 50%;
 	display: flex;
 	justify-content: center;
+	font-size: 14px;
 }
