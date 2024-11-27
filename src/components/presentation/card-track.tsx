@@ -1,6 +1,6 @@
 import useGameState from '@/store/game.state';
 import CSCard from './card';
-import '@/styles/components/cardTrack.scss'
+import '@/styles/components/card-track.scss'
 
 interface ICSCardTrackProps {
 	showPrompt?: boolean

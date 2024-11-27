@@ -24,6 +24,20 @@ const useGameState = () => {
     setHistory([]);
   }
 
+  const reset = () => {
+    setHistory([]);
+  }
+  
+  const undo = () => {
+    setUndoCache([history[0], ...undoCache]);
+    setHistory(history.slice(1))
+  }
+
+  const redo = () => {
+    setHistory([undoCache[0], ...history]);
+    setUndoCache(undoCache.slice(1));
+  }
+
   const expandAll = () => {
     setHistory(
       history.map(entity => ({
@@ -42,16 +56,6 @@ const useGameState = () => {
     )
   }
 
-  const undo = () => {
-    setUndoCache([history[0], ...undoCache]);
-    setHistory(history.slice(1))
-  }
-
-  const redo = () => {
-    setHistory([undoCache[0], ...history]);
-    setUndoCache(undoCache.slice(1));
-  }
-
   return {
     score,
     current,
@@ -61,10 +65,11 @@ const useGameState = () => {
     undoCache,
     addEntity,
     initUnlimitedGame,
+    reset,
+    undo,
+    redo,
     expandAll,
     collapseAll,
-    undo,
-    redo
   }
 }
 
