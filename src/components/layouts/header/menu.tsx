@@ -15,6 +15,9 @@ export default function Menu() {
 		setToggle(initialValue);
 
 		document.querySelector('html')?.toggleAttribute('data-light-mode', !initialValue);
+		window.addEventListener('click', function(){   
+			setOpen(false);
+		});
 	}, []);
 
 	const toggleTheme = () => {
@@ -24,7 +27,7 @@ export default function Menu() {
 
   return (
 		<div className='header-menu-container'
-			onBlur={() => setOpen(false)}
+			onClick={(e) => e.stopPropagation()}
 		>
 			<button className={`header-menu-button ${open ? 'header-menu-open' : ''}`}
 				onClick={() => setOpen(!open)}

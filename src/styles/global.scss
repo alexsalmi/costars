@@ -57,8 +57,10 @@ header {
 	align-items: center;
 }
 
-.header-menu-button:hover {
-	background-color: var(--background-faded);
+@media (hover: hover) {
+	.header-menu-button:hover {
+		background-color: var(--background-faded);
+	}
 }
 
 .header-menu-button.header-menu-open {
@@ -72,23 +74,21 @@ header {
 .header-menu {
 	position: absolute;
 	z-index: 1000;
+	display: none;
 	padding: 0;
 	top: 60px;
-	display: flex;
 	border-radius: 10px 0 10px 10px;
 	flex-direction: column;
 	align-items: flex-end;
 	gap: 6px;
-	opacity: 0;
 	color: var(--highlight-text);
 	border: var(--highlight-primary) 2px solid;
+	background-color: var(--highlight-secondary);
 	padding: 12px;
-	transition: all ease-in-out 250ms;
 }
 
 .header-menu.header-menu-open {
-	opacity: 100;
-	background-color: var(--highlight-secondary);
+	display: block;
 }
 
 .header-menu-item {

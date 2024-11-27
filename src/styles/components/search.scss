@@ -6,6 +6,13 @@
 	color: var(--text-primary);
 	background-color: var(--background-secondary);
 	border-radius: 5px;
+	margin-bottom: 10px;
+	padding-bottom: 0;
+}
+
+.search-bar-container.open {
+	margin-bottom: 0;
+	padding-bottom: 10px;
 }
 
 .search-bar-icon {
@@ -23,7 +30,6 @@
 	}
 
 	input {
-		margin-top: 5px;
 		padding-left: 40px !important;
 		padding-right: 40px !important;
 	}
@@ -32,6 +38,7 @@
 		border: none;
 	}
 }
+
 .search-bar-option {
 	background-color: var(--background-faded);
 	width: 100%;

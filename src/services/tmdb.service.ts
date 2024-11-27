@@ -17,16 +17,34 @@ export const search = async (query: string, type: TmdbType = 'person')
 		cache: 'force-cache'
 	}).then(res => res.json());
 
-	return response.results
+	const filtered = response.results
 		.filter((a) => a.popularity > 5)
+	
+	const labels = new Set();
+	const duplicates = new Set();
+
+	for(const entity of filtered){
+		const label = (<Person> entity).name || (<Movie> entity).title;
+
+		if(labels.has(label))
+			duplicates.add(label);
+
+		labels.add(label);
+	}
+
+	return filtered
 		.sort((a, b) => b.popularity - a.popularity)
-		.map(a => ({
+		.map(a => {
+			const label = (<Person> a).name || (<Movie> a).title;
+			return {
 			type,
 			id: a.id,
-			label: (<Person> a).name || (<Movie> a).title, 
+			label: duplicates.has(label) ? 
+				`${label} (${new Date((<Movie> a).release_date).getFullYear()})` :
+				label, 
 			image: (<Person> a).profile_path?.replace(".png", ".svg") || 
-						 (<Movie> a).poster_path?.replace(".png", ".svg")
-		}));
+						(<Movie> a).poster_path?.replace(".png", ".svg")
+		}});
 }
 
 export const isMatch = async (guess: GameEntity, current?: GameEntity) => {
@@ -41,6 +59,6 @@ export const isMatch = async (guess: GameEntity, current?: GameEntity) => {
 		cache: 'force-cache'
 	}).then(res => res.json());
 
-	return response.cast
-		.find((a) => a.id === current.id) !== undefined;
+	return response
+		.cast?.find((a) => a.id === current.id) !== undefined;
 }
