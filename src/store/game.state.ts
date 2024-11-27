@@ -11,8 +11,8 @@ const useGameState = () => {
   const addEntity = (entity: GameEntity) => {
     setHistory([entity, ...history]);
     
-		if (gameType === 'unlimited' && history.length >= highScore) {
-			window?.localStorage.setItem('costars-highscore', (highScore + 1).toString());
+		if (gameType === 'unlimited' && history.length >= highScore && typeof window !== 'undefined') {
+			window.localStorage.setItem('costars-highscore', (highScore + 1).toString());
 		}
   }
 
