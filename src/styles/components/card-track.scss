@@ -1,6 +1,7 @@
 .card-track-container {
 	width: min-content;
 	max-width: var(--max-width-mobile);
+	min-height: 20em;
 	max-height: 60vh;
 	background-color: var(--background-faded);
 	border-radius: 10px;

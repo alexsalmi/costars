@@ -37,14 +37,14 @@ export const search = async (query: string, type: TmdbType = 'person')
 		.map(a => {
 			const label = (<Person> a).name || (<Movie> a).title;
 			return {
-			type,
-			id: a.id,
-			label: duplicates.has(label) ? 
-				`${label} (${new Date((<Movie> a).release_date).getFullYear()})` :
-				label, 
-			image: (<Person> a).profile_path?.replace(".png", ".svg") || 
-						(<Movie> a).poster_path?.replace(".png", ".svg")
-		}});
+				type,
+				id: a.id,
+				label: duplicates.has(label) && (<Movie> a).release_date ? 
+					`${label} (${new Date((<Movie> a).release_date).getFullYear()})` :
+					label, 
+				image: (<Person> a).profile_path || (<Movie> a).poster_path
+			}
+		});
 }
 
 export const isMatch = async (guess: GameEntity, current?: GameEntity) => {

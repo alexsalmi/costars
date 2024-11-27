@@ -19,7 +19,10 @@ export default function CSCard({entity, reverse, target}: ICSCardProps) {
 		`}>
 			{ !condensed ? 
 				<Image className='card-image' 
-					src={`https://image.tmdb.org/t/p/w500${entity.image}`} alt={`Picture of ${entity.label}`} width={80} height={120}/>
+					src={`https://image.tmdb.org/t/p/w185${entity.image}`} alt={`Picture of ${entity.label}`} width={80} height={120}
+					placeholder='blur'
+					blurDataURL='/placeholder.webp'
+				/>
 				: <></>
 			}
 			<span className='card-label'>

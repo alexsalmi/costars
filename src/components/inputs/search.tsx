@@ -29,8 +29,10 @@ export default function CSSearchBar() {
 		debouncedSearch(value || '', current?.type === 'person' ? 'movie' : 'person')
 	}
 
-	const submit = async (value: GameEntity) => {
+	const submit = async (value: GameEntity | string | null) => {
 		if (!value) return;
+		if (typeof value === 'string')
+			value = options[0];
 
 		setValue('');
 
@@ -56,7 +58,7 @@ export default function CSSearchBar() {
 				options={options}
 				onInputChange={onType}
 				onChange={async (e, value) => 
-					submit(value as GameEntity)
+					submit(value)
 				}
 				renderInput={(params) =>
 					<TextField {...params} placeholder='Search...' />
