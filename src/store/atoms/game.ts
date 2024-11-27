@@ -6,4 +6,4 @@ export const historyAtom = atom([] as Array<GameEntity>);
 
 export const scoreAtom = atom((get) => get(historyAtom).length);
 
-export const highScoreAtom = atom(() => parseInt(localStorage.getItem('costars-highscore') || '0'));
+export const highScoreAtom = atom(() => parseInt(window?.localStorage.getItem('costars-highscore') || '0'));

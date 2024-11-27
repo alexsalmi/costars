@@ -12,7 +12,7 @@ const useGameState = () => {
     setHistory([entity, ...history]);
     
 		if (gameType === 'unlimited' && history.length >= highScore) {
-			localStorage.setItem('costars-highscore', (highScore + 1).toString());
+			window?.localStorage.setItem('costars-highscore', (highScore + 1).toString());
 		}
   }
 
