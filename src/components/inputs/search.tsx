@@ -12,6 +12,7 @@ export default function CSSearchBar() {
 	const { history, current, addEntity } = useGameState();
 	const [value, setValue] = useState('');
 	const [options, setOptions] = useState([] as GameEntity[]);
+	const [error, setError] = useState(false);
 	const inputRef = useRef(null as HTMLElement | null);
 
 	const debouncedSearch = debounce(async (query: string, type: TmdbType) => {
@@ -40,12 +41,20 @@ export default function CSSearchBar() {
 
 		if (match)
 			addEntity(value);
+		else {
+			setError(true);
+			setTimeout(() => setError(false), 1000);
+		}
 
 		inputRef.current?.querySelector("input")?.focus();
 	}
 
   return (
-		<div className={`search-bar-container ${options.length > 0 ? 'open' : ''}`}>
+		<div className={`
+			search-bar-container
+			${options.length > 0 ? 'open ' : ''}
+			${error ? 'incorrect' : ''}
+		`}>
 			<SearchOutlined className='search-bar-icon'/>
 			<Autocomplete className="search-bar-input"
 				ref={inputRef}

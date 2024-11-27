@@ -9,6 +9,7 @@
 	--highlight-primary: #E39E27;
 	--highlight-secondary: #7A2010;
 	--highlight-text: #FABB07;
+	--highlight-faded: rgb(227, 158, 39, 0.5);
 
 	--max-width-desktop: 770px;
 	--max-width-mobile: 425px;
@@ -20,14 +21,6 @@
 	--highlight-primary: #7A2010;
 	--highlight-secondary: #E39E27;
 	--highlight-text: #7A2010;
+	--highlight-faded: rgb(122, 32, 16, 0.5);
 }
 
-@media (prefers-color-scheme: light) {
-	:root {
-		--background-primary: #DFE4F5;
-		--text-secondary: #7A2010;
-		--highlight-primary: #7A2010;
-		--highlight-secondary: #E39E27;
-		--highlight-text: #7A2010;
-	}
-}

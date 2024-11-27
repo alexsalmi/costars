@@ -25,8 +25,10 @@ export default function UnlimitedGame() {
 					High Score: {highScore}
 				</CSTextDisplay>
 			</div>
-			<CSCardTrack showPrompt />
-			<CSToolbar />
+			<div className='unlimited-page-card-section'>
+				<CSToolbar />
+				<CSCardTrack showPrompt />
+			</div>
     </div>
   );
 }
