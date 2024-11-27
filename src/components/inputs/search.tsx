@@ -30,7 +30,6 @@ export default function CSSearchBar() {
 		if (match)
 			addEntity(value);
 	}
-
   return (
 		<div className='search-bar-container'>
 			<SearchOutlined className='search-bar-icon'/>
