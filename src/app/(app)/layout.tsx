@@ -9,9 +9,9 @@ export default function MenuLayout({
   return (
     <>
       <Header showLogo />
-      <main>
-        {children}
-      </main>
+        <main>
+          {children}
+        </main>
       <Footer/>
     </>
   );

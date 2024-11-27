@@ -1,23 +1,32 @@
+import useGameState from '@/store/game.state';
 import CSCard from './card';
 import '@/styles/components/cardTrack.scss'
 
 interface ICSCardTrackProps {
-	values: Array<GameEntity>,
-	prompt?: string
+	showPrompt?: boolean
 }
 
-export default function CSCardTrack({values, prompt}: ICSCardTrackProps) {
+export default function CSCardTrack({ showPrompt }: ICSCardTrackProps) {
+	const { history, current } = useGameState();
+
   return (
 		<div className='card-track-container'>
-			{ prompt ? 
+			{ showPrompt ? 
 				<span className='card-track-prompt'>
-					{prompt}
+					{
+						!current ? 
+							'Enter any actor to begin!'
+						: current.type === 'person' ? 
+							`What else has ${current.label} been in?`
+						:
+							`Who else was in ${current.label}?`
+					}
 				</span>
 				: <></>
 			}
 			{
-				values.map((content, ind) => {
-					return <CSCard {...content} movie={content?.type === 'movie'} key={ind}/>
+				history.map(entity => {
+					return <CSCard entity={entity} reverse={entity.type === 'movie'} key={entity.id}/>
 				})
 			}
 		</div>

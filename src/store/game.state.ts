@@ -1,10 +1,11 @@
 import { useAtom } from "jotai";
-import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom } from "./atoms/game";
+import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom } from "./atoms/game";
 
 const useGameState = () => {
-  const [score] = useAtom(scoreAtom);
-  const [history, setHistory] = useAtom(historyAtom);
   const [gameType, setGameType] = useAtom(gameTypeAtom);
+  const [history, setHistory] = useAtom(historyAtom);
+  const [current] = useAtom(currentAtom);
+  const [score] = useAtom(scoreAtom);
   const [highScore] = useAtom(highScoreAtom);
 
   // Actions
@@ -23,6 +24,7 @@ const useGameState = () => {
 
   return {
     score,
+    current,
     history,
     gameType,
     highScore,

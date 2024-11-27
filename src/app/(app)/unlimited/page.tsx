@@ -6,21 +6,11 @@ import useGameState from '@/store/game.state';
 import '@/styles/pages/unlimited.scss';
 
 export default function UnlimitedGame() {
-	const { history, score, highScore, addEntity } = useGameState();
-
-	const getPrompt = () => {
-		const current = history[0];
-		if (!current)
-			return 'Enter any actor to begin!';
-
-		return current.type === 'person' ?
-			`What else has ${current.label} been in?` :
-			`Who else was in ${current.label}?` 
-	}
+	const { score, highScore } = useGameState();
 
   return (
     <div className='unlimited-page'>
-			<CSSearchBar current={history[0]} add={addEntity}></CSSearchBar>
+			<CSSearchBar />
 			<div className='unlimited-page-scores'>
 				<CSTextDisplay>
 					Current Score: {score}
@@ -29,7 +19,7 @@ export default function UnlimitedGame() {
 					High Score: {highScore}
 				</CSTextDisplay>
 			</div>
-			<CSCardTrack values={history} prompt={getPrompt()} />
+			<CSCardTrack showPrompt />
     </div>
   );
 }

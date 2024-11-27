@@ -17,11 +17,9 @@ export const search = async (query: string, type: TmdbType = 'person')
 		cache: 'force-cache'
 	}).then(res => res.json());
 
-	console.log(JSON.stringify(response));
-
 	return response.results
 		.filter((a) => a.popularity > 5)
-		.sort((a, b) => a.popularity - b.popularity)
+		.sort((a, b) => b.popularity - a.popularity)
 		.map(a => ({
 			type,
 			id: a.id,
@@ -31,7 +29,7 @@ export const search = async (query: string, type: TmdbType = 'person')
 		}));
 }
 
-export const submit = async (guess: GameEntity, current?: GameEntity) => {
+export const isMatch = async (guess: GameEntity, current?: GameEntity) => {
 	if(!current)
 		return true;
 

@@ -11,7 +11,8 @@ interface ICSButtonProps {
 
 export default function CSbutton({primary, secondary, onClick, children}: ICSButtonProps) {
   return (
-		<button className={`cs-button primary ${primary || ! secondary ? 'primary' : 'secondary'}`}
+		<button
+			className={`cs-button primary ${primary || !secondary ? 'primary' : 'secondary'}`}
 			onClick={onClick}
 		>
 			{ children || 'Button'}
