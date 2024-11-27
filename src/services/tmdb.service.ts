@@ -2,7 +2,7 @@
 
 const BASE_URL = 'https://api.themoviedb.org';
 const headers = {
-	'Authorization': `Bearer ${process.env.Tmdb_API_KEY}`
+	'Authorization': `Bearer ${process.env.TMDB_API_KEY}`
 }
 
 export const search = async (query: string, type: TmdbType = 'person')
@@ -16,6 +16,8 @@ export const search = async (query: string, type: TmdbType = 'person')
 		headers,
 		cache: 'force-cache'
 	}).then(res => res.json());
+
+	console.log(JSON.stringify(response));
 
 	return response.results
 		.filter((a) => a.popularity > 5)
