@@ -1,10 +1,11 @@
 import { useAtom } from "jotai";
-import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom } from "./atoms/game";
+import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom } from "./atoms/game";
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
   const [history, setHistory] = useAtom(historyAtom);
   const [undoCache, setUndoCache] = useAtom(undoCacheAtom);
+  const [condensed, setCondensed] = useAtom(condensedAtom);
   const [current] = useAtom(currentAtom);
   const [score] = useAtom(scoreAtom);
   const [highScore] = useAtom(highScoreAtom);
@@ -39,21 +40,11 @@ const useGameState = () => {
   }
 
   const expandAll = () => {
-    setHistory(
-      history.map(entity => ({
-        ...entity,
-        collapsed: false,
-      }))
-    )
+    setCondensed(false);
   }
 
   const collapseAll = () => {
-    setHistory(
-      history.map(entity => ({
-        ...entity,
-        collapsed: true,
-      }))
-    )
+    setCondensed(true);
   }
 
   return {
@@ -63,6 +54,7 @@ const useGameState = () => {
     gameType,
     highScore,
     undoCache,
+    condensed,
     addEntity,
     initUnlimitedGame,
     reset,

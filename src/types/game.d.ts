@@ -4,6 +4,5 @@ interface GameEntity {
   id: number,
   type: TmdbType,
   label: string,
-  image: string,
-  collapsed?: boolean
+  image: string
 }

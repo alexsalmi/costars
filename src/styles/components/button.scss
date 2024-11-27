@@ -10,16 +10,11 @@
 
 .cs-button.primary {
 	background-color: var(--highlight-primary);
-	color: var(--text-primary);
+	color: var(--background-primary);
 }
 
 .cs-button.secondary {
-	background-color: inherit;
-	color: var(--highlight-text);
-}
-
-.cs-button:hover {
-	background-color: var(--highlight-secondary);
+	background-color: var(--background-primary);
 	color: var(--highlight-text);
 }
 
@@ -28,7 +23,14 @@
 	cursor: auto;
 }
 
-.cs-button.disabled:hover {
-	background-color: var(--background-faded);
-	color: var(--text-faded);
+@media (hover: hover) {
+	.cs-button:hover {
+		background-color: var(--highlight-secondary);
+		color: var(--highlight-text);
+	}
+
+	.cs-button.disabled:hover {
+		background-color: var(--background-faded);
+		color: var(--text-faded);
+	}
 }

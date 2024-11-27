@@ -6,9 +6,11 @@
 	right: 0;
 	width: 100vw;
 	height: 100vh;
+	padding: 24px;
 	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	justify-content: flex-start;
 	align-items: center;
 }
 
@@ -17,6 +19,7 @@
 	width: fit-content;
 	max-width: var(--max-width-mobile);
 	padding: 24px 16px;
+	margin-top: 30vh;
 	background-color: var(--background-primary);
 	color: var(--highlight-text);
 	border: 3px solid var(--highlight-primary); 
