@@ -14,7 +14,8 @@ export const incrementHighscore = () => {
 }
 
 export const getUnlimitedSave = () => {
-  if (typeof window !== 'undefined' && window.localStorage.getItem(KEY_UNLIMITED_SAVE) !== undefined)
+  console.log(window.localStorage.getItem(KEY_UNLIMITED_SAVE));
+  if (typeof window !== 'undefined' && (window.localStorage.getItem(KEY_UNLIMITED_SAVE) !== null))
     return JSON.parse(atob(window.localStorage.getItem(KEY_UNLIMITED_SAVE)!));
   
   return [];
