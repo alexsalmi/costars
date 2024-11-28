@@ -21,9 +21,6 @@ export default function CSSearchBar() {
 			return;
 
 		const res = await search(query, type);
-
-		console.log(res);
-
 		setOptions(res);
 	}, 300);
 
