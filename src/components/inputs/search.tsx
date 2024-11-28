@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import '@/styles/components/search.scss'
 import { SearchOutlined} from '@mui/icons-material';
 import { SyntheticEvent, useRef, useState } from "react";
-import { search, isMatch } from '@/services/tmdb.service';
+import { search, getCredits } from '@/services/tmdb.service';
 import useGameState from '@/store/game.state';
 import { debounce } from '@/services/utils';
 
@@ -15,14 +15,18 @@ export default function CSSearchBar() {
 	const [error, setError] = useState(false);
 	const inputRef = useRef(null as HTMLElement | null);
 
+
 	const debouncedSearch = debounce(async (query: string, type: TmdbType) => {
 		if(query === '')
 			return;
 
 		const res = await search(query, type);
 
+		console.log(res);
+
 		setOptions(res);
 	}, 300);
+
 
 	const onType = (e: SyntheticEvent, value: string) => {
 		if(!value) setOptions([]);
@@ -30,24 +34,32 @@ export default function CSSearchBar() {
 		debouncedSearch(value || '', current?.type === 'person' ? 'movie' : 'person')
 	}
 
+
 	const submit = async (value: GameEntity | string | null) => {
-		if (!value) return;
+		// If the user didn't select one of the autocomplete options, take the first one
 		if (typeof value === 'string')
 			value = options[0];
 
+		if (!value) return;
+
 		setValue('');
 
-		const match = await isMatch(value, current);
+		const isMatch = !current || current.credits!.includes(value.id);
 
-		if (match)
-			addEntity(value);
+		if (isMatch) {
+			addEntity({
+				...value,
+				credits: (await getCredits(value)).cast.map(credit => credit.id)
+			});
+		}
 		else {
 			setError(true);
 			setTimeout(() => setError(false), 1000);
 		}
 
 		inputRef.current?.querySelector("input")?.focus();
-	}
+	};
+	
 
   return (
 		<div className={`
@@ -66,6 +78,7 @@ export default function CSSearchBar() {
 				value={value}
 				options={options}
 				onInputChange={onType}
+				filterOptions={options => options}
 				onChange={async (e, value) => 
 					submit(value)
 				}

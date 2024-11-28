@@ -16,6 +16,8 @@ export default function CSCardTrack({ showPrompt }: ICSCardTrackProps) {
 					{
 						!current ? 
 							'Enter any actor to begin!'
+						: history.length === 1 ?
+							`What has ${current.label} been in?`
 						: current.type === 'person' ? 
 							`What else has ${current.label} been in?`
 						:

@@ -47,18 +47,51 @@ export const search = async (query: string, type: TmdbType = 'person')
 		});
 }
 
-export const isMatch = async (guess: GameEntity, current?: GameEntity) => {
-	if(!current)
-		return true;
-
-	const suffix = guess.type === 'person' ? 'movie_credits' : 'credits';
-	const url = `${BASE_URL}/3/${guess.type}/${guess.id}/${suffix}`;
+export const getCredits = async (entity: GameEntity) => {
+	const suffix = entity.type === 'person' ? 'movie_credits' : 'credits';
+	const url = `${BASE_URL}/3/${entity.type}/${entity.id}/${suffix}`;
 
 	const response: TmdbCreditsResult<PersonCredit | MovieCredit> = await fetch(url, {
 		headers,
 		cache: 'force-cache'
 	}).then(res => res.json());
 
-	return response
-		.cast?.find((a) => a.id === current.id) !== undefined;
+	return response;
+}
+
+export const randomPerson = async (): Promise<GameEntity> => {
+	const baseUrl = `${BASE_URL}/3/trending/person/day?language=en-US&page=`;
+	const promises: Promise<TmdbSearchResult<Person>>[] = [];
+
+	for(let i=1; i<=10; i++){
+		const url = `${baseUrl}${i}`;
+
+		const promise: Promise<TmdbSearchResult<Person>> = fetch(url, {
+			headers,
+			next: {
+				revalidate: 86400
+			}
+		}).then(res => res.json());
+
+		promises.push(promise);
+	}
+
+	const results: Array<Person> = [];
+
+	const responses = await Promise.all(promises);
+
+	for(const res of responses){
+		results.push(...res.results
+			.filter(val => val.known_for_department === "Acting" && val.popularity > 50)
+		);
+	}
+
+	const randomPerson = results[Math.floor(Math.random() * results.length)];
+	
+	return {
+		id: randomPerson.id,
+		label: randomPerson.name,
+		image: randomPerson.profile_path,
+		type: 'person'
+	}
 }
