@@ -30,7 +30,14 @@
 	}
 
 	.cs-button.disabled:hover {
-		background-color: var(--background-faded);
 		color: var(--text-faded);
+	}
+
+	.cs-button.primary.disabled:hover {
+		background-color: var(--highlight-primary);
+	}
+
+	.cs-button.secondary.disabled:hover {
+		background-color: var(--background-primary);
 	}
 }

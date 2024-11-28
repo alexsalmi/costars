@@ -1,7 +1,7 @@
-import '@/styles/components/reset-modal.scss'
 import CSModal from '../presentation/modal';
 import CSButton from '../inputs/button';
 import useGameState from '@/store/game.state';
+import '@/styles/game/reset-modal.scss'
 
 interface ICSResetModalProps {
 	isOpen: boolean,

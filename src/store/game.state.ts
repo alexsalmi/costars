@@ -1,32 +1,44 @@
 import { useAtom } from "jotai";
 import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom } from "./atoms/game";
+import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave} from "@/services/storage.service";
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
   const [history, setHistory] = useAtom(historyAtom);
   const [undoCache, setUndoCache] = useAtom(undoCacheAtom);
   const [condensed, setCondensed] = useAtom(condensedAtom);
+  const [highScore, setHighScore] = useAtom(highScoreAtom);
   const [current] = useAtom(currentAtom);
   const [score] = useAtom(scoreAtom);
-  const [highScore] = useAtom(highScoreAtom);
 
   // Actions
   const addEntity = (entity: GameEntity) => {
     setHistory([entity, ...history]);
     setUndoCache([]);
     
-		if (gameType === 'unlimited' && history.length >= highScore && typeof window !== 'undefined') {
-			window.localStorage.setItem('costars-highscore', (highScore + 1).toString());
+    if (gameType === 'unlimited') {
+      if (history.length >= highScore)
+        incrementHighscore();
+      
+      updateUnlimitedSave([entity, ...history]);
 		}
   }
 
   const initUnlimitedGame = () => {
     setGameType('unlimited');
-    setHistory([]);
+
+    const saveData = getUnlimitedSave();
+    setHistory(saveData);
+  }
+
+  const incrementHighscore = () => {
+    setHighScore(highScore + 1);
+    incrementHighscoreStorage();
   }
 
   const reset = () => {
     setHistory([]);
+    updateUnlimitedSave([]);
   }
   
   const undo = () => {
