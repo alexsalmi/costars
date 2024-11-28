@@ -6,7 +6,7 @@ import { SearchOutlined} from '@mui/icons-material';
 import { SyntheticEvent, useRef, useState } from "react";
 import { search, getCredits } from '@/services/tmdb.service';
 import useGameState from '@/store/game.state';
-import { debounce } from '@/services/utils';
+import debounce from 'debounce';
 
 export default function CSSearchBar() {
 	const { history, current, addEntity } = useGameState();
