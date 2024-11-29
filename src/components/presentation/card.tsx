@@ -1,6 +1,7 @@
 'use client'
 import '@/styles/components/card.scss'
 import Image from 'next/image';
+import { ExpandMoreOutlined, ExpandLessOutlined } from '@mui/icons-material';
 
 interface ICSCardProps {
 	entity: GameEntity,
@@ -29,6 +30,13 @@ export default function CSCard({entity, reverse, target, condensed}: ICSCardProp
 				{target ? <h4>Target:</h4> : ''}
 				{entity.label}
 			</span>
+			{target ? 
+				condensed ?
+					<ExpandMoreOutlined className='card-expandable-icon' />
+					:
+					<ExpandLessOutlined className='card-expandable-icon'/>
+				: <></>
+			}
 		</div>
   );
 }

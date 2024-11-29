@@ -46,7 +46,7 @@ export default function CSSearchBar({ onSubmit } : ICSSearchBar) {
 		setValue('');
 
 		try {
-			onSubmit(value);
+			await onSubmit(value);
 		}
 		catch {
 			setError(true);

@@ -15,13 +15,13 @@ interface IGameProps {
 }
 
 export default function GameContainer({ initPeople }: IGameProps) {
-	const { current, gameType, target, score, highScore, initCustomGame, addEntity,  } = useGameState();
+	const { current, gameType, target, score, highScore, initGame, addEntity,  } = useGameState();
 	const [condensedTarget, setCondensedTarget] = useState(true);
 	const [success, setSuccess] = useState(false);
 
 	useEffect(() => {
 		if (initPeople)
-			initCustomGame(initPeople)
+			initGame(initPeople)
 	}, []);
 
 

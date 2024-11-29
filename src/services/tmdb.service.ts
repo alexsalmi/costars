@@ -75,7 +75,7 @@ export const randomPerson = async (): Promise<GameEntity> => {
 	const baseUrl = `${BASE_URL}/3/trending/person/day?language=en-US&page=`;
 	const promises: Promise<TmdbSearchResult<Person>>[] = [];
 
-	for(let i=1; i<=10; i++){
+	for(let i=1; i<=30; i++){
 		const url = `${baseUrl}${i}`;
 
 		const promise: Promise<TmdbSearchResult<Person>> = fetch(url, {

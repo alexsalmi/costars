@@ -12,15 +12,18 @@ export default function Success() {
   return (
     <div className='success-container'>
       <CSTextDisplay>
-        <h4>Congrats!</h4>
-        <span>You connected {history[history.length - 1].label} and {target.label} in {score - 1} moves!</span>
+        <h3>Congrats!</h3>
+        <div className='success-message'>
+          <span>You connected {history[history.length - 1].label} and {target.label} in:</span>
+          <span><strong>{score - 1} moves!</strong></span>
+        </div>
         <Link href="/custom">
           <CSButton>
             New Game
           </CSButton>
         </Link>
       </CSTextDisplay>
-      <CSCardTrack showPrompt />
+      <CSCardTrack />
     </div>
   );
 }

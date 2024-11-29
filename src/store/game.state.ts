@@ -33,7 +33,13 @@ const useGameState = () => {
     setHistory(saveData);
   }
 
-  const initCustomGame = async ([target, starter]: [PersonDetails, PersonDetails]) => {
+  const initCustomGame = () => {
+    setGameType('custom');
+    setTarget({} as GameEntity);
+    setHistory([]);
+  }
+
+  const initGame = async ([target, starter]: [PersonDetails, PersonDetails]) => {
     setGameType('custom');
 
     const targetEntity: GameEntity = {
@@ -104,6 +110,7 @@ const useGameState = () => {
     condensed,
     initUnlimitedGame,
     initCustomGame,
+    initGame,
     addEntity,
     reset,
     undo,

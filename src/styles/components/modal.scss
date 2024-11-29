@@ -12,14 +12,14 @@
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
+	z-index: 1100;
 }
 
 .modal-container {
-	background-color: pink;
 	width: fit-content;
 	max-width: var(--max-width-mobile);
 	padding: 24px 16px;
-	margin-top: 30vh;
+	margin-top: 75px;
 	background-color: var(--background-primary);
 	color: var(--highlight-text);
 	border: 3px solid var(--highlight-primary); 
