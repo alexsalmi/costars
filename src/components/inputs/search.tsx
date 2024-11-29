@@ -4,12 +4,16 @@ import TextField from '@mui/material/TextField';
 import '@/styles/components/search.scss'
 import { SearchOutlined} from '@mui/icons-material';
 import { SyntheticEvent, useRef, useState } from "react";
-import { search, getCredits } from '@/services/tmdb.service';
+import { search } from '@/services/tmdb.service';
 import useGameState from '@/store/game.state';
 import debounce from 'debounce';
 
-export default function CSSearchBar() {
-	const { history, current, addEntity } = useGameState();
+interface ICSSearchBar {
+	onSubmit: (value: GameEntity) => void
+}
+
+export default function CSSearchBar({ onSubmit } : ICSSearchBar) {
+	const { history, current } = useGameState();
 	const [value, setValue] = useState('');
 	const [options, setOptions] = useState([] as GameEntity[]);
 	const [error, setError] = useState(false);
@@ -41,15 +45,10 @@ export default function CSSearchBar() {
 
 		setValue('');
 
-		const isMatch = !current || current.credits!.includes(value.id);
-
-		if (isMatch) {
-			addEntity({
-				...value,
-				credits: (await getCredits(value)).cast.map(credit => credit.id)
-			});
+		try {
+			onSubmit(value);
 		}
-		else {
+		catch {
 			setError(true);
 			setTimeout(() => setError(false), 1000);
 		}

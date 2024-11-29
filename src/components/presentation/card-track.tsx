@@ -7,7 +7,7 @@ interface ICSCardTrackProps {
 }
 
 export default function CSCardTrack({ showPrompt }: ICSCardTrackProps) {
-	const { history, current } = useGameState();
+	const { history, current, condensed } = useGameState();
 
   return (
 		<div className='card-track-container'>
@@ -28,7 +28,7 @@ export default function CSCardTrack({ showPrompt }: ICSCardTrackProps) {
 			}
 			{
 				history.map(entity => {
-					return <CSCard entity={entity} reverse={entity.type === 'movie'} key={entity.id}/>
+					return <CSCard entity={entity} reverse={entity.type === 'movie'} condensed={condensed} key={entity.id}/>
 				})
 			}
 		</div>

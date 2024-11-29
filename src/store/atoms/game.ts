@@ -1,7 +1,8 @@
 import { atom } from "jotai";
 import { getHighscore } from "@/services/storage.service";
 
-export const gameTypeAtom = atom('unlimited');
+export const gameTypeAtom = atom('custom');
+export const targetAtom = atom({} as GameEntity);
 export const historyAtom = atom([] as Array<GameEntity>);
 export const undoCacheAtom = atom([] as Array<GameEntity>);
 export const condensedAtom = atom(false);

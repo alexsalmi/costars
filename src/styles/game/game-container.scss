@@ -6,6 +6,14 @@
 	flex-grow: 1;
 }
 
+.game-target {
+	margin-top: 14px;
+}
+
+.game-target > div {
+	width: 329px;
+}
+
 .game-scores {
 	width: 100%;
 	max-width: var(--max-width-mobile);
