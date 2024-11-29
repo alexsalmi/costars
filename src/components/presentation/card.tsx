@@ -1,15 +1,16 @@
-import useGameState from '@/store/game.state';
+'use client'
 import '@/styles/components/card.scss'
 import Image from 'next/image';
+import { ExpandMoreOutlined, ExpandLessOutlined } from '@mui/icons-material';
 
 interface ICSCardProps {
 	entity: GameEntity,
 	reverse?: boolean,
-	target?: boolean
+	target?: boolean,
+	condensed?: boolean
 }
 
-export default function CSCard({entity, reverse, target}: ICSCardProps) {
-	const {condensed} = useGameState();
+export default function CSCard({entity, reverse, target, condensed}: ICSCardProps) {
   return (
 		<div className={`
 			card-container 
@@ -26,8 +27,16 @@ export default function CSCard({entity, reverse, target}: ICSCardProps) {
 				: <></>
 			}
 			<span className='card-label'>
+				{target ? <h4>Target:</h4> : ''}
 				{entity.label}
 			</span>
+			{target ? 
+				condensed ?
+					<ExpandMoreOutlined className='card-expandable-icon' />
+					:
+					<ExpandLessOutlined className='card-expandable-icon'/>
+				: <></>
+			}
 		</div>
   );
 }

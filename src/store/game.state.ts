@@ -1,9 +1,11 @@
 import { useAtom } from "jotai";
-import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom } from "./atoms/game";
+import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom } from "./atoms/game";
 import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave} from "@/services/storage.service";
+import { getCredits } from "@/services/tmdb.service";
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
+  const [target, setTarget] = useAtom(targetAtom);
   const [history, setHistory] = useAtom(historyAtom);
   const [undoCache, setUndoCache] = useAtom(undoCacheAtom);
   const [condensed, setCondensed] = useAtom(condensedAtom);
@@ -31,14 +33,52 @@ const useGameState = () => {
     setHistory(saveData);
   }
 
+  const initCustomGame = () => {
+    setGameType('custom');
+    setTarget({} as GameEntity);
+    setHistory([]);
+  }
+
+  const initGame = async ([target, starter]: [PersonDetails, PersonDetails]) => {
+    setGameType('custom');
+
+    const targetEntity: GameEntity = {
+      type: 'person',
+      id: target.id,
+      label: target.name,
+      image: target.profile_path,
+    };
+
+    const starterEntity: GameEntity = {
+      type: 'person',
+      id: starter.id,
+      label: starter.name,
+      image: starter.profile_path,
+    }
+
+    setTarget({
+      ...targetEntity,
+      credits: (await getCredits(targetEntity)).cast.map(credit => credit.id)
+    });
+    setHistory([{
+      ...starterEntity,
+      credits: (await getCredits(starterEntity)).cast.map(credit => credit.id)
+    }]);
+  }
+
   const incrementHighscore = () => {
     setHighScore(highScore + 1);
     incrementHighscoreStorage();
   }
 
   const reset = () => {
-    setHistory([]);
-    updateUnlimitedSave([]);
+    if (gameType === 'unlimited') {
+      setHistory([]);
+      updateUnlimitedSave([]);
+    }
+    else {
+      setHistory(history.slice(-1));
+    }
   }
   
   const undo = () => {
@@ -61,14 +101,17 @@ const useGameState = () => {
 
   return {
     score,
+    target,
     current,
     history,
     gameType,
     highScore,
     undoCache,
     condensed,
-    addEntity,
     initUnlimitedGame,
+    initCustomGame,
+    initGame,
+    addEntity,
     reset,
     undo,
     redo,

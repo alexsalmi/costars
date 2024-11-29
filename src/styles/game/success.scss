@@ -1,0 +1,30 @@
+.success-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 20px 0;
+	flex-grow: 1;
+  gap: 24px;
+}
+
+.success-container > div {
+  max-width: var(--max-width-mobile);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 16px;
+	padding: 16px;
+}
+
+.success-message {
+	display: flex;
+	flex-direction: column;
+	font-weight: 600;
+
+	strong {
+		font-size: large;
+		font-weight: 900;
+	}
+}
+

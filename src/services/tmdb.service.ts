@@ -47,7 +47,19 @@ export const search = async (query: string, type: TmdbType = 'person')
 		});
 }
 
-export const getCredits = async (entity: GameEntity) => {
+export const getPerson = async (id: number): Promise<PersonDetails> => {
+	const url = `${BASE_URL}/3/person/${id}`;
+
+	const response: PersonDetails = await fetch(url, {
+		headers,
+		cache: 'force-cache'
+	}).then(res => res.json());
+
+	return response;
+}
+
+export const getCredits = async (entity: GameEntity)
+		: Promise<TmdbCreditsResult<PersonCredit | MovieCredit>> => {
 	const suffix = entity.type === 'person' ? 'movie_credits' : 'credits';
 	const url = `${BASE_URL}/3/${entity.type}/${entity.id}/${suffix}`;
 
@@ -63,7 +75,7 @@ export const randomPerson = async (): Promise<GameEntity> => {
 	const baseUrl = `${BASE_URL}/3/trending/person/day?language=en-US&page=`;
 	const promises: Promise<TmdbSearchResult<Person>>[] = [];
 
-	for(let i=1; i<=10; i++){
+	for(let i=1; i<=30; i++){
 		const url = `${baseUrl}${i}`;
 
 		const promise: Promise<TmdbSearchResult<Person>> = fetch(url, {
