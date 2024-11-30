@@ -3,7 +3,41 @@
 	flex-direction: column;
 	align-items: center;
 	margin-top: 100px;
-	gap: 48px;
+	gap: 40px;
+}
+
+.home-page-daily-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+	background-color: var(--background-faded);
+	border: 3px solid var(--highlight-faded);
+	border-radius: 10px;
+	padding: 10px 24px 0px;
+	color: var(--highlight-text);
+	font-weight: 600;
+
+	a {
+		width: 100%;
+		max-width: 230px;
+		transform: translateY(50%);
+		margin-top: -24px; 
+	}
+}
+
+.home-page-daily-previews {
+	display: flex;
+	justify-content: center;
+	gap: 32px;
+
+	> span {
+		flex-grow: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+	}
 }
 
 .home-page-button-container {
