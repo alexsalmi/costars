@@ -1,35 +1,32 @@
 'use server';
-import { revalidateTag, unstable_cache } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import { randomPerson } from "./tmdb.service";
 import cron from 'node-cron';
 
-const daily: DailyCostars = {
+const dailyCostars: DailyCostars = {
   target: {} as GameEntity,
   starter: {} as GameEntity
 };
 
 const refreshDailyCostars = async () => {
   console.log("----- Refreshing Daily Costars -----")
-  daily.target = await randomPerson();
-  const targetSet = new Set(daily.target.credits);
+  dailyCostars.target = await randomPerson();
+  const targetSet = new Set(dailyCostars.target.credits);
 
   do {
-    daily.starter = await randomPerson();
-  } while (daily.starter.credits!.some(c => targetSet.has(c)));
-
-  revalidateTag('daily_costars');
+    dailyCostars.starter = await randomPerson();
+  } while (dailyCostars.starter.credits!.some(c => targetSet.has(c)));
 };
 
 cron.schedule('0 0 * * *', async () => {
   await refreshDailyCostars();
+
+  revalidatePath('/');
 });
 
-export const getDaily = unstable_cache(
-  async () => { return daily; },
-  [],
-  {
-    tags: ['daily_costars']
-  }
-);
-
-refreshDailyCostars();
+export const getDaily = async () => {
+  if (!dailyCostars.starter.credits)
+    await refreshDailyCostars();
+    
+  return dailyCostars;
+}
