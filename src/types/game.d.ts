@@ -9,6 +9,6 @@ interface GameEntity {
 }
 
 interface DailyCostars {
-  target: PersonDetails,
-  starter: PersonDetails
+  target: GameEntity,
+  starter: GameEntity
 }

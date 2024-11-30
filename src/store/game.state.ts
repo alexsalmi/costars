@@ -1,7 +1,6 @@
 import { useAtom } from "jotai";
 import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom } from "./atoms/game";
 import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave} from "@/services/storage.service";
-import { getCredits } from "@/services/tmdb.service";
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
@@ -42,31 +41,11 @@ const useGameState = () => {
     setUndoCache([]);
   }
 
-  const initGame = async ([target, starter]: [PersonDetails, PersonDetails]) => {
+  const initGame = async ([target, starter]: [GameEntity, GameEntity]) => {
     setGameType('custom');
 
-    const targetEntity: GameEntity = {
-      type: 'person',
-      id: target.id,
-      label: target.name,
-      image: target.profile_path,
-    };
-
-    const starterEntity: GameEntity = {
-      type: 'person',
-      id: starter.id,
-      label: starter.name,
-      image: starter.profile_path,
-    }
-
-    setTarget({
-      ...targetEntity,
-      credits: (await getCredits(targetEntity)).cast.map(credit => credit.id)
-    });
-    setHistory([{
-      ...starterEntity,
-      credits: (await getCredits(starterEntity)).cast.map(credit => credit.id)
-    }]);
+    setTarget(target);
+    setHistory([starter]);
   }
 
   const incrementHighscore = () => {

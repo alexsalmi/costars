@@ -19,16 +19,16 @@ export default async function Home() {
       <div className='home-page-daily-container'>
         <h3 className='home-page-daily-header'>Daily Costars</h3>
         <div className='home-page-daily-previews'>
-          <Image src={`https://image.tmdb.org/t/p/w185${starter.profile_path}`}
-            width={80} height={120} alt={`Image of ${starter.name}`}
+          <Image src={`https://image.tmdb.org/t/p/w185${starter.image}`}
+            width={80} height={120} alt={`Image of ${starter.label}`}
           />
           <div className='home-page-daily-names'>
-            <span>{starter.name}</span>
+            <span>{starter.label}</span>
             <span>to</span>
-            <span>{target.name}</span>
+            <span>{target.label}</span>
           </div>
-          <Image src={`https://image.tmdb.org/t/p/w185${target.profile_path}`}
-            width={80} height={120} alt={`Image of ${target.name}`}
+          <Image src={`https://image.tmdb.org/t/p/w185${target.image}`}
+            width={80} height={120} alt={`Image of ${target.label}`}
           />
         </div>
         <Link href="/daily">

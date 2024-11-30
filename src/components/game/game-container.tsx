@@ -11,13 +11,13 @@ import { getCredits } from '@/services/tmdb.service';
 import Success from './success';
 
 interface IGameProps {
-  initPeople?: [PersonDetails, PersonDetails]
+  initPeople?: [GameEntity, GameEntity]
 }
 
 export default function GameContainer({ initPeople }: IGameProps) {
-	const { current, gameType, target, score, highScore, initGame, addEntity,  } = useGameState();
+	const { current, gameType, target, score, highScore, initGame, addEntity } = useGameState();
 	const [condensedTarget, setCondensedTarget] = useState(true);
-	const [success, setSuccess] = useState(false);
+	const [success, setSuccess] = useState(true);
 
 	useEffect(() => {
 		if (initPeople)

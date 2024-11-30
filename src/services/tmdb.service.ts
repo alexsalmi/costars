@@ -100,10 +100,14 @@ export const randomPerson = async (): Promise<GameEntity> => {
 
 	const randomPerson = results[Math.floor(Math.random() * results.length)];
 	
-	return {
+	const personEntity: GameEntity = {
 		id: randomPerson.id,
 		label: randomPerson.name,
 		image: randomPerson.profile_path,
 		type: 'person'
-	}
+	};
+
+	personEntity.credits = (await getCredits(personEntity)).cast.map(credit => credit.id);
+
+	return personEntity;
 }
