@@ -11,26 +11,46 @@
 .cs-button.primary {
 	background-color: var(--highlight-primary);
 	color: var(--background-primary);
+
+	svg {
+		color: var(--background-primary);
+	}
 }
 
 .cs-button.secondary {
 	background-color: var(--background-primary);
 	color: var(--highlight-text);
+
+	svg {
+		color: var(--highlight-text);
+	}
 }
 
 .cs-button.disabled {
 	color: var(--text-faded);
 	cursor: auto;
+
+	svg {
+		color: var(--text-faded);
+	}
 }
 
 @media (hover: hover) {
 	.cs-button:hover {
 		background-color: var(--highlight-secondary);
 		color: var(--highlight-text);
+
+		svg {
+			color: var(--highlight-text);
+		}
 	}
 
 	.cs-button.disabled:hover {
 		color: var(--text-faded);
+
+		svg {
+			color: var(--text-faded);
+		}
 	}
 
 	.cs-button.primary.disabled:hover {

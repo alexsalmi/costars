@@ -6,7 +6,7 @@ import CSResetModal from '../game/reset-modal';
 import { useState } from 'react';
 
 export default function CSToolbar() {
-  const { history, undoCache, expandAll, collapseAll, undo, redo } = useGameState();
+  const { history, gameType, undoCache, expandAll, collapseAll, undo, redo } = useGameState();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -37,7 +37,7 @@ export default function CSToolbar() {
           <ReplayOutlined />
         </CSButton>
         <CSButton secondary
-          disabled={history.length < 1}
+          disabled={ gameType === 'unlimited' ? history.length < 1 : history.length < 2 }
           onClick={undo}
         >
           <UndoOutlined />

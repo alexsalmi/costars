@@ -7,3 +7,8 @@ interface GameEntity {
   image: string,
   credits?: Array<number>
 }
+
+interface DailyCostars {
+  target: PersonDetails,
+  starter: PersonDetails
+}

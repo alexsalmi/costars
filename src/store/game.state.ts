@@ -31,12 +31,15 @@ const useGameState = () => {
 
     const saveData = getUnlimitedSave();
     setHistory(saveData);
+    setTarget({} as GameEntity);
+    setUndoCache([]);
   }
 
   const initCustomGame = () => {
     setGameType('custom');
     setTarget({} as GameEntity);
     setHistory([]);
+    setUndoCache([]);
   }
 
   const initGame = async ([target, starter]: [PersonDetails, PersonDetails]) => {
