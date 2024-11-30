@@ -4,7 +4,7 @@ import CSButton from '../inputs/button';
 import CSSearchBar from '../inputs/search';
 import { useState } from 'react';
 import CSTextDisplay from '../presentation/display';
-import { AutorenewOutlined, CloseOutlined, ArrowBackIosNewOutlined } from '@mui/icons-material';
+import { AutorenewOutlined, CloseOutlined, ArrowBackIosNewOutlined, ShareOutlined, SkipNextOutlined } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import Slide from '@mui/material/Slide';
 import { randomPerson } from '@/services/tmdb.service';
@@ -15,27 +15,36 @@ export default function CSCustomGameModal() {
   const [target, setTarget] = useState(null as GameEntity | null);
   const [starter, setStarter] = useState(null as GameEntity | null);
   const [openToast, setOpenToast] = useState(false);
+  const [loading, setLoading] = useState({ target: false, starter: false });
+
 
   const getRandomPerson = async (type: 'target' | 'starter') => {
+    setLoading({ ...loading, [type]: true });
+
     const person = await randomPerson();
 
     if (type === 'target')
       setTarget(person);
     else
       setStarter(person);
+
+    setLoading({ ...loading, [type]: false });
   }
+
 
   const copyToClipboard = () => {
     if (!target || !starter)
       return;
 
-    window.navigator.clipboard.writeText(`${location.origin}/custom/${target.id}..${starter.id}`);
+    window.navigator.clipboard.writeText(`${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`);
     setOpenToast(true);
   }
+
 
   const handleCloseToast = () => {
     setOpenToast(false);
   }
+
 
   return (
     <CSModal isOpen className='custom-game-modal'>
@@ -55,7 +64,7 @@ export default function CSCustomGameModal() {
           target === null ?
             <>
               <CSSearchBar onSubmit={setTarget} />
-              <CSButton>
+              <CSButton loading={loading['target']}>
                 <AutorenewOutlined onClick={() => getRandomPerson('target')} />
               </CSButton>
             </>
@@ -78,7 +87,7 @@ export default function CSCustomGameModal() {
           starter === null ?
             <>
               <CSSearchBar onSubmit={setStarter} />
-              <CSButton>
+              <CSButton loading={loading['starter']}>
                 <AutorenewOutlined onClick={() => getRandomPerson('starter')} />
               </CSButton>
             </>
@@ -99,17 +108,20 @@ export default function CSCustomGameModal() {
           secondary
           disabled={!target || !starter}
           onClick={copyToClipboard}
-				>
+        >
+          <ShareOutlined />
 					Share
         </CSButton>
         {!target || !starter ?
           <CSButton disabled>
             Start
+            <SkipNextOutlined />
           </CSButton>
         :
-          <Link href={`/custom/${target.id}..${starter.id}`}>
+          <Link href={`/custom/${target.id.toString(36)}..${starter.id.toString(36)}`}>
             <CSButton>
-              Start
+              <span>Start</span>
+              <SkipNextOutlined />
             </CSButton>
           </Link>
         }

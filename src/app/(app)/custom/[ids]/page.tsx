@@ -8,11 +8,11 @@ interface ICustomGameProps {
 export default async function CustomGame({ params }: ICustomGameProps) {
   const ids = (await params).ids.split("..");
 
-  if (ids.length !== 2 || parseInt(ids[0]) == parseInt(ids[1]))
+  if (ids.length !== 2 || parseInt(ids[0], 36) == parseInt(ids[1], 36))
     throw Error("Invalid URL");
 
-  const targetId = parseInt(ids[0]);
-  const startId = parseInt(ids[1]);
+  const targetId = parseInt(ids[0], 36);
+  const startId = parseInt(ids[1], 36);
     
   const [target, start] = await Promise.all([getPerson(targetId), getPerson(startId)]);
 
