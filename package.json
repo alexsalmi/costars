@@ -21,11 +21,13 @@
     "debounce": "^2.2.0",
     "jotai": "^2.10.3",
     "next": "15.0.3",
+    "node-cron": "^3.0.3",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/node-cron": "^3.0.11",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
