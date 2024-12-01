@@ -101,6 +101,8 @@ export const randomPerson = async (): Promise<GameEntity> => {
 	let credits: Array<MovieCredit>;
 	let personEntity: GameEntity;
 
+	console.log(results.length);
+
 	do {
 		const randomPerson = results[Math.floor(Math.random() * results.length)];
 		
