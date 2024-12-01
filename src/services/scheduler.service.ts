@@ -1,9 +1,9 @@
 'use server';
-import { revalidateTag, unstable_cache } from 'next/cache';
+import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache';
 import { randomPerson } from "./tmdb.service";
 import cron from 'node-cron';
 
-const fetchDailyCostars = async () => {
+const fetchDailyCostars = unstable_cache(async () => {
   console.log("----- Refreshing Daily Costars -----")
   const dailyCostars: DailyCostars = {
     target: (await randomPerson()),
@@ -18,11 +18,15 @@ const fetchDailyCostars = async () => {
   console.log("----- Finished Refreshing -----")
 
   return dailyCostars;
-};
+}, ['daily_costars'], {tags: ['daily_costars']});
 
 cron.schedule('* * * * *', async () => {
   console.log("Revalidating")
   revalidateTag('daily_costars');
+  revalidatePath('/');
+  revalidatePath('/daily');
 });
 
-export const getDaily = unstable_cache(fetchDailyCostars, ['daily_costars'], { revalidate: false, tags: ['daily_costars'] });
+export const getDaily = async () => {    
+  return fetchDailyCostars();
+}
