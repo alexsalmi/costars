@@ -1,4 +1,5 @@
 'use server';
+import { revalidatePath } from "next/cache";
 import { randomPerson } from "./tmdb.service";
 import cron from 'node-cron';
 
@@ -27,6 +28,9 @@ cron.schedule('* * * * *', async () => {
   console.log("Revalidating")
 
   dailyCostars = await fetchDailyCostars();
+
+  revalidatePath('/');
+  revalidatePath('/daily');
 });
 
 export const getDaily = async () => {    
