@@ -72,10 +72,10 @@ export const getCredits = async (entity: GameEntity)
 }
 
 export const randomPerson = async (): Promise<GameEntity> => {
-	const baseUrl = `${BASE_URL}/3/trending/person/day?language=en-US&page=`;
+	const baseUrl = `${BASE_URL}/3/trending/person/day?page=`;
 	const promises: Promise<TmdbSearchResult<Person>>[] = [];
 
-	for(let i=1; i<=30; i++){
+	for(let i=1; i<=50; i++){
 		const url = `${baseUrl}${i}`;
 
 		const promise: Promise<TmdbSearchResult<Person>> = fetch(url, {
@@ -98,16 +98,23 @@ export const randomPerson = async (): Promise<GameEntity> => {
 		);
 	}
 
-	const randomPerson = results[Math.floor(Math.random() * results.length)];
-	
-	const personEntity: GameEntity = {
-		id: randomPerson.id,
-		label: randomPerson.name,
-		image: randomPerson.profile_path,
-		type: 'person'
-	};
+	let credits: Array<MovieCredit>;
+	let personEntity: GameEntity;
 
-	personEntity.credits = (await getCredits(personEntity)).cast.map(credit => credit.id);
+	do {
+		const randomPerson = results[Math.floor(Math.random() * results.length)];
+		
+		personEntity = {
+			id: randomPerson.id,
+			label: randomPerson.name,
+			image: randomPerson.profile_path,
+			type: 'person'
+		};
+
+		credits = (await getCredits(personEntity)).cast as Array<MovieCredit>;
+	
+		personEntity.credits = credits.map(credit => credit.id);
+	} while (credits.some(credit => credit.original_language === 'ko') || !credits.some(credit => credit.original_language === 'en'))
 
 	return personEntity;
 }

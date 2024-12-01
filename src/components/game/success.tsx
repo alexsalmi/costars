@@ -13,20 +13,16 @@ export default function Success() {
     <div className='success-container'>
       <div className='success-message-container'>
         <h3>Congrats!</h3>
-        <div className='success-message'>
-          <span>
-            {'You connected '}
-            <strong>{history[history.length - 1].label}</strong>
-            {' and '}
-            <strong>{target.label}</strong>
-            {' in '}
-          </span>
-          <span>
-            <strong>
-              {(score - 1) / 2} {score < 4 ? 'movie!' : 'movies!'}
-            </strong>
-          </span>
-        </div>
+        <span>
+          {'You connected '}
+          <strong>{history[history.length - 1].label}</strong>
+          {' and '}
+          <strong>{target.label}</strong>
+          {' in '}
+          <strong>
+            {(score - 1) / 2} {score < 4 ? 'movie!' : 'movies!'}
+          </strong>
+        </span>
         {gameType === 'daily' ?
           <div className='success-stats'>
             <CSTextDisplay>
