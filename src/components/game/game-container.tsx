@@ -9,19 +9,24 @@ import CSCard from '../presentation/card';
 import { useEffect, useState } from 'react';
 import { getCredits } from '@/services/tmdb.service';
 import Success from './success';
+import { isToday } from '@/services/utils.service';
 
 interface IGameProps {
-  initPeople?: [GameEntity, GameEntity]
+	initPeople?: [GameEntity, GameEntity],
+	daily?: boolean
 }
 
-export default function GameContainer({ initPeople }: IGameProps) {
-	const { current, gameType, target, score, highScore, initGame, addEntity } = useGameState();
+export default function GameContainer({ initPeople, daily }: IGameProps) {
+	const { current, gameType, target, score, highScore, dailyStats, initGame, addEntity, updateDailyStats } = useGameState();
 	const [condensedTarget, setCondensedTarget] = useState(true);
 	const [success, setSuccess] = useState(false);
 
 	useEffect(() => {
 		if (initPeople)
-			initGame(initPeople)
+			initGame(initPeople, daily);
+
+		if (daily && dailyStats.lastPlayed && isToday(new Date(dailyStats.lastPlayed)))
+			setSuccess(true);
 	}, []);
 
 
@@ -33,6 +38,9 @@ export default function GameContainer({ initPeople }: IGameProps) {
 
 		if (gameType !== 'unlimited') {
 			const isTargetMatch = target.id === value.id && target.type == value.type;
+
+			if (isTargetMatch && gameType === 'daily')
+				updateDailyStats(value);
 
 			if (isTargetMatch)
 				setSuccess(true);

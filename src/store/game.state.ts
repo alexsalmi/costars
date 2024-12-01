@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
-import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom } from "./atoms/game";
-import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave} from "@/services/storage.service";
+import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom } from "./atoms/game";
+import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave, updateDailyStats as updateDailyStatsStorage, getDailyStats } from "@/services/storage.service";
+import { isToday } from "@/services/utils.service";
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
@@ -9,6 +10,7 @@ const useGameState = () => {
   const [undoCache, setUndoCache] = useAtom(undoCacheAtom);
   const [condensed, setCondensed] = useAtom(condensedAtom);
   const [highScore, setHighScore] = useAtom(highScoreAtom);
+  const [dailyStats, setDailyStats] = useAtom(dailyStatsAtom);
   const [current] = useAtom(currentAtom);
   const [score] = useAtom(scoreAtom);
 
@@ -41,11 +43,23 @@ const useGameState = () => {
     setUndoCache([]);
   }
 
-  const initGame = async ([target, starter]: [GameEntity, GameEntity]) => {
-    setGameType('custom');
+  const initGame = async ([target, starter]: [GameEntity, GameEntity], daily?: boolean) => {
+    setGameType(daily ? 'daily' : 'custom');
 
-    setTarget(target);
-    setHistory([starter]);
+    if (daily && dailyStats.lastSolve && dailyStats.lastPlayed && isToday(new Date(dailyStats.lastPlayed))) {
+      setTarget(dailyStats.lastSolve[0]);
+      setHistory(dailyStats.lastSolve);
+      
+    }
+    else {
+      setTarget(target);
+      setHistory([starter]);
+    }
+  }
+
+  const updateDailyStats = (value: GameEntity) => {
+    updateDailyStatsStorage([value, ...history]);
+    setDailyStats(getDailyStats());
   }
 
   const incrementHighscore = () => {
@@ -90,9 +104,11 @@ const useGameState = () => {
     highScore,
     undoCache,
     condensed,
+    dailyStats,
     initUnlimitedGame,
     initCustomGame,
     initGame,
+    updateDailyStats,
     addEntity,
     reset,
     undo,

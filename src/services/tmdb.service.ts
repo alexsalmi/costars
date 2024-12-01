@@ -92,7 +92,7 @@ export const randomPerson = async (): Promise<GameEntity> => {
 
 	const responses = await Promise.all(promises);
 
-	for(const res of responses){
+	for (const res of responses) {
 		results.push(...res.results
 			.filter(val => val.known_for_department === "Acting" && val.popularity > 50)
 		);

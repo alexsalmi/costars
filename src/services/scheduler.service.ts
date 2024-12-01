@@ -18,15 +18,15 @@ const refreshDailyCostars = async () => {
   } while (dailyCostars.starter.credits!.some(c => targetSet.has(c)));
 };
 
-cron.schedule('0 0 * * *', async () => {
+cron.schedule('* * * * *', async () => {
   await refreshDailyCostars();
 
   revalidatePath('/');
+  revalidatePath('/daily');
 });
 
-export const getDaily = async () => {
-  if (!dailyCostars.starter.credits)
-    await refreshDailyCostars();
-    
+refreshDailyCostars();
+
+export const getDaily = async () => {    
   return dailyCostars;
 }
