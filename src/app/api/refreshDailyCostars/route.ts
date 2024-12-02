@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchDailyCostars } from '@/services/scheduler.service';
+import { fetchDailyCostars, getDaily } from '@/services/scheduler.service';
 import { revalidatePath } from 'next/cache';
 
 export async function GET() {
@@ -10,5 +10,7 @@ export async function GET() {
   revalidatePath('/(home)', 'page');
   revalidatePath('/(app)/daily', 'page');
 
-  return NextResponse.json({ ok: true });
+  const {target, starter} = await getDaily();
+
+  return NextResponse.json({ ok: true, starter: starter.label, target: target label });
 }
