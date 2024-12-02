@@ -1,7 +1,10 @@
 'use server';
 import { randomPerson } from "./tmdb.service";
 
-let dailyCostars: DailyCostars;
+let dailyCostars: DailyCostars = {
+  target: {} as GameEntity,
+  starter: {} as GameEntity
+};
 
 export const fetchDailyCostars = async () => {
   console.log("----- Refreshing Daily Costars -----")
