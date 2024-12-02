@@ -12,5 +12,5 @@ export async function GET() {
 
   const {target, starter} = await getDaily();
 
-  return NextResponse.json({ ok: true, starter: starter.label, target: target label });
+  return NextResponse.json({ ok: true, starter: starter.label, target: target.label });
 }
