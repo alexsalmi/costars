@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import { fetchDailyCostars, getDaily } from '@/services/scheduler.service';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 export async function GET() {
   console.log("Revalidating")
 
   await fetchDailyCostars();
 
+  revalidateTag('daily_costars');
   revalidatePath('/(home)', 'page');
   revalidatePath('/(app)/daily', 'page');
 
