@@ -7,8 +7,8 @@ export async function GET() {
 
   await fetchDailyCostars();
 
-  revalidatePath('/');
-  revalidatePath('/daily');
+  revalidatePath('/(home)/page', 'page');
+  revalidatePath('/(app)/daily/page', 'page');
 
   return NextResponse.json({ ok: true });
 }
