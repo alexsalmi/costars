@@ -1,7 +1,8 @@
 'use server';
+import { unstable_cache } from 'next/cache';
 import { randomPerson } from "./tmdb.service";
 
-export const fetchDailyCostars = async () => {
+export const fetchDailyCostars = unstable_cache(async () => {
   console.log("----- Refreshing Daily Costars -----")
 
   const target = await randomPerson();
@@ -18,9 +19,7 @@ export const fetchDailyCostars = async () => {
     target,
     starter
   };
-};
-
-console.log("Scheduler service");
+}, ['daily_costars'], {tags: ['daily_costars']});
 
 export const getDaily = async () => {
   console.log("Getting daily costars");
