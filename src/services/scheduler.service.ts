@@ -25,7 +25,7 @@ export const fetchDailyCostars = async () => {
   };
 };
 
-fetchDailyCostars();
+console.log("Scheduler service");
 
 export const getDaily = async () => {
   console.log("Getting daily costars");
