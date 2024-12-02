@@ -27,6 +27,7 @@ export const fetchDailyCostars = async () => {
 
 fetchDailyCostars();
 
-export const getDaily = async () => {    
+export const getDaily = async () => {
+  console.log("Getting daily costars");
   return dailyCostars;
 }
