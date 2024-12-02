@@ -29,5 +29,6 @@ fetchDailyCostars();
 
 export const getDaily = async () => {
   console.log("Getting daily costars");
+  console.log(JSON.stringify(dailyCostars));
   return dailyCostars;
 }
