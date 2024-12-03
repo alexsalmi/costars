@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
-import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom } from "./atoms/game";
-import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave} from "@/services/storage.service";
-import { getCredits } from "@/services/tmdb.service";
+import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom } from "./atoms/game";
+import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave, updateDailyStats as updateDailyStatsStorage, getDailyStats } from "@/services/storage.service";
+import { isToday } from "@/services/utils.service";
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
@@ -10,6 +10,7 @@ const useGameState = () => {
   const [undoCache, setUndoCache] = useAtom(undoCacheAtom);
   const [condensed, setCondensed] = useAtom(condensedAtom);
   const [highScore, setHighScore] = useAtom(highScoreAtom);
+  const [dailyStats, setDailyStats] = useAtom(dailyStatsAtom);
   const [current] = useAtom(currentAtom);
   const [score] = useAtom(scoreAtom);
 
@@ -42,31 +43,23 @@ const useGameState = () => {
     setUndoCache([]);
   }
 
-  const initGame = async ([target, starter]: [PersonDetails, PersonDetails]) => {
-    setGameType('custom');
+  const initGame = async ([target, starter]: [GameEntity, GameEntity], daily?: boolean) => {
+    setGameType(daily ? 'daily' : 'custom');
 
-    const targetEntity: GameEntity = {
-      type: 'person',
-      id: target.id,
-      label: target.name,
-      image: target.profile_path,
-    };
-
-    const starterEntity: GameEntity = {
-      type: 'person',
-      id: starter.id,
-      label: starter.name,
-      image: starter.profile_path,
+    if (daily && dailyStats.lastSolve && dailyStats.lastPlayed && isToday(new Date(dailyStats.lastPlayed))) {
+      setTarget(dailyStats.lastSolve[0]);
+      setHistory(dailyStats.lastSolve);
+      
     }
+    else {
+      setTarget(target);
+      setHistory([starter]);
+    }
+  }
 
-    setTarget({
-      ...targetEntity,
-      credits: (await getCredits(targetEntity)).cast.map(credit => credit.id)
-    });
-    setHistory([{
-      ...starterEntity,
-      credits: (await getCredits(starterEntity)).cast.map(credit => credit.id)
-    }]);
+  const updateDailyStats = (value: GameEntity) => {
+    updateDailyStatsStorage([value, ...history]);
+    setDailyStats(getDailyStats());
   }
 
   const incrementHighscore = () => {
@@ -111,9 +104,11 @@ const useGameState = () => {
     highScore,
     undoCache,
     condensed,
+    dailyStats,
     initUnlimitedGame,
     initCustomGame,
     initGame,
+    updateDailyStats,
     addEntity,
     reset,
     undo,

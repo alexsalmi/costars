@@ -15,29 +15,43 @@ export default function CSCustomGameModal() {
   const [target, setTarget] = useState(null as GameEntity | null);
   const [starter, setStarter] = useState(null as GameEntity | null);
   const [openToast, setOpenToast] = useState(false);
-  const [loading, setLoading] = useState({ target: false, starter: false });
+  const [targetLoading, setTargetLoading] = useState(false);
+  const [starterLoading, setStarterLoading] = useState(false);
 
 
   const getRandomPerson = async (type: 'target' | 'starter') => {
-    setLoading({ ...loading, [type]: true });
+    if (type === 'target')
+      setTargetLoading(true);
+    else
+      setStarterLoading(true);
 
     const person = await randomPerson();
 
-    if (type === 'target')
+    if (type === 'target') {
       setTarget(person);
-    else
+      setTargetLoading(false);
+    }
+    else {
       setStarter(person);
-
-    setLoading({ ...loading, [type]: false });
+      setStarterLoading(false);
+    }
   }
 
 
-  const copyToClipboard = () => {
+  const shareLink = () => {
     if (!target || !starter)
       return;
 
-    window.navigator.clipboard.writeText(`${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`);
-    setOpenToast(true);
+    try{
+      window.navigator.share({
+        title: "Costars",
+        text: `Connect ${starter.label} and ${target.label} in as few movies as possible!`,
+        url: `${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`
+      })
+    } catch {
+      window.navigator.clipboard.writeText(`${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`);
+      setOpenToast(true);
+    }
   }
 
 
@@ -64,8 +78,8 @@ export default function CSCustomGameModal() {
           target === null ?
             <>
               <CSSearchBar onSubmit={setTarget} />
-              <CSButton loading={loading['target']}>
-                <AutorenewOutlined onClick={() => getRandomPerson('target')} />
+              <CSButton loading={targetLoading} onClick={() => getRandomPerson('target')}>
+                <AutorenewOutlined />
               </CSButton>
             </>
             :
@@ -87,8 +101,8 @@ export default function CSCustomGameModal() {
           starter === null ?
             <>
               <CSSearchBar onSubmit={setStarter} />
-              <CSButton loading={loading['starter']}>
-                <AutorenewOutlined onClick={() => getRandomPerson('starter')} />
+              <CSButton loading={starterLoading} onClick={() => getRandomPerson('starter')}>
+                <AutorenewOutlined />
               </CSButton>
             </>
             :
@@ -107,7 +121,7 @@ export default function CSCustomGameModal() {
 				<CSButton 
           secondary
           disabled={!target || !starter}
-          onClick={copyToClipboard}
+          onClick={shareLink}
         >
           <ShareOutlined />
 					Share

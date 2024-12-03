@@ -71,11 +71,24 @@ export const getCredits = async (entity: GameEntity)
 	return response;
 }
 
+export const getTrending = async (page: number): Promise<Array<Person>> => {
+	const url = `${BASE_URL}/3/trending/person/day?page=${page}`;
+	
+	const response: TmdbSearchResult<Person> = await fetch(url, {
+		headers,
+		next: {
+			revalidate: 86400
+		}
+	}).then(res => res.json());
+
+	return response.results;
+}
+
 export const randomPerson = async (): Promise<GameEntity> => {
-	const baseUrl = `${BASE_URL}/3/trending/person/day?language=en-US&page=`;
+	const baseUrl = `${BASE_URL}/3/trending/person/day?page=`;
 	const promises: Promise<TmdbSearchResult<Person>>[] = [];
 
-	for(let i=1; i<=30; i++){
+	for(let i=1; i<=50; i++){
 		const url = `${baseUrl}${i}`;
 
 		const promise: Promise<TmdbSearchResult<Person>> = fetch(url, {
@@ -92,18 +105,31 @@ export const randomPerson = async (): Promise<GameEntity> => {
 
 	const responses = await Promise.all(promises);
 
-	for(const res of responses){
+	for (const res of responses) {
 		results.push(...res.results
 			.filter(val => val.known_for_department === "Acting" && val.popularity > 50)
 		);
 	}
 
-	const randomPerson = results[Math.floor(Math.random() * results.length)];
+	let credits: Array<MovieCredit>;
+	let personEntity: GameEntity;
+
+	console.log(results.length);
+
+	do {
+		const randomPerson = results[Math.floor(Math.random() * results.length)];
+		
+		personEntity = {
+			id: randomPerson.id,
+			label: randomPerson.name,
+			image: randomPerson.profile_path,
+			type: 'person'
+		};
+
+		credits = (await getCredits(personEntity)).cast as Array<MovieCredit>;
 	
-	return {
-		id: randomPerson.id,
-		label: randomPerson.name,
-		image: randomPerson.profile_path,
-		type: 'person'
-	}
+		personEntity.credits = credits.map(credit => credit.id);
+	} while (credits.some(credit => credit.original_language === 'ko') || !credits.some(credit => credit.original_language === 'en'))
+
+	return personEntity;
 }

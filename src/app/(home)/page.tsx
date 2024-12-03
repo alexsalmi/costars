@@ -3,10 +3,10 @@ import CSButton from "@/components/inputs/button";
 import logo from '@/../public/costars_primary_logo.png';
 import '@/styles/pages/home.scss';
 import Link from 'next/link';
-import { getDaily } from '@/services/scheduler.service';
+import { getDailyCostars } from '@/services/cache.service';
 
 export default async function Home() {
-  const { target, starter } = await getDaily();
+  const { target, starter } = await getDailyCostars();
 
   return (
     <div className="home-page">
@@ -17,20 +17,19 @@ export default async function Home() {
       />
 
       <div className='home-page-daily-container'>
-        <h3>Daily Costars:</h3>
+        <h3 className='home-page-daily-header'>Daily Costars</h3>
         <div className='home-page-daily-previews'>
-          <span>
-            <Image src={`https://image.tmdb.org/t/p/w185${starter.profile_path}`}
-              width={80} height={120} alt={`Image of ${starter.name}`}
-            />
-            <span>{starter.name}</span>
-          </span>
-          <span>
-            <Image src={`https://image.tmdb.org/t/p/w185${target.profile_path}`}
-              width={80} height={120} alt={`Image of ${target.name}`}
-            />
-            <span>{target.name}</span>
-          </span>
+          <Image src={`https://image.tmdb.org/t/p/w185${starter.image}`}
+            width={80} height={120} alt={`Image of ${starter.label}`}
+          />
+          <div className='home-page-daily-names'>
+            <span>{starter.label}</span>
+            <span>and</span>
+            <span>{target.label}</span>
+          </div>
+          <Image src={`https://image.tmdb.org/t/p/w185${target.image}`}
+            width={80} height={120} alt={`Image of ${target.label}`}
+          />
         </div>
         <Link href="/daily">
           <CSButton>

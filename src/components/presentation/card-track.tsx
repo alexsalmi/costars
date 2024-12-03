@@ -10,7 +10,7 @@ export default function CSCardTrack({ showPrompt }: ICSCardTrackProps) {
 	const { history, current, condensed } = useGameState();
 
   return (
-		<div className='card-track-container'>
+		<div className={`card-track-container ${!showPrompt ? 'no-prompt' : ''}`}>
 			{ showPrompt ? 
 				<span className='card-track-prompt'>
 					{
