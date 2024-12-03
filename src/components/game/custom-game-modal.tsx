@@ -38,12 +38,20 @@ export default function CSCustomGameModal() {
   }
 
 
-  const copyToClipboard = () => {
+  const shareLink = () => {
     if (!target || !starter)
       return;
 
-    window.navigator.clipboard.writeText(`${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`);
-    setOpenToast(true);
+    try{
+      window.navigator.share({
+        title: "Costars",
+        text: `Connect ${starter.label} and ${target.label} in as few movies as possible!`,
+        url: `${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`
+      })
+    } catch {
+      window.navigator.clipboard.writeText(`${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`);
+      setOpenToast(true);
+    }
   }
 
 
@@ -113,7 +121,7 @@ export default function CSCustomGameModal() {
 				<CSButton 
           secondary
           disabled={!target || !starter}
-          onClick={copyToClipboard}
+          onClick={shareLink}
         >
           <ShareOutlined />
 					Share

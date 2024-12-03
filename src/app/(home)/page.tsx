@@ -24,7 +24,7 @@ export default async function Home() {
           />
           <div className='home-page-daily-names'>
             <span>{starter.label}</span>
-            <span>to</span>
+            <span>and</span>
             <span>{target.label}</span>
           </div>
           <Image src={`https://image.tmdb.org/t/p/w185${target.image}`}
