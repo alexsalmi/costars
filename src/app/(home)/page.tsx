@@ -3,10 +3,10 @@ import CSButton from "@/components/inputs/button";
 import logo from '@/../public/costars_primary_logo.png';
 import '@/styles/pages/home.scss';
 import Link from 'next/link';
-import { getDaily } from '@/services/scheduler.service';
+import { getDailyCostars } from '@/services/cache.service';
 
 export default async function Home() {
-  const { target, starter } = await getDaily();
+  const { target, starter } = await getDailyCostars();
 
   return (
     <div className="home-page">

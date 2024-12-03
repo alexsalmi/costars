@@ -22,6 +22,8 @@ export const updateDailyStats = (history: Array<GameEntity>) => {
 
   if (!dailyStats.lastPlayed || isYesterday(new Date(dailyStats.lastPlayed)))
     dailyStats.currentStreak++;
+  else
+    dailyStats.currentStreak = 1;
 
   if (dailyStats.currentStreak > dailyStats.highestStreak)
     dailyStats.highestStreak = dailyStats.currentStreak;

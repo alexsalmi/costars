@@ -71,6 +71,19 @@ export const getCredits = async (entity: GameEntity)
 	return response;
 }
 
+export const getTrending = async (page: number): Promise<Array<Person>> => {
+	const url = `${BASE_URL}/3/trending/person/day?page=${page}`;
+	
+	const response: TmdbSearchResult<Person> = await fetch(url, {
+		headers,
+		next: {
+			revalidate: 86400
+		}
+	}).then(res => res.json());
+
+	return response.results;
+}
+
 export const randomPerson = async (): Promise<GameEntity> => {
 	const baseUrl = `${BASE_URL}/3/trending/person/day?page=`;
 	const promises: Promise<TmdbSearchResult<Person>>[] = [];
