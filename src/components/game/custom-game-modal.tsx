@@ -7,9 +7,9 @@ import CSTextDisplay from '../presentation/display';
 import { AutorenewOutlined, CloseOutlined, ArrowBackIosNewOutlined, ShareOutlined, SkipNextOutlined } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import Slide from '@mui/material/Slide';
-import { randomPerson } from '@/services/tmdb.service';
 import Link from 'next/link';
 import '@/styles/game/custom-game-modal.scss'
+import { getRandomPerson } from '@/services/cache.service';
 
 export default function CSCustomGameModal() {
   const [target, setTarget] = useState(null as GameEntity | null);
@@ -19,13 +19,13 @@ export default function CSCustomGameModal() {
   const [starterLoading, setStarterLoading] = useState(false);
 
 
-  const getRandomPerson = async (type: 'target' | 'starter') => {
+  const randomize = async (type: 'target' | 'starter') => {
     if (type === 'target')
       setTargetLoading(true);
     else
       setStarterLoading(true);
 
-    const person = await randomPerson();
+    const person = await getRandomPerson();
 
     if (type === 'target') {
       setTarget(person);
@@ -78,7 +78,7 @@ export default function CSCustomGameModal() {
           target === null ?
             <>
               <CSSearchBar onSubmit={setTarget} />
-              <CSButton loading={targetLoading} onClick={() => getRandomPerson('target')}>
+              <CSButton loading={targetLoading} onClick={() => randomize('target')}>
                 <AutorenewOutlined />
               </CSButton>
             </>
@@ -101,7 +101,7 @@ export default function CSCustomGameModal() {
           starter === null ?
             <>
               <CSSearchBar onSubmit={setStarter} />
-              <CSButton loading={starterLoading} onClick={() => getRandomPerson('starter')}>
+              <CSButton loading={starterLoading} onClick={() => randomize('starter')}>
                 <AutorenewOutlined />
               </CSButton>
             </>

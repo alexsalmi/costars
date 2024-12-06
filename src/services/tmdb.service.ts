@@ -52,84 +52,38 @@ export const getPerson = async (id: number): Promise<PersonDetails> => {
 
 	const response: PersonDetails = await fetch(url, {
 		headers,
-		cache: 'force-cache'
+		next: {
+			revalidate: 60 * 60 * 24 * 30
+		}
 	}).then(res => res.json());
 
 	return response;
 }
 
-export const getCredits = async (entity: GameEntity)
+export const getCredits = async (id: number, type: TmdbType)
 		: Promise<TmdbCreditsResult<PersonCredit | MovieCredit>> => {
-	const suffix = entity.type === 'person' ? 'movie_credits' : 'credits';
-	const url = `${BASE_URL}/3/${entity.type}/${entity.id}/${suffix}`;
+	const suffix = type === 'person' ? 'movie_credits' : 'credits';
+	const url = `${BASE_URL}/3/${type}/${id}/${suffix}`;
 
 	const response: TmdbCreditsResult<PersonCredit | MovieCredit> = await fetch(url, {
 		headers,
-		cache: 'force-cache'
+		next: {
+			revalidate: 60 * 60 * 24 * 30
+		}
 	}).then(res => res.json());
 
 	return response;
 }
 
 export const getTrending = async (page: number): Promise<Array<Person>> => {
-	const url = `${BASE_URL}/3/trending/person/day?page=${page}`;
+	const url = `${BASE_URL}/3/trending/person/week?page=${page}`;
 	
 	const response: TmdbSearchResult<Person> = await fetch(url, {
 		headers,
 		next: {
-			revalidate: 86400
+			revalidate: 60 * 60 * 24 * 7
 		}
 	}).then(res => res.json());
 
 	return response.results;
-}
-
-export const randomPerson = async (): Promise<GameEntity> => {
-	const baseUrl = `${BASE_URL}/3/trending/person/day?page=`;
-	const promises: Promise<TmdbSearchResult<Person>>[] = [];
-
-	for(let i=1; i<=50; i++){
-		const url = `${baseUrl}${i}`;
-
-		const promise: Promise<TmdbSearchResult<Person>> = fetch(url, {
-			headers,
-			next: {
-				revalidate: 86400
-			}
-		}).then(res => res.json());
-
-		promises.push(promise);
-	}
-
-	const results: Array<Person> = [];
-
-	const responses = await Promise.all(promises);
-
-	for (const res of responses) {
-		results.push(...res.results
-			.filter(val => val.known_for_department === "Acting" && val.popularity > 50)
-		);
-	}
-
-	let credits: Array<MovieCredit>;
-	let personEntity: GameEntity;
-
-	console.log(results.length);
-
-	do {
-		const randomPerson = results[Math.floor(Math.random() * results.length)];
-		
-		personEntity = {
-			id: randomPerson.id,
-			label: randomPerson.name,
-			image: randomPerson.profile_path,
-			type: 'person'
-		};
-
-		credits = (await getCredits(personEntity)).cast as Array<MovieCredit>;
-	
-		personEntity.credits = credits.map(credit => credit.id);
-	} while (credits.some(credit => credit.original_language === 'ko') || !credits.some(credit => credit.original_language === 'en'))
-
-	return personEntity;
 }
