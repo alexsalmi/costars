@@ -33,8 +33,8 @@ export default async function CustomGame({ params }: ICustomGameProps) {
     image: starter.profile_path,
   }
 
-  targetEntity.credits = (await getCredits(targetEntity)).cast.map(credit => credit.id);
-  starterEntity.credits = (await getCredits(starterEntity)).cast.map(credit => credit.id);
+  targetEntity.credits = (await getCredits(targetEntity.id, 'person')).cast.map(credit => credit.id);
+  starterEntity.credits = (await getCredits(starterEntity.id, 'person')).cast.map(credit => credit.id);
 
   return (
     <GameContainer initPeople={[targetEntity, starterEntity]} />
