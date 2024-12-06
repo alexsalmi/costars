@@ -48,7 +48,7 @@ export default function GameContainer({ initPeople, daily }: IGameProps) {
 
 		addEntity({
 			...value,
-			credits: (await getCredits(value)).cast.map(credit => credit.id)
+			credits: (await getCredits(value.id, value.type)).cast.map(credit => credit.id)
 		});
 	};
 
