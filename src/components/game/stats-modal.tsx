@@ -4,7 +4,7 @@ import useGameState from '@/store/game.state';
 import '@/styles/game/stats-modal.scss'
 import CSTextDisplay from '../presentation/display';
 import CSButton from '../inputs/button';
-import { CloseOutlined } from '@mui/icons-material';
+import { CloseOutlined, ShareOutlined } from '@mui/icons-material';
 import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/solutions-toolbar';
 import { useState } from 'react';
@@ -16,10 +16,30 @@ interface ICSStatsModalProps {
 }
 
 export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStatsModalProps) {
-	const { score, dailyStats } = useGameState();
+	const { score, dailyStats, target, history } = useGameState();
 	const [solutionInd, setSolutionInd] = useState(0);
 
 	const numMovies = (score-1)/2;
+
+	const encoding = btoa(JSON.stringify(history.map(entity => ({
+		...entity,
+		credits: undefined
+	}))))
+
+  const shareScore = () => {
+    try{
+      window.navigator.share({
+        title: "Costars",
+        text: `Daily Costars #1\n
+				${'🎬'.repeat((score-1)/2)}\n
+				Check out my solution!
+				`,
+        url: `${location.origin}/solution/${encoding}`
+      })
+    } catch {
+      window.navigator.clipboard.writeText(`${location.origin}/solution/${encoding}`);
+    }
+  }
 	
   return (
 		<CSModal isOpen={isOpen}>
@@ -30,7 +50,7 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 					</CSButton>
 				</div>
 				<div className='stats-modal-recap'>
-					<span>You connected {"today's"} daily costars in</span>
+					<span>You connected {"today's"} costars in</span>
 					<strong>{numMovies} movies.</strong>
 					{numMovies === 2 ?
 						<strong>{"That's"} the optimal score!</strong>	
@@ -59,8 +79,15 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 						<span>Highest Streak</span>
 					</CSTextDisplay>
 				</div>
+				<div className='stats-modal-share-button'>
+					<CSButton onClick={shareScore}>
+          	<ShareOutlined />
+						Share your score
+					</CSButton>
+				</div>
+				<hr />
 				<div className='stats-modal-optimal'>
-					Here are a few of the <strong>{dailySolutions!.count} different ways</strong> to connect the daily costars in 2 movies today:
+					Here are a few of the <strong>{dailySolutions!.count} different ways</strong> to connect <strong>{history[0].label}</strong> and <strong>{target.label}</strong> in 2 movies:
 				</div>
 				<div className='stats-modal-solutions'>
 					<CSSolutionsToolbar 
