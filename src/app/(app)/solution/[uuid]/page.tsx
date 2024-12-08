@@ -1,14 +1,15 @@
 import CardTrack from "@/components/presentation/card-track";
+import { getSolution } from "@/services/db.service";
 import '@/styles/pages/solution.scss';
 
 interface ICustomGameProps {
-  params: Promise<{ json: string }>
+  params: Promise<{ uuid: string }>
 }
 
 export default async function CustomGame({ params }: ICustomGameProps) {
-  const json = (await params).json;
+  const uuid = (await params).uuid;
 
-  const solution: Array<GameEntity> = JSON.parse(atob(json));
+  const solution = await getSolution(uuid);
 
   return (
     <div className="solution-page-container">

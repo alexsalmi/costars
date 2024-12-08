@@ -8,6 +8,7 @@ import { CloseOutlined, ShareOutlined } from '@mui/icons-material';
 import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/solutions-toolbar';
 import { useState } from 'react';
+import { saveSolution } from '@/services/db.service';
 
 interface ICSStatsModalProps {
 	isOpen: boolean,
@@ -21,23 +22,18 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 
 	const numMovies = (score-1)/2;
 
-	const encoding = btoa(JSON.stringify(history.map(entity => ({
-		...entity,
-		credits: undefined
-	}))))
+  const shareScore = async () => {
+		const uuid = await saveSolution(history);
 
-  const shareScore = () => {
     try{
       window.navigator.share({
         title: "Costars",
-        text: `Daily Costars #1\n
-				${'🎬'.repeat((score-1)/2)}\n
-				Check out my solution!
+        text: `Daily Costars #1\n${'🎬'.repeat((score-1)/2)}\nCheck out my solution!
 				`,
-        url: `${location.origin}/solution/${encoding}`
+        url: `${location.origin}/solution/${uuid}`
       })
     } catch {
-      window.navigator.clipboard.writeText(`${location.origin}/solution/${encoding}`);
+      window.navigator.clipboard.writeText(`${location.origin}/solution/${uuid}`);
     }
   }
 	
