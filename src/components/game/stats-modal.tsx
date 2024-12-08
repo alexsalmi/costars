@@ -43,12 +43,12 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 						<span>Days Played</span>
 					</CSTextDisplay>
 					<CSTextDisplay>
-						<span>{dailyStats.daysOptimal}</span>
-						<span>Optimal Scores</span>
-					</CSTextDisplay>
-					<CSTextDisplay>
 						<span>{Math.round(dailyStats.daysOptimal/dailyStats.daysPlayed*100)}%</span>
 						<span>Percent Optimal</span>
+					</CSTextDisplay>
+					<CSTextDisplay>
+						<span>{dailyStats.daysOptimal}</span>
+						<span>Optimal Scores</span>
 					</CSTextDisplay>
 					<CSTextDisplay>
 						<span>{dailyStats.currentStreak}</span>

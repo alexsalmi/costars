@@ -13,7 +13,7 @@ export default function CSSolutionsToolbar({ leftClick, rightClick, leftDisabled
   return (
     <>
       <div
-        className='cs-toolbar'
+        className='cs-toolbar cs-solutions-toolbar'
       >
         <CSButton secondary
           disabled={leftDisabled}
