@@ -20,6 +20,7 @@ interface OptimalMapValue {
 
 const OptimalMap = Map<string, OptimalMapValue>;
 
+
 export const getRandomPerson = async () => {
   return pool[Math.floor(Math.random() * pool.length)];
 }
