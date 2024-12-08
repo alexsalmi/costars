@@ -19,11 +19,14 @@ interface ICSStatsModalProps {
 export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStatsModalProps) {
 	const { score, dailyStats, target, history } = useGameState();
 	const [solutionInd, setSolutionInd] = useState(0);
+	const [shareLoading, setShareLoading] = useState(false);
 
 	const numMovies = (score-1)/2;
 
   const shareScore = async () => {
+		setShareLoading(true);
 		const uuid = await saveSolution(history);
+		setShareLoading(false);
 
     try{
       window.navigator.share({
@@ -76,7 +79,7 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 					</CSTextDisplay>
 				</div>
 				<div className='stats-modal-share-button'>
-					<CSButton onClick={shareScore}>
+					<CSButton onClick={shareScore} loading={shareLoading}>
           	<ShareOutlined />
 						Share your score
 					</CSButton>
