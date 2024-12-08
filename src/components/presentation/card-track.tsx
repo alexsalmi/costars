@@ -3,11 +3,14 @@ import CSCard from './card';
 import '@/styles/components/card-track.scss'
 
 interface ICSCardTrackProps {
-	showPrompt?: boolean
+	showPrompt?: boolean,
+	cards?: Array<GameEntity>
 }
 
-export default function CSCardTrack({ showPrompt }: ICSCardTrackProps) {
+export default function CSCardTrack({ showPrompt, cards }: ICSCardTrackProps) {
 	const { history, current, condensed } = useGameState();
+
+	const cardsToDisplay = cards || history;
 
   return (
 		<div className={`card-track-container ${!showPrompt ? 'no-prompt' : ''}`}>
@@ -27,7 +30,7 @@ export default function CSCardTrack({ showPrompt }: ICSCardTrackProps) {
 				: <></>
 			}
 			{
-				history.map(entity => {
+				cardsToDisplay.map(entity => {
 					return <CSCard entity={entity} reverse={entity.type === 'movie'} condensed={condensed} key={entity.id}/>
 				})
 			}

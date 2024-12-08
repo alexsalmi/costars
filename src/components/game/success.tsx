@@ -4,15 +4,18 @@ import useGameState from '@/store/game.state';
 import Link from 'next/link';
 import CSButton from '../inputs/button';
 import '@/styles/game/success.scss';
-import CSTextDisplay from '../presentation/display';
+import { useState } from 'react';
+import CSStatsModal from './stats-modal';
 
-export default function Success() {
-  const { history, target, score, gameType, dailyStats } = useGameState();
+export default function Success({dailySolutions} : {dailySolutions?: DailySolutions}) {
+  const { history, target, score, gameType } = useGameState();
+
+  const [statsOpen, setStatsOpen] = useState(gameType === 'daily');
 
   return (
     <div className='success-container'>
       <div className='success-message-container'>
-        <h3>Congrats!</h3>
+        <h3>Congratulations!</h3>
         <span>
           {'You connected '}
           <strong>{history[history.length - 1].label}</strong>
@@ -23,30 +26,17 @@ export default function Success() {
             {(score - 1) / 2} {score < 4 ? 'movie!' : 'movies!'}
           </strong>
         </span>
-        {gameType === 'daily' ?
-          <div className='success-stats'>
-            <CSTextDisplay>
-              <span>{dailyStats.daysPlayed}</span>
-              <span>Days Played</span>
-            </CSTextDisplay>
-            <CSTextDisplay>
-              <span>{dailyStats.currentStreak}</span>
-              <span>Current Streak</span>
-            </CSTextDisplay>
-            <CSTextDisplay>
-              <span>{dailyStats.highestStreak}</span>
-              <span>Highest Streak</span>
-            </CSTextDisplay>
-          </div>
-          : 
+        {gameType !== 'daily' ?
           <Link href="/custom">
             <CSButton>
               New Game
             </CSButton>
           </Link>
+          : <CSButton onClick={() => setStatsOpen(true)}>See Stats</CSButton>
         }
       </div>
       <CSCardTrack />
+      <CSStatsModal isOpen={statsOpen} close={() => setStatsOpen(false)} dailySolutions={dailySolutions}/>
     </div>
   );
 }

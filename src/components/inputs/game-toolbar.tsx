@@ -5,7 +5,7 @@ import useGameState from '@/store/game.state';
 import CSResetModal from '../game/reset-modal';
 import { useState } from 'react';
 
-export default function CSToolbar() {
+export default function CSGameToolbar() {
   const { history, gameType, undoCache, expandAll, collapseAll, undo, redo } = useGameState();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 

@@ -18,6 +18,7 @@
 .modal-container {
 	width: fit-content;
 	max-width: var(--max-width-mobile);
+	overflow-x: hidden;
 	padding: 24px 16px;
 	margin-top: 75px;
 	background-color: var(--background-primary);
@@ -26,7 +27,7 @@
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	gap: 16px;
 	text-align: center;

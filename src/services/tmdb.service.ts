@@ -5,6 +5,21 @@ const headers = {
 	'Authorization': `Bearer ${process.env.TMDB_API_KEY}`
 }
 
+const filterResults = (results: Array<Movie | Person> | Array<PersonCredit | MovieCredit>)
+		: Array<Movie | Person> | Array<PersonCredit | MovieCredit> => {
+
+	const BANNED_MOVIES = new Set([126314]);
+	const BANNED_GENRES = new Set([99]);
+
+	return results.filter((a) => 
+		a.popularity > 5 && 
+		!(<Movie | MovieCredit> a).genre_ids?.some(g => BANNED_GENRES.has(g)) &&
+		!((<Movie | MovieCredit> a).release_date !== undefined && new Date((<Movie | MovieCredit> a).release_date) > new Date()) &&
+		!BANNED_MOVIES.has((<Movie | MovieCredit> a).id) &&
+		!((<Person | PersonCredit> a).known_for_department !== undefined && (<Person | PersonCredit> a).known_for_department !== 'Acting')
+	) as Array<Movie | Person> | Array<PersonCredit | MovieCredit>;
+}
+
 export const search = async (query: string, type: TmdbType = 'person')
 		: Promise<Array<GameEntity>> => {
 	if (query.length === 0)
@@ -17,9 +32,8 @@ export const search = async (query: string, type: TmdbType = 'person')
 		cache: 'force-cache'
 	}).then(res => res.json());
 
-	const filtered = response.results
-		.filter((a) => a.popularity > 5)
-	
+	const filtered = filterResults(response.results);
+
 	const labels = new Set();
 	const duplicates = new Set();
 
@@ -61,7 +75,7 @@ export const getPerson = async (id: number): Promise<PersonDetails> => {
 }
 
 export const getCredits = async (id: number, type: TmdbType)
-		: Promise<TmdbCreditsResult<PersonCredit | MovieCredit>> => {
+		: Promise<Array<PersonCredit | MovieCredit>> => {
 	const suffix = type === 'person' ? 'movie_credits' : 'credits';
 	const url = `${BASE_URL}/3/${type}/${id}/${suffix}`;
 
@@ -71,8 +85,8 @@ export const getCredits = async (id: number, type: TmdbType)
 			revalidate: 60 * 60 * 24 * 30
 		}
 	}).then(res => res.json());
-
-	return response;
+	
+	return filterResults(response.cast) as Array<PersonCredit | MovieCredit>;
 }
 
 export const getTrending = async (page: number): Promise<Array<Person>> => {
