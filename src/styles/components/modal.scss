@@ -19,14 +19,14 @@
 	width: fit-content;
 	max-width: var(--max-width-mobile);
 	padding: 24px 16px;
-	margin-top: 75px;
+	margin-top: 50px;
 	background-color: var(--background-primary);
 	color: var(--highlight-text);
 	border: 3px solid var(--highlight-primary); 
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	gap: 16px;
 	text-align: center;

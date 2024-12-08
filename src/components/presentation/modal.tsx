@@ -11,7 +11,7 @@ export default function CSModal({children, isOpen, className}: ICSModalProps) {
 
   return (
 		<div className='modal-background'>
-			<div className={`modal-container ${className}`}>
+			<div className={`modal-container ${className || ''}`}>
 				{children}
 			</div>
 		</div>

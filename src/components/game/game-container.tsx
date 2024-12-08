@@ -1,6 +1,6 @@
 'use client'
 import CSSearchBar from '@/components/inputs/search';
-import CSToolbar from '@/components/inputs/toolbar';
+import CSGameToolbar from '@/components/inputs/game-toolbar';
 import CSCardTrack from '@/components/presentation/card-track';
 import CSTextDisplay from '@/components/presentation/display';
 import useGameState from '@/store/game.state';
@@ -13,10 +13,11 @@ import { isToday } from '@/services/utils.service';
 
 interface IGameProps {
 	initPeople?: [GameEntity, GameEntity],
-	daily?: boolean
+	daily?: boolean,
+	dailySolutions?: DailySolutions
 }
 
-export default function GameContainer({ initPeople, daily }: IGameProps) {
+export default function GameContainer({ initPeople, daily, dailySolutions }: IGameProps) {
 	const { current, gameType, target, score, highScore, dailyStats, initGame, addEntity, updateDailyStats } = useGameState();
 	const [condensedTarget, setCondensedTarget] = useState(true);
 	const [success, setSuccess] = useState(false);
@@ -48,12 +49,12 @@ export default function GameContainer({ initPeople, daily }: IGameProps) {
 
 		addEntity({
 			...value,
-			credits: (await getCredits(value.id, value.type)).cast.map(credit => credit.id)
+			credits: (await getCredits(value.id, value.type)).map(credit => credit.id)
 		});
 	};
 
 	if (success) {
-		return <Success />;
+		return <Success dailySolutions={dailySolutions} />;
 	}
 
   return (
@@ -74,7 +75,7 @@ export default function GameContainer({ initPeople, daily }: IGameProps) {
 				</div>
 			}
 			<div className='game-card-section'>
-				<CSToolbar />
+				<CSGameToolbar />
 				<CSCardTrack showPrompt />
 			</div>
     </div>
