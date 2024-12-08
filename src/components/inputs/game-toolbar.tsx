@@ -10,7 +10,7 @@ export default function CSGameToolbar() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
-    if(history.length > 0)
+    if(gameType === 'unlimited' ? history.length > 0 : history.length > 1)
       setIsModalOpen(true);
   }
   
