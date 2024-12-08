@@ -36,7 +36,10 @@ export default function Success({dailySolutions} : {dailySolutions?: DailySoluti
         }
       </div>
       <CSCardTrack />
-      <CSStatsModal isOpen={statsOpen} close={() => setStatsOpen(false)} dailySolutions={dailySolutions}/>
+      {gameType === 'daily' ?
+        <CSStatsModal isOpen={statsOpen} close={() => setStatsOpen(false)} dailySolutions={dailySolutions}/>
+        : <></>
+      }
     </div>
   );
 }
