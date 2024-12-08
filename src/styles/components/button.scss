@@ -6,6 +6,10 @@
 	border: 3px solid var(--highlight-primary);
 	font-weight: 600;
 	transition: all 250ms ease-in-out;
+
+	* {
+		transition: all 250ms ease-in-out;
+	}
 }
 
 .cs-button.primary {

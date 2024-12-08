@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { getCredits } from '@/services/tmdb.service';
 import Success from './success';
 import { isToday } from '@/services/utils.service';
+import CSBackButton from '../inputs/back-button';
 
 interface IGameProps {
 	initPeople?: [GameEntity, GameEntity],
@@ -59,6 +60,7 @@ export default function GameContainer({ initPeople, daily, dailySolutions }: IGa
 
   return (
 		<div className='game-container'>
+			<CSBackButton/>
 			<CSSearchBar onSubmit={onSubmit} />
 			{gameType === 'unlimited' ?
 				<div className='game-scores'>
