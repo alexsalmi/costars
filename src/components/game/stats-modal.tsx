@@ -4,7 +4,7 @@ import useGameState from '@/store/game.state';
 import '@/styles/game/stats-modal.scss'
 import CSTextDisplay from '../presentation/display';
 import CSButton from '../inputs/button';
-import { CloseOutlined, ShareOutlined } from '@mui/icons-material';
+import { ShareOutlined } from '@mui/icons-material';
 import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/solutions-toolbar';
 import { useState } from 'react';
@@ -41,13 +41,8 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
   }
 	
   return (
-		<CSModal isOpen={isOpen}>
+		<CSModal isOpen={isOpen} close={close}>
 			<div className='stats-modal-container'>
-				<div className='stats-modal-close-button'>
-					<CSButton secondary onClick={() => close()}>
-						<CloseOutlined/>
-					</CSButton>
-				</div>
 				<div className='stats-modal-recap'>
 					<span>You connected {"today's"} costars in</span>
 					<strong>{numMovies} movies.</strong>
