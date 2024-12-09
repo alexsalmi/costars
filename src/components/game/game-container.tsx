@@ -20,7 +20,6 @@ interface IGameProps {
 
 export default function GameContainer({ initPeople, daily, dailySolutions }: IGameProps) {
 	const { current, gameType, target, score, highScore, dailyStats, initGame, addEntity, updateDailyStats } = useGameState();
-	const [condensedTarget, setCondensedTarget] = useState(true);
 	const [success, setSuccess] = useState(false);
 
 	useEffect(() => {
@@ -72,8 +71,8 @@ export default function GameContainer({ initPeople, daily, dailySolutions }: IGa
 					</CSTextDisplay>
 				</div>
 				:
-				<div className='game-target' onClick={() => setCondensedTarget(!condensedTarget)}>
-					<CSCard entity={target} target reverse condensed={condensedTarget} />
+				<div className='game-target'>
+					<CSCard entity={target} target reverse />
 				</div>
 			}
 			<div className='game-card-section'>

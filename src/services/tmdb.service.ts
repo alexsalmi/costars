@@ -5,20 +5,6 @@ const headers = {
 	'Authorization': `Bearer ${process.env.TMDB_API_KEY}`
 }
 
-const filterResults = (results: Array<Movie | Person> | Array<PersonCredit | MovieCredit>)
-		: Array<Movie | Person> | Array<PersonCredit | MovieCredit> => {
-
-	const BANNED_MOVIES = new Set([126314]);
-	const BANNED_GENRES = new Set([99]);
-
-	return results.filter((a) => 
-		a.popularity > 5 && 
-		!(<Movie | MovieCredit> a).genre_ids?.some(g => BANNED_GENRES.has(g)) &&
-		!((<Movie | MovieCredit> a).release_date !== undefined && new Date((<Movie | MovieCredit> a).release_date) > new Date()) &&
-		!BANNED_MOVIES.has((<Movie | MovieCredit> a).id) &&
-		!((<Person | PersonCredit> a).known_for_department !== undefined && (<Person | PersonCredit> a).known_for_department !== 'Acting')
-	) as Array<Movie | Person> | Array<PersonCredit | MovieCredit>;
-}
 
 export const search = async (query: string, type: TmdbType = 'person')
 		: Promise<Array<GameEntity>> => {
@@ -61,10 +47,10 @@ export const search = async (query: string, type: TmdbType = 'person')
 		});
 }
 
-export const getPerson = async (id: number): Promise<PersonDetails> => {
-	const url = `${BASE_URL}/3/person/${id}`;
+export const getDetails = async (id: number, type: TmdbType): Promise<PersonDetails | MovieDetails> => {
+	const url = `${BASE_URL}/3/${type}/${id}`;
 
-	const response: PersonDetails = await fetch(url, {
+	const response: PersonDetails | MovieDetails = await fetch(url, {
 		headers,
 		next: {
 			revalidate: 60 * 60 * 24 * 30
@@ -100,4 +86,19 @@ export const getTrending = async (page: number): Promise<Array<Person>> => {
 	}).then(res => res.json());
 
 	return response.results;
+}
+
+const filterResults = (results: Array<Movie | Person> | Array<PersonCredit | MovieCredit>)
+		: Array<Movie | Person> | Array<PersonCredit | MovieCredit> => {
+
+	const BANNED_MOVIES = new Set([126314]);
+	const BANNED_GENRES = new Set([99]);
+
+	return results.filter((a) => 
+		a.popularity > 5 && 
+		!(<Movie | MovieCredit> a).genre_ids?.some(g => BANNED_GENRES.has(g)) &&
+		!((<Movie | MovieCredit> a).release_date !== undefined && new Date((<Movie | MovieCredit> a).release_date) > new Date()) &&
+		!BANNED_MOVIES.has((<Movie | MovieCredit> a).id) &&
+		!((<Person | PersonCredit> a).known_for_department !== undefined && (<Person | PersonCredit> a).known_for_department !== 'Acting')
+	) as Array<Movie | Person> | Array<PersonCredit | MovieCredit>;
 }

@@ -17,7 +17,11 @@ export default function CSModal({children, isOpen, className, close}: ICSModalPr
 			<div className={`modal-container ${className || ''}`}>
 				{close ?
 					<div className='modal-close-button'>
-						<CSButton secondary onClick={() => close()}>
+						<CSButton secondary onClick={(e) => {
+								e.stopPropagation();
+								close();
+							}}
+						>
 							<CloseOutlined/>
 						</CSButton>
 					</div>

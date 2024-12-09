@@ -1,4 +1,4 @@
-import { getCredits, getPerson } from "@/services/tmdb.service";
+import { getCredits, getDetails } from "@/services/tmdb.service";
 import GameContainer from "@/components/game/game-container";
 
 interface ICustomGameProps {
@@ -14,7 +14,10 @@ export default async function CustomGame({ params }: ICustomGameProps) {
   const targetId = parseInt(ids[0], 36);
   const starterId = parseInt(ids[1], 36);
     
-  const [target, starter] = await Promise.all([getPerson(targetId), getPerson(starterId)]);
+  const [target, starter] = await Promise.all([
+    getDetails(targetId, 'person'),
+    getDetails(starterId, 'person')
+  ]) as Array<PersonDetails>;
 
   if (target.known_for_department !== 'Acting' || starter.known_for_department !== 'Acting')
     throw Error("Invalid people");
