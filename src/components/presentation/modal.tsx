@@ -13,8 +13,8 @@ export default function CSModal({children, isOpen, className, close}: ICSModalPr
 	if(!isOpen) return <></>;
 
   return (
-		<div className='modal-background'>
-			<div className={`modal-container ${className || ''}`}>
+		<div className='modal-background' onClick={() => close && close()}>
+			<div className={`modal-container ${className || ''}`} onClick={(e) => e.stopPropagation()}>
 				{close ?
 					<div className='modal-close-button'>
 						<CSButton secondary onClick={(e) => {

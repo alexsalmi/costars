@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { getCredits, getDetails } from '@/services/tmdb.service';
 import CSButton from '../inputs/button';
 import useGameState from '@/store/game.state';
+import { CircularProgress } from '@mui/material';
 
 interface ICSDetailsModalProps {
 	entity: GameEntity
@@ -16,15 +17,17 @@ interface ICSDetailsModalProps {
 export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModalProps) {
 	const [details, setDetails] = useState({} as PersonDetails | MovieDetails);
 	const [credits, setCredits] = useState([] as Array<GameEntity>);
-	const [hintState, setHintState] = useState('hidden' as 'hidden' | 'pending' | 'revealed');
+	const [loading, setLoading] = useState(false);
+	const [hintState, setHintState] = useState('hidden' as 'hidden' | 'pending' | 'fetching' | 'revealed');
 	const { history, addEntity } = useGameState();
 
 	useEffect(() => {
-		console.log(JSON.stringify(entity))
+		setLoading(true);
 
 		getDetails(entity.id, entity.type)
 		.then(res => {
-			setDetails(res)
+			setDetails(res);
+			setLoading(false);
 		});
 	}, []);
 
@@ -33,6 +36,8 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 	}
 
 	const viewCredits = async () => {
+		setHintState('fetching');
+
 		setCredits(
 			(await getCredits(entity.id, entity.type))
 				.sort((a, b) => b.popularity - a.popularity)
@@ -43,7 +48,7 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 					image: (credit as MovieCredit).poster_path || (credit as PersonCredit).profile_path,
 				}))
 			);
-		
+
 		setHintState('revealed');
 	}
 
@@ -67,8 +72,10 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 					blurDataURL='/placeholder.webp'
 				/>
 				<div className='details-modal-hero-text'>
-					<h2>{entity.label}</h2>
-					{entity.type === 'person' ?
+					<h3>{entity.label}</h3>
+					{ loading ?
+						<></>
+					: entity.type === 'person' ?
 						<>
 							<span>{formatDate((details as PersonDetails).birthday)}</span>
 							<span>{(details as PersonDetails).place_of_birth}</span>
@@ -82,10 +89,12 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 				</div>
 			</div>
 			<p className="details-modal-description">
-				{entity.type === 'person' ?
+				{ loading ?
+							<CircularProgress className='details-modal-spinner' />
+					: entity.type === 'person' ?
 					(details as PersonDetails).biography?.split(".").slice(0,2).join(".") + "."
 					:
-					(details as MovieDetails).overview
+						(details as MovieDetails).overview
 				}
 			</p>
 			<div className={
@@ -104,6 +113,8 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 							Yes, {"I'll"} use a hint
 						</CSButton>
 					</>
+					: hintState === 'fetching' ?
+						<CircularProgress className='details-modal-spinner' />
 					: credits.map(credit => {
 						return(
 							<span className='details-modal-credit-display' key={credit.id}
