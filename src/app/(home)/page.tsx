@@ -4,9 +4,16 @@ import logo from '@/../public/costars_primary_logo.png';
 import '@/styles/pages/home.scss';
 import Link from 'next/link';
 import { getDailyCostars } from '@/services/cache.service';
+import CSDailyCostars from '@/components/presentation/daily-costars';
 
-export default async function Home() {
-  const { target, starter } = await getDailyCostars();
+interface IHomeProps {
+  placeholder: boolean
+}
+
+export default async function Home({placeholder}: IHomeProps) {
+  const { target, starter } = placeholder ? 
+    {target: {} as GameEntity, starter: {} as GameEntity} :
+    await getDailyCostars();
 
   return (
     <div className="home-page">
@@ -15,29 +22,7 @@ export default async function Home() {
         alt="Costars logo"
         height={80}
       />
-
-      <div className='home-page-daily-container'>
-        <h3 className='home-page-daily-header'>Daily Costars</h3>
-        <div className='home-page-daily-previews'>
-          <Image src={`https://image.tmdb.org/t/p/w185${starter.image}`}
-            width={80} height={120} alt={`Image of ${starter.label}`}
-          />
-          <div className='home-page-daily-names'>
-            <span>{starter.label}</span>
-            <span>and</span>
-            <span>{target.label}</span>
-          </div>
-          <Image src={`https://image.tmdb.org/t/p/w185${target.image}`}
-            width={80} height={120} alt={`Image of ${target.label}`}
-          />
-        </div>
-        <Link href="/daily">
-          <CSButton>
-            Play!
-          </CSButton>
-        </Link>
-      </div>
-
+      <CSDailyCostars starter={starter} target={target}/>
       <div className='home-page-button-container'>
         <Link href="/custom">
           <CSButton secondary>
