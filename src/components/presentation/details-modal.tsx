@@ -52,11 +52,13 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 		setHintState('revealed');
 	}
 
-	const selectCredit = (credit: GameEntity) => {
+	const selectCredit = async (credit: GameEntity) => {
 		const isMostRecentInHistory = entity.id === history[0].id && entity.type === history[0].type;
 		const isAlreadyInHistory = history.some(entity => entity.id === credit.id && entity.type === credit.type);
 		if(!isMostRecentInHistory || isAlreadyInHistory)
 			return;
+
+		credit.credits = (await getCredits(credit.id, credit.type)).map(credit => credit.id);
 
 		addEntity(credit);
 		close();
