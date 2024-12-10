@@ -19,7 +19,7 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 	const [credits, setCredits] = useState([] as Array<GameEntity>);
 	const [loading, setLoading] = useState(false);
 	const [hintState, setHintState] = useState('hidden' as 'hidden' | 'pending' | 'fetching' | 'revealed');
-	const { history, addEntity } = useGameState();
+	const { completed, history, addEntity } = useGameState();
 
 	useEffect(() => {
 		setLoading(true);
@@ -55,7 +55,7 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 	const selectCredit = async (credit: GameEntity) => {
 		const isMostRecentInHistory = entity.id === history[0].id && entity.type === history[0].type;
 		const isAlreadyInHistory = history.some(entity => entity.id === credit.id && entity.type === credit.type);
-		if(!isMostRecentInHistory || isAlreadyInHistory)
+		if(!isMostRecentInHistory || isAlreadyInHistory || completed)
 			return;
 
 		credit.credits = (await getCredits(credit.id, credit.type)).map(credit => credit.id);
@@ -105,7 +105,13 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 				`}
 			>
 				{ hintState === 'hidden' ?
-						<CSButton onClick={() => setHintState('pending')}>
+						<CSButton onClick={() => {
+								if(completed)
+									viewCredits()
+								else
+									setHintState('pending')
+							}}
+						>
 							View credits
 						</CSButton>
 					: hintState === 'pending' ?
