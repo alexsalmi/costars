@@ -41,7 +41,7 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
   }
 	
   return (
-		<CSModal isOpen={isOpen} close={close}>
+		<CSModal isOpen={isOpen} close={close} className='stats-modal'>
 			<div className='stats-modal-container'>
 				<div className='stats-modal-recap'>
 					<span>You connected {"today's"} costars in</span>

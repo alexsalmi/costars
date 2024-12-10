@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom } from "./atoms/game";
+import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom, completedAtom } from "./atoms/game";
 import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave, updateDailyStats as updateDailyStatsStorage, getDailyStats } from "@/services/storage.service";
 import { isToday } from "@/services/utils.service";
 
@@ -13,6 +13,7 @@ const useGameState = () => {
   const [dailyStats, setDailyStats] = useAtom(dailyStatsAtom);
   const [current] = useAtom(currentAtom);
   const [score] = useAtom(scoreAtom);
+  const [completed] = useAtom(completedAtom);
 
   // Actions
   const addEntity = (entity: GameEntity) => {
@@ -105,6 +106,7 @@ const useGameState = () => {
     undoCache,
     condensed,
     dailyStats,
+    completed,
     initUnlimitedGame,
     initCustomGame,
     initGame,

@@ -9,6 +9,23 @@
 	justify-content: space-between;
 	align-items: center;
 	border: 2px solid var(--background-secondary);
+
+	button {
+		padding: 0;
+		width: min-content;
+		height: 1.5em;
+		align-self: flex-start;
+		background-color: inherit !important;
+		border: none;
+	}
+
+	svg {
+		color: var(--highlight-text) !important;
+	}
+}
+
+.card-container:hover {
+	cursor: pointer;
 }
 
 .card-container.reverse {
@@ -37,7 +54,7 @@
 		flex-grow: 1;
 		display: flex;
 		justify-content: center;
-		margin-left: -1.5em;
+		margin-right: 1.5em;
 	}
 }
 

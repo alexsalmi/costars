@@ -1,9 +1,12 @@
+.stats-modal > div > button {
+	margin-top: 6px;
+}
+
 .stats-modal-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 16px;
-	margin-top: -16px;
 
 	hr {
 		width: 100%;
@@ -17,22 +20,6 @@
 	display: flex;
 	flex-direction: column;
 	font-size: 18px;
-}
-
-.stats-modal-close-button {
-	position: sticky;
-	align-self: flex-end;
-	margin-bottom: -28px;
-
-	button {
-		padding: 0;
-		height: 28px;
-		width: 28px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border: none;
-	}
 }
 
 .stats-modal-info {
