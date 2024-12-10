@@ -29,3 +29,9 @@ interface DailyStats {
   lastPlayed?: string,
   lastSolve?: Array<GameEntity>
 }
+
+interface Hint {
+  id: number,
+  type: TmdbType,
+  credits: Array<GameEntity>
+}
