@@ -14,12 +14,14 @@ interface ICSDetailsModalProps {
 	close: () => void
 }
 
+type HintState = 'hidden' | 'pending' | 'fetching' | 'revealed';
+
 export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModalProps) {
+	const { completed, history, hints,addEntity, addHint } = useGameState();
 	const [details, setDetails] = useState({} as PersonDetails | MovieDetails);
 	const [credits, setCredits] = useState([] as Array<GameEntity>);
 	const [loading, setLoading] = useState(false);
-	const [hintState, setHintState] = useState('hidden' as 'hidden' | 'pending' | 'fetching' | 'revealed');
-	const { completed, history, addEntity } = useGameState();
+	const [hintState, setHintState] = useState<HintState>('hidden');
 
 	useEffect(() => {
 		setLoading(true);
@@ -29,6 +31,12 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 			setDetails(res);
 			setLoading(false);
 		});
+
+		const hint = hints.find(hint => hint.id === entity.id && hint.type === entity.type)
+
+		if(hint){
+			viewCredits()
+		}
 	}, []);
 
 	const formatDate = (date: string) => {
@@ -38,16 +46,18 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 	const viewCredits = async () => {
 		setHintState('fetching');
 
-		setCredits(
-			(await getCredits(entity.id, entity.type))
-				.sort((a, b) => b.popularity - a.popularity)
-				.map(credit => ({
-					type: entity.type === 'person' ? 'movie': 'person' as TmdbType,
-					id: credit.id,
-					label: (credit as MovieCredit).title || (credit as PersonCredit).name,
-					image: (credit as MovieCredit).poster_path || (credit as PersonCredit).profile_path,
-				}))
-			);
+		const creditEntities = (await getCredits(entity.id, entity.type))
+			.sort((a, b) => b.popularity - a.popularity)
+			.map(credit => ({
+				type: entity.type === 'person' ? 'movie': 'person' as TmdbType,
+				id: credit.id,
+				label: (credit as MovieCredit).title || (credit as PersonCredit).name,
+				image: (credit as MovieCredit).poster_path || (credit as PersonCredit).profile_path,
+			})) as Array<GameEntity>;
+
+		setCredits(creditEntities);
+
+		addHint(entity);
 
 		setHintState('revealed');
 	}

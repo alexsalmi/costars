@@ -4,6 +4,7 @@ import { getDailyStats, getHighscore } from "@/services/storage.service";
 export const gameTypeAtom = atom('custom');
 export const targetAtom = atom({} as GameEntity);
 export const historyAtom = atom([] as Array<GameEntity>);
+export const hintsAtom = atom([] as Array<Hint>);
 export const undoCacheAtom = atom([] as Array<GameEntity>);
 export const condensedAtom = atom(false);
 
