@@ -9,6 +9,7 @@ import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/solutions-toolbar';
 import { useState } from 'react';
 import { saveSolution } from '@/services/db.service';
+import { getScoreString } from '@/services/utils.service';
 
 interface ICSStatsModalProps {
 	isOpen: boolean,
@@ -17,7 +18,7 @@ interface ICSStatsModalProps {
 }
 
 export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStatsModalProps) {
-	const { score, dailyStats, target, history } = useGameState();
+	const { score, dailyStats, target, history, hints } = useGameState();
 	const [solutionInd, setSolutionInd] = useState(0);
 	const [shareLoading, setShareLoading] = useState(false);
 
@@ -31,7 +32,7 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
     try{
       window.navigator.share({
         title: "Costars",
-        text: `Daily Costars #1\n${'🎬'.repeat((score-1)/2)}\nCheck out my solution!
+        text: `Daily Costars #1\n${getScoreString(history, hints)}\nCheck out my solution!
 				`,
         url: `${location.origin}/solution/${uuid}`
       })

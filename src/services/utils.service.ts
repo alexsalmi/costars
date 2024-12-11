@@ -14,3 +14,17 @@ export function isYesterday (date: Date) {
         date.getMonth() === yesterday.getMonth() &&
         date.getFullYear() === yesterday.getFullYear()
 }
+
+export function getScoreString (history: Array<GameEntity>, hints: Array<Hint>) {
+  let str = '';
+
+  for(const entity of history.reverse()){
+    if(entity.type === 'movie')
+      str += '🎬';
+
+    if(hints.some(hint => hint.id === entity.id && hint.type === entity.type))
+      str += '❔'; 
+  }
+
+  return str;
+}

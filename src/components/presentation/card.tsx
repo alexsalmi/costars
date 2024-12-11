@@ -10,10 +10,11 @@ interface ICSCardProps {
 	entity: GameEntity,
 	reverse?: boolean,
 	target?: boolean,
-	condensed?: boolean
+	condensed?: boolean,
+	hintUsed?: boolean
 }
 
-export default function CSCard({entity, reverse, target, condensed}: ICSCardProps) {
+export default function CSCard({entity, reverse, target, condensed, hintUsed}: ICSCardProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 	const [targetCondensed, setTargetCondensed] = useState(false);
 	
@@ -23,7 +24,8 @@ export default function CSCard({entity, reverse, target, condensed}: ICSCardProp
 					card-container 
 					${reverse ? 'reverse ' : ''}
 					${target ? 'target ' : ''}
-					${condensed || targetCondensed ? 'condensed' : ''}
+					${condensed || targetCondensed ? 'condensed ' : ''}
+					${hintUsed ? 'hintUsed' : ''}
 				`}
 				onClick={(e) => {
 					e.stopPropagation();

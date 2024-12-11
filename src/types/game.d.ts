@@ -27,11 +27,11 @@ interface DailyStats {
   currentStreak: number,
   highestStreak: number,
   lastPlayed?: string,
-  lastSolve?: Array<GameEntity>
+  lastSolve?: Array<GameEntity>,
+  lastSolveHints?: Array<Hint>
 }
 
 interface Hint {
   id: number,
-  type: TmdbType,
-  credits: Array<GameEntity>
+  type: TmdbType
 }

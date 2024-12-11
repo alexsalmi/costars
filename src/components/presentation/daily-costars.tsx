@@ -4,7 +4,7 @@ import Link from 'next/link';
 import CSButton from '../inputs/button';
 import '@/styles/components/daily-costars.scss'
 import useGameState from '@/store/game.state';
-import { isToday } from '@/services/utils.service';
+import { getScoreString, isToday } from '@/services/utils.service';
 
 interface IDailyCostarsProps {
 	starter: GameEntity,
@@ -36,7 +36,7 @@ export default function CSDailyCostars({starter, target}: IDailyCostarsProps) {
 			</div>
 			<Link href="/daily">
 				<CSButton>
-					{completed ? '🎬'.repeat((dailyStats.lastSolve!.length-1)/2) : 'Play!'}
+					{completed ? getScoreString(dailyStats.lastSolve!, dailyStats.lastSolveHints!) : 'Play!'}
 				</CSButton>
 			</Link>
 		</div>

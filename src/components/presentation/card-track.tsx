@@ -9,7 +9,7 @@ interface ICSCardTrackProps {
 }
 
 export default function CSCardTrack({ showPrompt, cards }: ICSCardTrackProps) {
-	const { history, current, condensed } = useGameState();
+	const { history, hints, current, condensed } = useGameState();
 
 	const cardsToDisplay = cards || history;
 
@@ -32,7 +32,14 @@ export default function CSCardTrack({ showPrompt, cards }: ICSCardTrackProps) {
 			}
 			{
 				cardsToDisplay.map(entity => {
-					return <CSCard entity={entity} reverse={entity.type === 'movie'} condensed={condensed} key={entity.id}/>
+					return (
+						<CSCard entity={entity} 
+							reverse={entity.type === 'movie'} 
+							condensed={condensed} 
+							hintUsed={hints.some(hint => hint.id === entity.id && hint.type === entity.type)}
+							key={entity.id}
+						/>
+					)
 				})
 			}
 		</div>
