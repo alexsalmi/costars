@@ -58,24 +58,28 @@ const useGameState = () => {
 		if (!isMatch)
 			throw Error("Invalid guess");
 
+    let newHistory = [entity, ...history];
+
 		if (gameType !== 'unlimited') {
 			const isTargetMatch = target.id === entity.id && target.type == entity.type;
 
 			if (isTargetMatch && gameType === 'daily')
 				updateDailyStats(entity);
 
-      if(isTargetMatch)
+      if(isTargetMatch){
         setCompleted(true);
+        newHistory = newHistory.reverse();
+      }
 		}
 
-    setHistory([entity, ...history]);
+    setHistory(newHistory);
     setUndoCache([]);
     
     if (gameType === 'unlimited') {
       if (history.length >= highScore)
         incrementHighscore();
       
-      updateUnlimitedSave([entity, ...history], hints);
+      updateUnlimitedSave(newHistory, hints);
 		}
   }
 

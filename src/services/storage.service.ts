@@ -40,7 +40,7 @@ export const updateDailyStats = (history: Array<GameEntity>, hints: Array<Hint>)
 
   dailyStats.lastPlayed = new Date().toString();
 
-  dailyStats.lastSolve = history.reverse();
+  dailyStats.lastSolve = history;
   dailyStats.lastSolveHints = hints;
 
   window.localStorage.setItem(KEY_DAILY_STATS, btoa(JSON.stringify(dailyStats)));
