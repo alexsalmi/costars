@@ -5,13 +5,16 @@ import '@/styles/components/card-track.scss'
 
 interface ICSCardTrackProps {
 	showPrompt?: boolean,
-	cards?: Array<GameEntity>
+	cards?: Array<GameEntity>,
+	hints?: Array<Hint>,
+	hideHints?: boolean
 }
 
-export default function CSCardTrack({ showPrompt, cards }: ICSCardTrackProps) {
+export default function CSCardTrack({ showPrompt, cards, hints: propHints, hideHints }: ICSCardTrackProps) {
 	const { history, hints, current, condensed } = useGameState();
 
 	const cardsToDisplay = cards || history;
+	const hintsToDisplay = propHints || hints;
 
   return (
 		<div className={`card-track-container ${!showPrompt ? 'no-prompt' : ''}`}>
@@ -36,8 +39,9 @@ export default function CSCardTrack({ showPrompt, cards }: ICSCardTrackProps) {
 						<CSCard entity={entity} 
 							reverse={entity.type === 'movie'} 
 							condensed={condensed} 
-							hintUsed={hints.some(hint => hint.id === entity.id && hint.type === entity.type)}
+							hintUsed={hintsToDisplay.some(hint => hint.id === entity.id && hint.type === entity.type)}
 							key={entity.id}
+							hideHints={hideHints}
 						/>
 					)
 				})

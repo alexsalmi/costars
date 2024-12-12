@@ -23,10 +23,15 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 	const [shareLoading, setShareLoading] = useState(false);
 
 	const numMovies = (score-1)/2;
+	const numHints = history.reduce(
+		(acc, curr) => 
+			acc + (hints.some(hint => hint.id === curr.id && hint.type === curr.type) ? 1 : 0), 
+		0
+	);
 
   const shareScore = async () => {
 		setShareLoading(true);
-		const uuid = await saveSolution(history);
+		const uuid = await saveSolution(history, hints);
 		setShareLoading(false);
 
     try{
@@ -42,12 +47,26 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
   }
 	
   return (
-		<CSModal isOpen={isOpen} close={close} className='stats-modal'>
+		<CSModal isOpen={isOpen} close={close}>
 			<div className='stats-modal-container'>
 				<div className='stats-modal-recap'>
+					<h3>Daily Stats</h3>
 					<span>You connected {"today's"} costars in</span>
-					<strong>{numMovies} movies.</strong>
-					{numMovies === 2 ?
+					<span>
+						<strong>{numMovies} movies</strong>
+            {
+              numHints > 0 ?
+              <>
+                {' and '}
+                <strong>
+                  {numHints} {numHints === 1 ? 'hint.' : 'hints.'}
+                </strong>
+              </>
+              :
+              <span>.</span>
+            }
+					</span>
+					{numMovies === 2 && numHints === 0 ?
 						<strong>{"That's"} the optimal score!</strong>	
 						: <></>
 					}
@@ -91,7 +110,7 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 						leftDisabled={solutionInd === 0}
 						rightDisabled={solutionInd === dailySolutions!.mostPopular.length-1}
 					/>
-					<CSCardTrack cards={dailySolutions?.mostPopular[solutionInd]}/>
+					<CSCardTrack cards={dailySolutions?.mostPopular[solutionInd]} hideHints={true}/>
 				</div>
 			</div>
 		</CSModal>

@@ -1,5 +1,6 @@
 .details-modal-container {
-	padding: 20px !important;
+	width: 100%;
+	max-width: var(--max-width-mobile);
 }
 
 .details-modal-hero {

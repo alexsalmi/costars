@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom, completedAtom, hintsAtom } from "./atoms/game";
+import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom, completedAtom, hintsAtom, isSolutionAtom } from "./atoms/game";
 import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave, updateDailyStats as updateDailyStatsStorage, getDailyStats } from "@/services/storage.service";
 import { isToday } from "@/services/utils.service";
 
@@ -12,9 +12,10 @@ const useGameState = () => {
   const [condensed, setCondensed] = useAtom(condensedAtom);
   const [highScore, setHighScore] = useAtom(highScoreAtom);
   const [dailyStats, setDailyStats] = useAtom(dailyStatsAtom);
+  const [completed, setCompleted] = useAtom(completedAtom);
   const [current] = useAtom(currentAtom);
   const [score] = useAtom(scoreAtom);
-  const [completed] = useAtom(completedAtom);
+  const [isSolution] = useAtom(isSolutionAtom);
 
   // Actions
   const initUnlimitedGame = () => {
@@ -25,6 +26,7 @@ const useGameState = () => {
     setHints(saveData.hints);
     setTarget({} as GameEntity);
     setUndoCache([]);
+    setCompleted(false);
   }
 
   const initCustomGame = () => {
@@ -33,15 +35,18 @@ const useGameState = () => {
     setHistory([]);
     setHints([]);
     setUndoCache([]);
+    setCompleted(false);
   }
 
   const initGame = async ([target, starter]: [GameEntity, GameEntity], daily?: boolean) => {
     setGameType(daily ? 'daily' : 'custom');
+    setCompleted(false);
 
     if (daily && dailyStats.lastSolve && dailyStats.lastPlayed && isToday(new Date(dailyStats.lastPlayed))) {
-      setTarget(dailyStats.lastSolve[0]);
+      setTarget(dailyStats.lastSolve[dailyStats.lastSolve.length-1]);
       setHistory(dailyStats.lastSolve);
       setHints(dailyStats.lastSolveHints || []);
+      setCompleted(true);
     }
     else {
       setTarget(target);
@@ -51,14 +56,33 @@ const useGameState = () => {
   }
 
   const addEntity = (entity: GameEntity) => {
-    setHistory([entity, ...history]);
+		const isMatch = !current || current.credits!.includes(entity.id);
+
+		if (!isMatch)
+			throw Error("Invalid guess");
+
+    let newHistory = [entity, ...history];
+
+		if (gameType !== 'unlimited') {
+			const isTargetMatch = target.id === entity.id && target.type == entity.type;
+
+			if (isTargetMatch && gameType === 'daily')
+				updateDailyStats(entity);
+
+      if(isTargetMatch){
+        setCompleted(true);
+        newHistory = newHistory.reverse();
+      }
+		}
+
+    setHistory(newHistory);
     setUndoCache([]);
     
     if (gameType === 'unlimited') {
       if (history.length >= highScore)
         incrementHighscore();
-      
-      updateUnlimitedSave([entity, ...history], hints);
+
+      updateUnlimitedSave(newHistory, hints);
 		}
   }
 
@@ -126,8 +150,9 @@ const useGameState = () => {
     highScore,
     undoCache,
     condensed,
-    dailyStats,
     completed,
+    dailyStats,
+    isSolution,
     initUnlimitedGame,
     initCustomGame,
     initGame,

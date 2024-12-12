@@ -4,23 +4,26 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	min-width: 100vw;
-	min-height: 100vh;
-	height: 100%;
-	padding: 24px;
+	min-width: 100%;
+	min-height: max(100%, 850px);
+	height: fit-content;
+	padding: 12px;
 	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
 	z-index: 1100;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .modal-container {
+	min-width: min(100%, fit-content);
 	width: fit-content;
 	max-width: min(var(--max-width-mobile), 98vw);
 	padding: 12px 16px 24px;
-	margin-top: 50px;
+	margin-top: 75px;
 	background-color: var(--background-primary);
 	color: var(--highlight-text);
 	border: 3px solid var(--highlight-primary); 
@@ -31,13 +34,19 @@
 	align-items: center;
 	gap: 16px;
 	text-align: center;
+	
+  h3 {
+    text-decoration: underline;
+		margin-bottom: 6px;
+  }
 }
 
 .modal-close-button {
 	align-self: flex-end;
-	margin-bottom: -28px;
-	margin-top: -12px;
+	margin-bottom: -20px;
+	margin-top: -8px;
 	margin-right: -12px;
+	
 	button {
 		padding: 0;
 		height: 28px;

@@ -27,7 +27,8 @@ export const updateDailyStats = (history: Array<GameEntity>, hints: Array<Hint>)
   dailyStats.daysPlayed++;
   
   const score = (history.length - 1) / 2;
-  if(score === 2)
+  hints = hints.filter(hint => history.some(entity => entity.id === hint.id && entity.type === hint.type));
+  if(score === 2 && hints.length === 0)
     dailyStats.daysOptimal++;
 
   if (!dailyStats.lastPlayed || isYesterday(new Date(dailyStats.lastPlayed)))

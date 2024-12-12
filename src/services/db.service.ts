@@ -1,6 +1,5 @@
 'use server';
 
-import { Database } from '@/types/db';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createServerClient } from '@supabase/ssr'
 import { SupabaseClient } from '@supabase/supabase-js';
@@ -35,31 +34,32 @@ async function createClient() {
 
 let supabase: SupabaseClient<Database, 'public', any> | undefined;
 
-export const saveSolution = async (history: Array<GameEntity>): Promise<string> => {
+export const saveSolution = async (history: Array<GameEntity>, hints: Array<Hint>): Promise<string> => {
 	if(!supabase)
 		supabase = await createClient();
 
 	const { data } = await supabase
 		.from('Solutions')
 		.insert({ 
-			solution: history.map(entity => ({...entity, credits: undefined}))
+			solution: history.map(entity => ({...entity, credits: undefined})),
+			hints: hints
 		})
 		.select();
 
 	return data![0].id;
 }
 
-export const getSolution = async (uuid: string): Promise<Array<GameEntity>> => {
+export const getSolution = async (uuid: string): Promise<Solution> => {
 	if(!supabase)
 		supabase = await createClient();
 
   const { data } = await supabase
 		.from("Solutions")
-		.select('solution')
+		.select('solution, hints')
 		.eq('id', uuid);
 	
 	if(!data || data.length === 0)
 		throw Error("Invalid uuid");
 
-	return data[0].solution;
+	return data[0];
 }

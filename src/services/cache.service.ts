@@ -37,7 +37,7 @@ export const getDailyCostars = unstable_cache(async () => {
 
   do {
     starter = await getRandomPerson();
-    solutions = await(getOptimalSolutions(target, starter));
+    solutions = await(getOptimalSolutions(starter, target));
   } while (solutions.score !== 2)
 
   console.log(`----- New daily costars are ${target.label} and ${starter.label} -----`);
@@ -194,6 +194,11 @@ const getOptimalSolutions = async (person1: GameEntity, person2: GameEntity)
     await Promise.all(promises);
 
     level++;
+
+    if(level === 3 && solutions.length === 0){
+      level = -1;
+      break;
+    }
   }
 
   // Filter out any solutions longer than optimal, and sort by total popularity

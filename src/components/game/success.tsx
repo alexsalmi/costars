@@ -9,9 +9,16 @@ import CSStatsModal from './stats-modal';
 import CSBackButton from '../inputs/back-button';
 
 export default function Success({dailySolutions} : {dailySolutions?: DailySolutions}) {
-  const { history, target, score, gameType } = useGameState();
+  const { history, target, score, hints, gameType } = useGameState();
 
   const [statsOpen, setStatsOpen] = useState(gameType === 'daily');
+
+	const numMovies = (score-1)/2;
+	const numHints = history.reduce(
+		(acc, curr) => 
+			acc + (hints.some(hint => hint.id === curr.id && hint.type === curr.type) ? 1 : 0), 
+		0
+	);
 
   return (
     <>
@@ -21,13 +28,24 @@ export default function Success({dailySolutions} : {dailySolutions?: DailySoluti
           <h3>Congratulations!</h3>
           <span>
             {'You connected '}
-            <strong>{history[history.length - 1].label}</strong>
+            <strong>{history[0].label}</strong>
             {' and '}
             <strong>{target.label}</strong>
             {' in '}
             <strong>
-              {(score - 1) / 2} {score < 4 ? 'movie!' : 'movies!'}
+              {numMovies} {numMovies === 1 ? 'movie' : 'movies'}
             </strong>
+            {
+              numHints > 0 ?
+              <>
+                {' and '}
+                <strong>
+                  {numHints} {numHints === 1 ? 'hint!' : 'hints!'}
+                </strong>
+              </>
+              :
+              <span>!</span>
+            }
           </span>
           {gameType !== 'daily' ?
             <Link href="/custom">

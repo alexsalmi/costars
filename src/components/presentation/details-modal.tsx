@@ -17,7 +17,7 @@ interface ICSDetailsModalProps {
 type HintState = 'hidden' | 'pending' | 'fetching' | 'revealed';
 
 export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModalProps) {
-	const { completed, history, hints,addEntity, addHint } = useGameState();
+	const { completed, history, hints, isSolution, addEntity, addHint } = useGameState();
 	const [details, setDetails] = useState({} as PersonDetails | MovieDetails);
 	const [credits, setCredits] = useState([] as Array<GameEntity>);
 	const [loading, setLoading] = useState(false);
@@ -116,7 +116,7 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 			>
 				{ hintState === 'hidden' ?
 						<CSButton onClick={() => {
-								if(completed)
+								if(completed || isSolution)
 									viewCredits()
 								else
 									setHintState('pending')
