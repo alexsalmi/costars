@@ -1,7 +1,7 @@
 .custom-game-modal {
   width: 100% !important;
   max-width: var(--max-width-mobile) !important;
-  gap: 12px;
+  gap: 6px;
   padding: 24px;
 }
 
@@ -9,7 +9,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  margin-top: 12px;
 }
 
 .custom-game-modal-input-section {

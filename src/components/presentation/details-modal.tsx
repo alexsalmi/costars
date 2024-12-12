@@ -75,7 +75,7 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 	}
 
   return (
-		<CSModal isOpen={isOpen} close={close}>
+		<CSModal isOpen={isOpen} close={close} className='details-modal-container'>
 			<div className='details-modal-hero'>
 				<Image className='card-image' 
 					src={`https://image.tmdb.org/t/p/w185${entity.image}`} alt={`Picture of ${entity.label}`} 

@@ -5,7 +5,7 @@
 	left: 0;
 	right: 0;
 	min-width: 100%;
-	min-height: 100%;
+	min-height: max(100%, 850px);
 	height: fit-content;
 	padding: 12px;
 	background-color: rgba(0, 0, 0, 0.5);
@@ -15,10 +15,12 @@
 	align-items: center;
 	z-index: 1100;
 	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .modal-container {
-	width: 100%;
+	min-width: min(100%, fit-content);
+	width: fit-content;
 	max-width: min(var(--max-width-mobile), 98vw);
 	padding: 12px 16px 24px;
 	margin-top: 75px;
@@ -35,6 +37,7 @@
 	
   h3 {
     text-decoration: underline;
+		margin-bottom: 6px;
   }
 }
 
