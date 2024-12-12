@@ -81,7 +81,7 @@ const useGameState = () => {
     if (gameType === 'unlimited') {
       if (history.length >= highScore)
         incrementHighscore();
-      
+
       updateUnlimitedSave(newHistory, hints);
 		}
   }

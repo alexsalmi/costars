@@ -94,6 +94,10 @@
 	}
 }
 
+.card-container.hintUsed {
+	border: 3px solid var(--highlight-primary);
+}
+
 .card-image {
 	border-radius: 5px;
 }
