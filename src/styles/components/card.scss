@@ -59,6 +59,10 @@
 	color: var(--highlight-text);
 	padding: 6px 12px;
 
+	.card-label {
+		margin-left: 24px;
+	}
+
 	.card-expand-icon {
 		margin-right: 275px
 	}
@@ -83,8 +87,9 @@
 	
 	.card-label {
 		display: flex;
+		flex-grow: 1;
+		justify-content: center;
 		gap: 6px;
-		margin-left: 34px;
 		max-width: 250px;
 	}
 }

@@ -77,29 +77,6 @@ export default function CSCustomGameModal() {
         </span>
       </div>
       <div className='custom-game-modal-input-section'>
-        <span>From:</span>
-        <span className='custom-game-modal-person-selector'>
-          {
-            starter === null ?
-              <>
-                <CSSearchBar onSubmit={setStarter} />
-                <CSButton loading={starterLoading} onClick={() => randomize('starter')}>
-                  <AutorenewOutlined />
-                </CSButton>
-              </>
-              :
-              <>
-                <CSTextDisplay>
-                  {starter.label}
-                </CSTextDisplay>
-                <CSButton secondary onClick={() => setStarter(null)}>
-                  <CloseOutlined />
-                </CSButton>
-              </>
-          }
-        </span>
-      </div>
-      <div className='custom-game-modal-input-section'>
         <span>To:</span>
         <span className='custom-game-modal-person-selector'>
           {
@@ -116,6 +93,29 @@ export default function CSCustomGameModal() {
                   {target.label}
                 </CSTextDisplay>
                 <CSButton secondary onClick={() => setTarget(null)}>
+                  <CloseOutlined />
+                </CSButton>
+              </>
+          }
+        </span>
+      </div>
+      <div className='custom-game-modal-input-section'>
+        <span>From:</span>
+        <span className='custom-game-modal-person-selector'>
+          {
+            starter === null ?
+              <>
+                <CSSearchBar onSubmit={setStarter} />
+                <CSButton loading={starterLoading} onClick={() => randomize('starter')}>
+                  <AutorenewOutlined />
+                </CSButton>
+              </>
+              :
+              <>
+                <CSTextDisplay>
+                  {starter.label}
+                </CSTextDisplay>
+                <CSButton secondary onClick={() => setStarter(null)}>
                   <CloseOutlined />
                 </CSButton>
               </>
