@@ -10,7 +10,7 @@ export const condensedAtom = atom(false);
 
 export const currentAtom = atom((get) => get(historyAtom)[0] || null);
 export const scoreAtom = atom((get) => get(historyAtom).length);
-export const completedAtom = atom((get) => get(historyAtom).includes(get(targetAtom)))
+export const completedAtom = atom(false);
 export const isSolutionAtom = atom(() => 
 	typeof window !== 'undefined' ? 
 	window.location.pathname.includes('/solution')

@@ -4,12 +4,10 @@
 	align-items: center;
 	margin-bottom: 20px;
 	flex-grow: 1;
-  gap: 24px;
+  gap: 40px;
 }
 
 .success-message-container {
-	border: 3px solid var(--highlight-primary);
-	border-radius: 10px;
 	color: var(--highlight-text);
   max-width: var(--max-width-mobile);
 	display: flex;
@@ -17,10 +15,13 @@
 	align-items: center;
 	text-align: center;
 	gap: 16px;
-	padding: 24px;
 
 	strong {
 		font-size: 18px;
 		font-weight: 900;
+	}
+
+	button {
+		width: fit-content;
 	}
 }

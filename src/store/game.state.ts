@@ -12,9 +12,9 @@ const useGameState = () => {
   const [condensed, setCondensed] = useAtom(condensedAtom);
   const [highScore, setHighScore] = useAtom(highScoreAtom);
   const [dailyStats, setDailyStats] = useAtom(dailyStatsAtom);
+  const [completed, setCompleted] = useAtom(completedAtom);
   const [current] = useAtom(currentAtom);
   const [score] = useAtom(scoreAtom);
-  const [completed] = useAtom(completedAtom);
   const [isSolution] = useAtom(isSolutionAtom);
 
   // Actions
@@ -40,9 +40,10 @@ const useGameState = () => {
     setGameType(daily ? 'daily' : 'custom');
 
     if (daily && dailyStats.lastSolve && dailyStats.lastPlayed && isToday(new Date(dailyStats.lastPlayed))) {
-      setTarget(dailyStats.lastSolve[0]);
+      setTarget(dailyStats.lastSolve[dailyStats.lastSolve.length-1]);
       setHistory(dailyStats.lastSolve);
       setHints(dailyStats.lastSolveHints || []);
+      setCompleted(true);
     }
     else {
       setTarget(target);
@@ -52,6 +53,21 @@ const useGameState = () => {
   }
 
   const addEntity = (entity: GameEntity) => {
+		const isMatch = !current || current.credits!.includes(entity.id);
+
+		if (!isMatch)
+			throw Error("Invalid guess");
+
+		if (gameType !== 'unlimited') {
+			const isTargetMatch = target.id === entity.id && target.type == entity.type;
+
+			if (isTargetMatch && gameType === 'daily')
+				updateDailyStats(entity);
+
+      if(isTargetMatch)
+        setCompleted(true);
+		}
+
     setHistory([entity, ...history]);
     setUndoCache([]);
     

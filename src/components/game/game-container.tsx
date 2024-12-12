@@ -6,10 +6,9 @@ import CSTextDisplay from '@/components/presentation/display';
 import useGameState from '@/store/game.state';
 import '@/styles/game/game-container.scss';
 import CSCard from '../presentation/card';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getCredits } from '@/services/tmdb.service';
 import Success from './success';
-import { isToday } from '@/services/utils.service';
 import CSBackButton from '../inputs/back-button';
 
 interface IGameProps {
@@ -19,41 +18,22 @@ interface IGameProps {
 }
 
 export default function GameContainer({ initPeople, daily, dailySolutions }: IGameProps) {
-	const { current, gameType, target, score, highScore, dailyStats, hints, initGame, addEntity, updateDailyStats } = useGameState();
-	const [success, setSuccess] = useState(false);
+	const { gameType, target, score, highScore, hints, completed, initGame, addEntity } = useGameState();
 
 	useEffect(() => {
 		if (initPeople)
 			initGame(initPeople, daily);
-
-		if (daily && dailyStats.lastPlayed && isToday(new Date(dailyStats.lastPlayed)))
-			setSuccess(true);
 	}, []);
 
 
 	const onSubmit = async (value: GameEntity) => {
-		const isMatch = !current || current.credits!.includes(value.id);
-
-		if (!isMatch)
-			throw Error("Invalid guess");
-
-		if (gameType !== 'unlimited') {
-			const isTargetMatch = target.id === value.id && target.type == value.type;
-
-			if (isTargetMatch && gameType === 'daily')
-				updateDailyStats(value);
-
-			if (isTargetMatch)
-				setSuccess(true);
-		}
-
 		addEntity({
 			...value,
 			credits: (await getCredits(value.id, value.type)).map(credit => credit.id)
 		});
 	};
 
-	if (success) {
+	if (completed) {
 		return <Success dailySolutions={dailySolutions} />;
 	}
 

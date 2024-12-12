@@ -18,12 +18,12 @@ export function isYesterday (date: Date) {
 export function getScoreString (history: Array<GameEntity>, hints: Array<Hint>) {
   let str = '';
 
-  for(const entity of history.reverse()){
+  for(const entity of history){
     if(entity.type === 'movie')
       str += '🎬';
 
     if(hints.some(hint => hint.id === entity.id && hint.type === entity.type))
-      str += '❔'; 
+      str += '❓'; 
   }
 
   return str;

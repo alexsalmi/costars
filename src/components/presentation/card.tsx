@@ -18,7 +18,7 @@ interface ICSCardProps {
 
 export default function CSCard({entity, reverse, target, condensed, hintUsed, hideHints}: ICSCardProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-	const [targetCondensed, setTargetCondensed] = useState(false);
+	const [targetCondensed, setTargetCondensed] = useState(target);
 	
 	return (
 		<>
