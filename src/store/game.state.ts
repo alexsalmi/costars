@@ -26,6 +26,7 @@ const useGameState = () => {
     setHints(saveData.hints);
     setTarget({} as GameEntity);
     setUndoCache([]);
+    setCompleted(false);
   }
 
   const initCustomGame = () => {
@@ -34,10 +35,12 @@ const useGameState = () => {
     setHistory([]);
     setHints([]);
     setUndoCache([]);
+    setCompleted(false);
   }
 
   const initGame = async ([target, starter]: [GameEntity, GameEntity], daily?: boolean) => {
     setGameType(daily ? 'daily' : 'custom');
+    setCompleted(false);
 
     if (daily && dailyStats.lastSolve && dailyStats.lastPlayed && isToday(new Date(dailyStats.lastPlayed))) {
       setTarget(dailyStats.lastSolve[dailyStats.lastSolve.length-1]);

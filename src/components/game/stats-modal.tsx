@@ -50,6 +50,7 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 		<CSModal isOpen={isOpen} close={close}>
 			<div className='stats-modal-container'>
 				<div className='stats-modal-recap'>
+					<h3>Daily Stats</h3>
 					<span>You connected {"today's"} costars in</span>
 					<span>
 						<strong>{numMovies} movies</strong> and <strong>{numHints} {numHints === 1 ? 'hint' : 'hints'}</strong>.

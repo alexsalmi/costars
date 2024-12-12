@@ -32,6 +32,10 @@
 	align-items: center;
 	gap: 16px;
 	text-align: center;
+	
+  h3 {
+    text-decoration: underline;
+  }
 }
 
 .modal-close-button {
@@ -39,6 +43,7 @@
 	margin-bottom: -20px;
 	margin-top: -8px;
 	margin-right: -12px;
+	
 	button {
 		padding: 0;
 		height: 28px;
