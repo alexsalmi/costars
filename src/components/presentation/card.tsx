@@ -1,20 +1,22 @@
 'use client'
 import '@/styles/components/card.scss'
 import Image from 'next/image';
-import { ExpandMoreOutlined, ExpandLessOutlined } from '@mui/icons-material';
+import { ExpandMoreOutlined, ExpandLessOutlined, QuestionMarkOutlined } from '@mui/icons-material';
 import { useState } from 'react';
 import CSDetailsModal from './details-modal';
 import CSButton from '../inputs/button';
+import { Tooltip } from '@mui/material';
 
 interface ICSCardProps {
 	entity: GameEntity,
 	reverse?: boolean,
 	target?: boolean,
 	condensed?: boolean,
-	hintUsed?: boolean
+	hintUsed?: boolean,
+	hideHints?: boolean
 }
 
-export default function CSCard({entity, reverse, target, condensed, hintUsed}: ICSCardProps) {
+export default function CSCard({entity, reverse, target, condensed, hintUsed, hideHints}: ICSCardProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 	const [targetCondensed, setTargetCondensed] = useState(false);
 	
@@ -25,7 +27,6 @@ export default function CSCard({entity, reverse, target, condensed, hintUsed}: I
 					${reverse ? 'reverse ' : ''}
 					${target ? 'target ' : ''}
 					${condensed || targetCondensed ? 'condensed ' : ''}
-					${hintUsed ? 'hintUsed' : ''}
 				`}
 				onClick={(e) => {
 					e.stopPropagation();
@@ -44,19 +45,30 @@ export default function CSCard({entity, reverse, target, condensed, hintUsed}: I
 					{target ? <h4>Target:</h4> : ''}
 					{entity.label}
 				</span>
-				{target ? 
-					<CSButton
-						onClick={(e) => {
-							e.stopPropagation();
-							setTargetCondensed(!targetCondensed);
-						}}
-					>
-						{ targetCondensed ?
-							<ExpandMoreOutlined className='card-expandable-icon'/>
-							:
-							<ExpandLessOutlined className='card-expandable-icon'/>
-						}
-					</CSButton>
+				{target ?
+					<span className='card-expand-icon'>
+						<CSButton
+							onClick={(e) => {
+								e.stopPropagation();
+								setTargetCondensed(!targetCondensed);
+							}}
+						>
+							{ targetCondensed ?
+								<ExpandMoreOutlined/>
+								:
+								<ExpandLessOutlined/>
+							}
+						</CSButton>
+					</span>
+					: <></>
+				}
+					
+				{hintUsed && !hideHints ?
+					<span className='card-hint-icon'>
+						<Tooltip title={`A hint was used on ${entity.label}`}>
+							<QuestionMarkOutlined />
+						</Tooltip>
+					</span>
 					: <></>
 				}
 			</div>

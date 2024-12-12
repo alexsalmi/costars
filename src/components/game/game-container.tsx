@@ -19,7 +19,7 @@ interface IGameProps {
 }
 
 export default function GameContainer({ initPeople, daily, dailySolutions }: IGameProps) {
-	const { current, gameType, target, score, highScore, dailyStats, initGame, addEntity, updateDailyStats } = useGameState();
+	const { current, gameType, target, score, highScore, dailyStats, hints, initGame, addEntity, updateDailyStats } = useGameState();
 	const [success, setSuccess] = useState(false);
 
 	useEffect(() => {
@@ -72,7 +72,8 @@ export default function GameContainer({ initPeople, daily, dailySolutions }: IGa
 				</div>
 				:
 				<div className='game-target'>
-					<CSCard entity={target} target reverse />
+					<CSCard entity={target} target reverse
+							hintUsed={hints.some(hint => hint.id === target.id && hint.type === target.type)} />
 				</div>
 			}
 			<div className='game-card-section'>

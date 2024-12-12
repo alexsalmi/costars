@@ -1,6 +1,6 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
-export interface Database {
+interface Database {
   public: {
     Tables: {
       Solutions: {
@@ -15,4 +15,9 @@ export interface Database {
       }
     }
   }
+}
+
+interface Solution {
+	solution: Array<GameEntity>
+	hints: Array<Hint>
 }

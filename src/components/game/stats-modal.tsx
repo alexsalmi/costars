@@ -26,7 +26,7 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 
   const shareScore = async () => {
 		setShareLoading(true);
-		const uuid = await saveSolution(history);
+		const uuid = await saveSolution(history, hints);
 		setShareLoading(false);
 
     try{
@@ -91,7 +91,7 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 						leftDisabled={solutionInd === 0}
 						rightDisabled={solutionInd === dailySolutions!.mostPopular.length-1}
 					/>
-					<CSCardTrack cards={dailySolutions?.mostPopular[solutionInd]}/>
+					<CSCardTrack cards={dailySolutions?.mostPopular[solutionInd]} hideHints={true}/>
 				</div>
 			</div>
 		</CSModal>
