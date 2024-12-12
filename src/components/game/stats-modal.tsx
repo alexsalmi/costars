@@ -54,7 +54,6 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 					<span>You connected {"today's"} costars in</span>
 					<span>
 						<strong>{numMovies} movies</strong>
-						{' and '}
             {
               numHints > 0 ?
               <>
