@@ -53,7 +53,19 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 					<h3>Daily Stats</h3>
 					<span>You connected {"today's"} costars in</span>
 					<span>
-						<strong>{numMovies} movies</strong> and <strong>{numHints} {numHints === 1 ? 'hint' : 'hints'}</strong>.
+						<strong>{numMovies} movies</strong>
+						{' and '}
+            {
+              numHints > 0 ?
+              <>
+                {' and '}
+                <strong>
+                  {numHints} {numHints === 1 ? 'hint.' : 'hints.'}
+                </strong>
+              </>
+              :
+              <span>.</span>
+            }
 					</span>
 					{numMovies === 2 && numHints === 0 ?
 						<strong>{"That's"} the optimal score!</strong>	

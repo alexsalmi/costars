@@ -35,10 +35,17 @@ export default function Success({dailySolutions} : {dailySolutions?: DailySoluti
             <strong>
               {numMovies} {numMovies === 1 ? 'movie' : 'movies'}
             </strong>
-            {' and '}
-            <strong>
-              {numHints} {numHints === 1 ? 'hint!' : 'hints!'}
-            </strong>
+            {
+              numHints > 0 ?
+              <>
+                {' and '}
+                <strong>
+                  {numHints} {numHints === 1 ? 'hint!' : 'hints!'}
+                </strong>
+              </>
+              :
+              <span>!</span>
+            }
           </span>
           {gameType !== 'daily' ?
             <Link href="/custom">
