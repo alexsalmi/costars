@@ -7,17 +7,18 @@ interface ICSCardTrackProps {
 	showPrompt?: boolean,
 	cards?: Array<GameEntity>,
 	hints?: Array<Hint>,
-	hideHints?: boolean
+	hideHints?: boolean,
+	fullHeight?: boolean
 }
 
-export default function CSCardTrack({ showPrompt, cards, hints: propHints, hideHints }: ICSCardTrackProps) {
+export default function CSCardTrack({ showPrompt, cards, hints: propHints, hideHints, fullHeight }: ICSCardTrackProps) {
 	const { history, hints, current, condensed } = useGameState();
 
 	const cardsToDisplay = cards || history;
 	const hintsToDisplay = propHints || hints;
 
   return (
-		<div className={`card-track-container ${!showPrompt ? 'no-prompt' : ''}`}>
+		<div className={`card-track-container ${!showPrompt ? 'no-prompt' : ''} ${fullHeight ? 'full-height' : ''}`}>
 			{ showPrompt ? 
 				<span className='card-track-prompt'>
 					{

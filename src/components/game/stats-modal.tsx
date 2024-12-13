@@ -110,7 +110,7 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 						leftDisabled={solutionInd === 0}
 						rightDisabled={solutionInd === dailySolutions!.mostPopular.length-1}
 					/>
-					<CSCardTrack cards={dailySolutions?.mostPopular[solutionInd]} hideHints={true}/>
+					<CSCardTrack cards={dailySolutions?.mostPopular[solutionInd]} hideHints={true} fullHeight={true} />
 				</div>
 			</div>
 		</CSModal>

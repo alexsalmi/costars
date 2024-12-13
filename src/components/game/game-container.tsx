@@ -20,8 +20,10 @@ interface IGameProps {
 export default function GameContainer({ initPeople, daily, dailySolutions }: IGameProps) {
 	const { gameType, target, score, highScore, hints, completed, initGame, addEntity } = useGameState();
 
+	const isUnlimited = !initPeople;
+
 	useEffect(() => {
-		if (initPeople)
+		if (!isUnlimited)
 			initGame(initPeople, daily);
 	}, []);
 
@@ -33,7 +35,7 @@ export default function GameContainer({ initPeople, daily, dailySolutions }: IGa
 		});
 	};
 
-	if (completed) {
+	if (!isUnlimited && completed) {
 		return <Success dailySolutions={dailySolutions} />;
 	}
 

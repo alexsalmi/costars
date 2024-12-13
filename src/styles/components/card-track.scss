@@ -14,6 +14,10 @@
 	overflow-y: auto;
 }
 
+.card-track-container.full-height {
+	max-height: none;
+}
+
 .card-track-container.no-prompt {
 	padding: 12px;
 }
