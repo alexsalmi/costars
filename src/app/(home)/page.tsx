@@ -1,4 +1,4 @@
-import { getDailyCostars } from '@/services/cache.service';
+import { getDailyCostars } from '@/services/db.service';
 import Home from './home';
 
 export default async function Index() {

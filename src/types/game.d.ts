@@ -10,7 +10,7 @@ interface GameEntity {
 }
 
 interface DailySolutions {
-  score: number,
+  score?: number,
   count: number,
   mostPopular: Array<Array<GameEntity>>
 }
