@@ -5,12 +5,12 @@ import { getCredits, getTrending } from "./tmdb.service";
 
 
 export const getRandomPerson = async () => {
-  const pool = await unstable_cache(getRandomPool, [], { tags: ['random_pool'] })();
+  const pool = await getRandomPool();
 
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-export const getRandomPool = async () => {
+export const getRandomPool = unstable_cache(async () => {
   console.log("----- Refreshing Random Pool -----");
   const POOL_SIZE = 200;
   const pool = [] as Array<GameEntity>;
@@ -62,4 +62,4 @@ export const getRandomPool = async () => {
   console.log(`------- Random Pool has ${pool.length} people --------`);
   console.log("----- Finished Refreshing Random Pool -----\n");
   return pool;
-};
+}, [], { tags: ['random_pool'] });

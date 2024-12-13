@@ -68,7 +68,7 @@ interface OptimalMapValue {
 
 const OptimalMap = Map<string, OptimalMapValue>;
 
-export const getCostars = async (actorSet: Set<number>) => {
+const getCostars = async (actorSet: Set<number>) => {
   console.log("----- Generating New Costars -----");
 
   let target = {} as GameEntity;
