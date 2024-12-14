@@ -18,7 +18,7 @@ interface ICSStatsModalProps {
 }
 
 export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProps) {
-	const { score, dailyStats, target, history, hints } = useGameState();
+	const { score, dailyStats, history, hints } = useGameState();
 	const [solutionInd, setSolutionInd] = useState(0);
 	const [shareLoading, setShareLoading] = useState(false);
 
