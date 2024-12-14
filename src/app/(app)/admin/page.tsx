@@ -3,8 +3,8 @@ import { getAllFutureCostars } from "@/services/db.service";
 import '@/styles/pages/admin.scss';
 
 export default async function Admin() {
-	if(process.env.NODE_ENV === 'production')
-		throw Error('Admins only');
+	if(process.env.IS_PRODUCTION)
+		return <></>
 
 	const futureCostars = await getAllFutureCostars();
 
