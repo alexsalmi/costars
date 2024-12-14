@@ -1,34 +1,12 @@
 'use server';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers'
 
-async function createClient() {
-	const cookieStore = await cookies()
-
-	const client = createServerClient<Database>(
+async function createSupabaseClient() {
+	const client = createClient<Database>(
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
-		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-		{
-			cookies: {
-				getAll() {
-					return cookieStore.getAll()
-				},
-				setAll(cookiesToSet: { name: any; value: any; options: any }[]) {
-					try {
-						cookiesToSet.forEach(({ name, value, options }) =>
-							cookieStore.set(name, value, options)
-						)
-					} catch {
-						// The `setAll` method was called from a Server Component.
-						// This can be ignored if you have middleware refreshing
-						// user sessions.
-					}
-				},
-			},
-		}
+		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 	)
 
 	return client;
@@ -38,7 +16,7 @@ let supabase: SupabaseClient<Database>;
 
 export const saveSolution = async (history: Array<GameEntity>, hints: Array<Hint>): Promise<string> => {
 	if(!supabase)
-		supabase = await createClient();
+		supabase = await createSupabaseClient();
 
 	const { data } = await supabase
 		.from('Solutions')
@@ -53,7 +31,7 @@ export const saveSolution = async (history: Array<GameEntity>, hints: Array<Hint
 
 export const getSolution = async (uuid: string): Promise<Tables<"Solutions">> => {
 	if(!supabase)
-		supabase = await createClient();
+		supabase = await createSupabaseClient();
 
   const { data } = await supabase
 		.from("Solutions")
@@ -68,7 +46,7 @@ export const getSolution = async (uuid: string): Promise<Tables<"Solutions">> =>
 
 export const saveCostars = async (costars: Array<DailyCostars>): Promise<void> => {
 	if(!supabase)
-		supabase = await createClient();
+		supabase = await createSupabaseClient();
 
 	const data = costars.map((val, ind) => {
 		if(!val.date){
@@ -124,7 +102,7 @@ export const saveCostars = async (costars: Array<DailyCostars>): Promise<void> =
 
 export const updateCostars = async (id: number, costars: DailyCostars): Promise<void> => {
 	if(!supabase)
-		supabase = await createClient();
+		supabase = await createSupabaseClient();
 
 	await supabase
 		.from('Solutions')
@@ -150,7 +128,9 @@ export const updateCostars = async (id: number, costars: DailyCostars): Promise<
 
 export const getDailyCostars = async (): Promise<DailyCostars> => {
 	if(!supabase)
-		supabase = await createClient();
+		supabase = await createSupabaseClient();
+
+	console.log("IN DAILY COSTARE")
 
 	const { data } = await supabase
 		.from('DailyCostars')
@@ -182,7 +162,7 @@ export const getDailyCostars = async (): Promise<DailyCostars> => {
 
 export const getAllFutureCostars = async (): Promise<Array<DailyCostars>> => {
 	if(!supabase)
-		supabase = await createClient();
+		supabase = await createSupabaseClient();
 
 	const { data } = await supabase
 		.from('DailyCostars')

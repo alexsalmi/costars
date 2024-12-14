@@ -2,6 +2,7 @@
 
 import { unstable_cache } from 'next/cache';
 import { getCredits, getTrending } from "./tmdb.service";
+import { getDailyCostars } from './db.service';
 
 
 export const getRandomPerson = async () => {
@@ -63,6 +64,8 @@ export const getRandomPool = unstable_cache(async () => {
   console.log("----- Finished Refreshing Random Pool -----\n");
   return pool;
 }, [], { tags: ['random_pool'] });
+
+export const getTodaysCostars = unstable_cache(getDailyCostars, [], { tags: ['daily_costars'] }); 
 
 
 

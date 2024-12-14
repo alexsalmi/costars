@@ -81,7 +81,7 @@ export const getTrending = async (page: number): Promise<Array<Person>> => {
 	const response: TmdbSearchResult<Person> = await fetch(url, {
 		headers,
 		next: {
-			revalidate: 60 * 60 * 24 * 7
+			tags: ['trending_people']
 		}
 	}).then(res => res.json());
 
