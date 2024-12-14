@@ -14,11 +14,11 @@ import { getScoreString } from '@/services/utils.service';
 interface ICSStatsModalProps {
 	isOpen: boolean,
 	close: () => void,
-	dailySolutions?: DailySolutions
+	daily: DailyCostars
 }
 
-export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStatsModalProps) {
-	const { score, dailyStats, target, history, hints } = useGameState();
+export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProps) {
+	const { score, dailyStats, history, hints } = useGameState();
 	const [solutionInd, setSolutionInd] = useState(0);
 	const [shareLoading, setShareLoading] = useState(false);
 
@@ -31,13 +31,13 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 
   const shareScore = async () => {
 		setShareLoading(true);
-		const uuid = await saveSolution(history, hints);
+		const uuid = await saveSolution(history, hints, true);
 		setShareLoading(false);
 
     try{
       window.navigator.share({
         title: "Costars",
-        text: `Daily Costars #1\n${getScoreString(history, hints)}\nCheck out my solution!
+        text: `Daily Costars #${daily.day_number}\n${getScoreString(history, hints)}\nCheck out my solution!
 				`,
         url: `${location.origin}/solution/${uuid}`
       })
@@ -101,16 +101,16 @@ export default function CSStatsModal({ isOpen, close, dailySolutions }: ICSStats
 				</div>
 				<hr />
 				<div className='stats-modal-optimal'>
-					Here are a few of the <strong>{dailySolutions!.count} different ways</strong> to connect <strong>{history[0].label}</strong> and <strong>{target.label}</strong> in 2 movies:
+					Here are a few of the <strong>{daily.solutions.count} different ways</strong> to connect <strong>{daily.starter.label}</strong> and <strong>{daily.target.label}</strong> in 2 movies:
 				</div>
 				<div className='stats-modal-solutions'>
 					<CSSolutionsToolbar 
 						leftClick={() => setSolutionInd(solutionInd-1)}
 						rightClick={() => setSolutionInd(solutionInd+1)}
 						leftDisabled={solutionInd === 0}
-						rightDisabled={solutionInd === dailySolutions!.mostPopular.length-1}
+						rightDisabled={solutionInd === daily.solutions.mostPopular.length-1}
 					/>
-					<CSCardTrack cards={dailySolutions?.mostPopular[solutionInd]} hideHints={true}/>
+					<CSCardTrack cards={daily.solutions.mostPopular[solutionInd]} hideHints={true} fullHeight={true} />
 				</div>
 			</div>
 		</CSModal>

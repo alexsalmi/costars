@@ -10,7 +10,7 @@ interface GameEntity {
 }
 
 interface DailySolutions {
-  score: number,
+  score?: number,
   count: number,
   mostPopular: Array<Array<GameEntity>>
 }
@@ -18,7 +18,10 @@ interface DailySolutions {
 interface DailyCostars {
   target: GameEntity,
   starter: GameEntity,
-  solutions: DailySolutions
+  solutions: DailySolutions,
+  date?: string,
+  day_number?: number,
+  id?: number
 }
 
 interface DailyStats {

@@ -57,7 +57,8 @@ export default function CSDetailsModal({ isOpen, close, entity }: ICSDetailsModa
 
 		setCredits(creditEntities);
 
-		addHint(entity);
+		if(!completed && !isSolution)
+			addHint(entity);
 
 		setHintState('revealed');
 	}

@@ -1,49 +1,26 @@
 'use client'
 import CSModal from '../presentation/modal';
 import CSButton from '../inputs/button';
-import CSSearchBar from '../inputs/search';
 import { useEffect, useState } from 'react';
-import CSTextDisplay from '../presentation/display';
-import { AutorenewOutlined, CloseOutlined, ShareOutlined, SkipNextOutlined } from '@mui/icons-material';
+import {ShareOutlined, SkipNextOutlined } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import Slide from '@mui/material/Slide';
 import Link from 'next/link';
 import '@/styles/game/custom-game-modal.scss'
-import { getRandomPerson } from '@/services/cache.service';
 import { useRouter } from 'next/navigation';
 import useGameState from '@/store/game.state';
+import CSCostarsGenerator from '../inputs/costars-generator';
 
 export default function CSCustomGameModal() {
   const { initCustomGame } = useGameState();
   const [target, setTarget] = useState(null as GameEntity | null);
   const [starter, setStarter] = useState(null as GameEntity | null);
   const [openToast, setOpenToast] = useState(false);
-  const [targetLoading, setTargetLoading] = useState(false);
-  const [starterLoading, setStarterLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     initCustomGame();
   }, []);
-
-
-  const randomize = async (type: 'target' | 'starter') => {
-    if (type === 'target')
-      setTargetLoading(true);
-    else
-      setStarterLoading(true);
-
-    const person = await getRandomPerson();
-
-    if (type === 'target') {
-      setTarget(person);
-      setTargetLoading(false);
-    }
-    else {
-      setStarter(person);
-      setStarterLoading(false);
-    }
-  }
 
 
   const shareLink = () => {
@@ -76,52 +53,7 @@ export default function CSCustomGameModal() {
           Choose two actors to connect!
         </span>
       </div>
-      <div className='custom-game-modal-input-section'>
-        <span>To:</span>
-        <span className='custom-game-modal-person-selector'>
-          {
-            target === null ?
-              <>
-                <CSSearchBar onSubmit={setTarget} />
-                <CSButton loading={targetLoading} onClick={() => randomize('target')}>
-                  <AutorenewOutlined />
-                </CSButton>
-              </>
-              :
-              <>
-                <CSTextDisplay>
-                  {target.label}
-                </CSTextDisplay>
-                <CSButton secondary onClick={() => setTarget(null)}>
-                  <CloseOutlined />
-                </CSButton>
-              </>
-          }
-        </span>
-      </div>
-      <div className='custom-game-modal-input-section'>
-        <span>From:</span>
-        <span className='custom-game-modal-person-selector'>
-          {
-            starter === null ?
-              <>
-                <CSSearchBar onSubmit={setStarter} />
-                <CSButton loading={starterLoading} onClick={() => randomize('starter')}>
-                  <AutorenewOutlined />
-                </CSButton>
-              </>
-              :
-              <>
-                <CSTextDisplay>
-                  {starter.label}
-                </CSTextDisplay>
-                <CSButton secondary onClick={() => setStarter(null)}>
-                  <CloseOutlined />
-                </CSButton>
-              </>
-          }
-        </span>
-      </div>
+      <CSCostarsGenerator target={target} starter={starter} setTarget={setTarget} setStarter={setStarter} />
 			<div className="custom-game-modal-buttons">
 				<CSButton 
           secondary

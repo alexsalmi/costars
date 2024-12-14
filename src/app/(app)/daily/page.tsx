@@ -1,10 +1,10 @@
 import GameContainer from "@/components/game/game-container";
-import { getDailyCostars } from "@/services/cache.service";
+import { getTodaysCostars } from "@/services/cache.service";
 
 export default async function DailyGame() {
-  const { target, starter, solutions } = await getDailyCostars();
+  const daily = await getTodaysCostars();
 
   return (
-    <GameContainer initPeople={[target, starter]} daily dailySolutions={solutions} />
+    <GameContainer initPeople={[daily.target, daily.starter]} daily={daily} />
   );
 }

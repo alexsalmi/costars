@@ -103,7 +103,7 @@ const useGameState = () => {
   }
 
   const updateDailyStats = (value: GameEntity) => {
-    updateDailyStatsStorage([value, ...history], hints);
+    updateDailyStatsStorage([value, ...history].reverse(), hints);
     setDailyStats(getDailyStats());
   }
 

@@ -2,54 +2,14 @@
 
 import { unstable_cache } from 'next/cache';
 import { getCredits, getTrending } from "./tmdb.service";
-
-interface OptimalQueueValue {
-  entity: GameEntity,
-  path: Array<GameEntity>
-}
-
-interface OptimalMapKey {
-  id: number,
-  type: TmdbType
-}
-
-interface OptimalMapValue {
-  path: Array<GameEntity>,
-  level: number
-}
-
-const OptimalMap = Map<string, OptimalMapValue>;
+import { getDailyCostars } from './db.service';
 
 
 export const getRandomPerson = async () => {
+  const pool = await getRandomPool();
+
   return pool[Math.floor(Math.random() * pool.length)];
 }
-
-export const getDailyCostars = unstable_cache(async () => {
-  console.log("----- Refreshing Daily Costars -----");
-
-  pool = await getRandomPool();
-
-  const target = await getRandomPerson();
-
-  let starter = {} as GameEntity;
-  let solutions = {} as DailySolutions;
-
-  do {
-    starter = await getRandomPerson();
-    solutions = await(getOptimalSolutions(starter, target));
-  } while (solutions.score !== 2)
-
-  console.log(`----- New daily costars are ${target.label} and ${starter.label} -----`);
-  console.log("----- Finished Refreshing Daily Costars -----\n");
-
-  return {
-    target,
-    starter,
-    solutions
-  };
-}, ['daily_costars'], {tags: ['daily_costars']});
-
 
 export const getRandomPool = unstable_cache(async () => {
   console.log("----- Refreshing Random Pool -----");
@@ -57,8 +17,9 @@ export const getRandomPool = unstable_cache(async () => {
   const pool = [] as Array<GameEntity>;
 
   let page = 1;
+  let iteration = 0;
 
-  while(pool.length < POOL_SIZE) {
+  while (pool.length < POOL_SIZE && iteration < 100) {
     const trending = (await getTrending(page))
       .filter(person => 
         person.popularity > 30 &&
@@ -88,31 +49,81 @@ export const getRandomPool = unstable_cache(async () => {
         id: trending[i].id,
         label: trending[i].name,
         image: trending[i].profile_path,
-        credits: creditsArr[i].map(credit => credit.id)
+        credits: creditsArr[i].map(credit => credit.id),
+        popularity: trending[i].popularity
       });
     }
 
     pool.push(...entities);
     console.log("Pool size: " + pool.length);
     page++;
+    iteration++;
   }
 
   console.log(`------- Random Pool has ${pool.length} people --------`);
   console.log("----- Finished Refreshing Random Pool -----\n");
   return pool;
-}, ['random_pool'], {tags: ['random_pool']});
+}, [], { tags: ['random_pool'] });
 
-let pool = await getRandomPool();
+export const getTodaysCostars = unstable_cache(getDailyCostars, [], { tags: ['daily_costars'] }); 
 
 
-const getOptimalSolutions = async (person1: GameEntity, person2: GameEntity)
+
+interface OptimalQueueValue {
+  entity: GameEntity,
+  path: Array<GameEntity>
+}
+
+interface OptimalMapKey {
+  id: number,
+  type: TmdbType
+}
+
+interface OptimalMapValue {
+  path: Array<GameEntity>,
+  level: number
+}
+
+const OptimalMap = Map<string, OptimalMapValue>;
+
+export const getCostars = async (actorSet: Set<number>) => {
+  console.log("----- Generating New Costars -----");
+
+  let target = {} as GameEntity;
+
+  do {
+    target = await getRandomPerson();
+  } while(actorSet.has(target.id))
+
+  let starter = {} as GameEntity;
+  let solutions = {} as DailySolutions;
+
+  do {
+    do {
+      starter = await getRandomPerson();
+    } while(actorSet.has(starter.id))
+
+    solutions = await(getOptimalSolutions(starter, target));
+  } while (solutions.score !== 2)
+
+  console.log(`----- Newly generated costars are ${target.label} and ${starter.label} -----`);
+  console.log("----- Finished Generating New Costars -----\n");
+
+  return {
+    target,
+    starter,
+    solutions
+  };
+};
+
+export const getOptimalSolutions = async (person1: GameEntity, person2: GameEntity)
     : Promise<DailySolutions> => {
   console.log("----- Getting Optimal Solutions -----");
   let solutions = [] as Array<Array<GameEntity>>;
   let level = 0;
 
-  const leftQueue: Array<OptimalQueueValue> = [{entity: person1, path: []}];
-  const rightQueue: Array<OptimalQueueValue> = [{entity: person2, path: []}];
+  const leftQueue: Array<OptimalQueueValue> = [{ entity: { ...person1, credits: undefined }, path: []}];
+  const rightQueue: Array<OptimalQueueValue> = [{ entity: { ...person2, credits: undefined }, path: []}];
   const leftMap = new OptimalMap(), rightMap = new OptimalMap();
 
   while(solutions.length === 0) {
