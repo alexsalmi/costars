@@ -40,7 +40,8 @@ type Database = {
           id: number
           starter: GameEntity
           target: GameEntity
-          num_solutions: number
+          num_solutions: number,
+          day_number: number
         }
         Insert: {
           date: string
@@ -48,6 +49,7 @@ type Database = {
           starter: GameEntity
           target: GameEntity
           num_solutions: number
+          day_number: number
         }
         Update: {
           date?: string
@@ -55,6 +57,7 @@ type Database = {
           starter?: GameEntity
           target?: GameEntity
           num_solutions?: number
+          day_number?: number
         }
         Relationships: []
       }

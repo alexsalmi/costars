@@ -151,6 +151,7 @@ export const getDailyCostars = async (): Promise<DailyCostars> => {
 		throw Error("Invalid date");
 
 	return {
+		day_number: data[0].day_number,
 		starter: data[0].starter,
 		target: data[0].target,
 		solutions: {

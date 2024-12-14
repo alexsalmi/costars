@@ -8,7 +8,7 @@ import { useState } from 'react';
 import CSStatsModal from './stats-modal';
 import CSBackButton from '../inputs/back-button';
 
-export default function Success({dailySolutions} : {dailySolutions?: DailySolutions}) {
+export default function Success({daily} : {daily?: DailyCostars}) {
   const { history, target, score, hints, gameType } = useGameState();
 
   const [statsOpen, setStatsOpen] = useState(gameType === 'daily');
@@ -58,7 +58,7 @@ export default function Success({dailySolutions} : {dailySolutions?: DailySoluti
         </div>
         <CSCardTrack />
         {gameType === 'daily' ?
-          <CSStatsModal isOpen={statsOpen} close={() => setStatsOpen(false)} dailySolutions={dailySolutions}/>
+          <CSStatsModal isOpen={statsOpen} close={() => setStatsOpen(false)} daily={daily!} />
           : <></>
         }
       </div>
