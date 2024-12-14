@@ -31,7 +31,7 @@ export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProp
 
   const shareScore = async () => {
 		setShareLoading(true);
-		const uuid = await saveSolution(history, hints);
+		const uuid = await saveSolution(history, hints, true);
 		setShareLoading(false);
 
     try{

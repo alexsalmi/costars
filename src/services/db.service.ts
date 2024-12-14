@@ -14,7 +14,7 @@ async function createSupabaseClient() {
 
 let supabase: SupabaseClient<Database>;
 
-export const saveSolution = async (history: Array<GameEntity>, hints: Array<Hint>): Promise<string> => {
+export const saveSolution = async (history: Array<GameEntity>, hints: Array<Hint>, is_temporary: boolean = false): Promise<string> => {
 	if(!supabase)
 		supabase = await createSupabaseClient();
 
@@ -22,7 +22,8 @@ export const saveSolution = async (history: Array<GameEntity>, hints: Array<Hint
 		.from('Solutions')
 		.insert({ 
 			solution: history.map(entity => ({...entity, credits: undefined})),
-			hints: hints
+			hints: hints,
+			is_temporary: is_temporary
 		})
 		.select();
 
@@ -42,6 +43,20 @@ export const getSolution = async (uuid: string): Promise<Tables<"Solutions">> =>
 		throw Error("Invalid uuid");
 
 	return data[0];
+}
+
+export const deleteOldSolutions = async (): Promise<void> => {
+	if(!supabase)
+		supabase = await createSupabaseClient();
+
+	const date = new Date();
+	date.setDate(date.getDate() - 7);
+
+	await supabase
+		.from('Solutions')
+		.delete()
+		.eq('is_temporary', true)
+		.lt('created_at', date.toUTCString());
 }
 
 export const saveCostars = async (costars: Array<DailyCostars>): Promise<void> => {

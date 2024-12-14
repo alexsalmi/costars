@@ -96,7 +96,8 @@ type Database = {
           is_daily_optimal: boolean
           is_temporary: boolean
           solution: Array<GameEntity>
-          user_id: string | null
+          user_id: string | null,
+          created_at: Date
         }
         Insert: {
           daily_id?: number | null
@@ -105,7 +106,8 @@ type Database = {
           is_daily_optimal?: boolean
           is_temporary?: boolean
           solution: Array<GameEntity>
-          user_id?: string | null
+          user_id?: string | null,
+          created_at?: Date
         }
         Update: {
           daily_id?: number | null
@@ -114,7 +116,8 @@ type Database = {
           is_daily_optimal?: boolean
           is_temporary?: boolean
           solution?: Array<GameEntity>
-          user_id?: string | null
+          user_id?: string | null,
+          created_at?: Date
         }
         Relationships: [
           {
