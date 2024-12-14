@@ -101,7 +101,7 @@ export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProp
 				</div>
 				<hr />
 				<div className='stats-modal-optimal'>
-					Here are a few of the <strong>{daily.solutions.count} different ways</strong> to connect <strong>{history[0].label}</strong> and <strong>{target.label}</strong> in 2 movies:
+					Here are a few of the <strong>{daily.solutions.count} different ways</strong> to connect <strong>{daily.starter.label}</strong> and <strong>{daily.target.label}</strong> in 2 movies:
 				</div>
 				<div className='stats-modal-solutions'>
 					<CSSolutionsToolbar 
