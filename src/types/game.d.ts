@@ -18,7 +18,10 @@ interface DailySolutions {
 interface DailyCostars {
   target: GameEntity,
   starter: GameEntity,
-  solutions: DailySolutions
+  solutions: DailySolutions,
+  date?: string,
+  day_number?: number,
+  id?: number
 }
 
 interface DailyStats {

@@ -71,40 +71,81 @@ export const saveCostars = async (costars: Array<DailyCostars>): Promise<void> =
 		supabase = await createClient();
 
 	const data = costars.map((val, ind) => {
-		const date = new Date();
-		date.setDate(date.getDate() + ind + 7);
+		if(!val.date){
+			const date = new Date();
+			date.setDate(date.getDate() + ind + 7);
+			date.setHours(0, 0, 0, 0);
+
+			val.date = date.toISOString();
+		}
+		else{
+			const date = new Date(val.date);
+			date.setHours(0, 0, 0, 0);
+
+			val.date = date.toISOString();
+		}		
 		
 		return {
 			starter: val.starter,
 			target: val.target,
-			date: date.toISOString(),
+			date: val.date,
 			num_solutions: val.solutions.count,
 			solutions: val.solutions.mostPopular,
-			day_number: Math.floor((date.getTime() - new Date("01/01/2025").getTime()) / (1000*60*60*24))
+			day_number: Math.floor((new Date(val.date).getTime() - new Date("12/31/2024").getTime()) / (1000*60*60*24))
 		}
 	});
 
 	for (const entry of data) {
-		const { data } = await supabase
-			.from('DailyCostars')
-			.insert({
-				...entry,
-				solutions: undefined
-			})
-			.select();
-		
-		const id = data![0].id;
-
-		const solData = entry.solutions.map(sol => ({
-			daily_id: id,
-			solution: sol.map(entity => ({...entity, popularity: undefined})),
-			is_daily_optimal: true
-		}))
-		
-		await supabase
-			.from('Solutions')
-			.insert(solData);
+		try{
+			const { data } = await supabase
+				.from('DailyCostars')
+				.insert({
+					...entry,
+					solutions: undefined
+				})
+				.select();
+			
+			const id = data![0].id;
+	
+			const solData = entry.solutions.map(sol => ({
+				daily_id: id,
+				solution: sol.map(entity => ({...entity, popularity: undefined})),
+				is_daily_optimal: true
+			}))
+			
+			await supabase
+				.from('Solutions')
+				.insert(solData);
+		} catch {
+			continue;
+		}
 	}
+}
+
+export const updateCostars = async (id: number, costars: DailyCostars): Promise<void> => {
+	if(!supabase)
+		supabase = await createClient();
+
+	await supabase
+		.from('Solutions')
+		.delete()
+		.eq('daily_id', id)
+		.eq('is_daily_optimal', true);
+
+	await supabase
+		.from('DailyCostars')
+		.update({ starter: costars.starter, target: costars.target, num_solutions: costars.solutions.count })
+		.eq('id', id);
+
+	const solData = costars.solutions.mostPopular.map(sol => ({
+		daily_id: id,
+		solution: sol.map(entity => ({...entity, popularity: undefined})),
+		is_daily_optimal: true
+	}))
+
+	await supabase
+	.from('Solutions')
+	.insert(solData);
 }
 
 export const getDailyCostars = async (): Promise<DailyCostars> => {
@@ -114,7 +155,7 @@ export const getDailyCostars = async (): Promise<DailyCostars> => {
 	const { data } = await supabase
 		.from('DailyCostars')
 		.select()
-		.eq('date', new Date().toISOString());
+		.eq('date', new Date().toLocaleString());
 
 
 	if(!data || data.length === 0)
@@ -139,3 +180,21 @@ export const getDailyCostars = async (): Promise<DailyCostars> => {
 	};
 }
 
+export const getAllFutureCostars = async (): Promise<Array<DailyCostars>> => {
+	if(!supabase)
+		supabase = await createClient();
+
+	const { data } = await supabase
+		.from('DailyCostars')
+		.select()
+		.gt('date', new Date().toLocaleString())
+		.order('date', { ascending: true });
+
+	return data!.map(costars => ({
+		...costars,
+		solutions: {
+			count: costars.num_solutions,
+			mostPopular: []
+		}
+	}));
+}
