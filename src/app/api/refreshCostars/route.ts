@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
 
   revalidatePath('/');
   revalidatePath('/daily');
+  revalidatePath('/admin');
 
   console.log('----- FINISHED REFRESHING COSTARS -----')
 
