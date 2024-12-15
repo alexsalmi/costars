@@ -1,12 +1,13 @@
 import '@/styles/components/toolbar.scss'
 import CSButton from './button';
-import {ReplayOutlined, UnfoldMoreOutlined, UnfoldLessOutlined, UndoOutlined, RedoOutlined} from '@mui/icons-material';
+import {QuestionMarkOutlined, ReplayOutlined, UnfoldMoreOutlined, UnfoldLessOutlined, UndoOutlined, RedoOutlined} from '@mui/icons-material';
 import useGameState from '@/store/game.state';
 import CSResetModal from '../game/reset-modal';
 import { useState } from 'react';
+import CSTooltip from '../presentation/tooltip';
 
 export default function CSGameToolbar() {
-  const { history, gameType, undoCache, expandAll, collapseAll, undo, redo } = useGameState();
+  const { history, gameType, undoCache, condensed, expandAll, collapseAll, undo, redo } = useGameState();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -19,17 +20,25 @@ export default function CSGameToolbar() {
       <div
         className='cs-toolbar'
       >
+        <CSTooltip title="Click on any actor or movie to use a hint and see their credits"
+          disableFocusListener
+          enterTouchDelay={10}
+        >
+          <span>
+            <CSButton secondary>
+              <QuestionMarkOutlined />
+            </CSButton>
+          </span>
+        </CSTooltip>
         <CSButton secondary
           disabled={history.length < 1}
-          onClick={collapseAll}
+          onClick={condensed ? expandAll : collapseAll}
         >
-          <UnfoldLessOutlined />
-        </CSButton>
-        <CSButton secondary
-          disabled={history.length < 1}
-          onClick={expandAll}
-        >
-          <UnfoldMoreOutlined />
+          { condensed ? 
+            <UnfoldMoreOutlined />
+            :
+            <UnfoldLessOutlined />
+          }
         </CSButton>
         <CSButton
           onClick={openModal}
