@@ -1,5 +1,6 @@
 import { getCostars } from '@/services/cache.service';
 import { saveCostars } from '@/services/db.service';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
@@ -43,6 +44,8 @@ export async function GET(req: Request) {
 
   console.log("----- Saving costars to DB -----");
   await saveCostars(costars);
+
+  revalidatePath('/admin');
 
   console.log("----- FINISHED GETTING NEW COSTARS -----");
 
