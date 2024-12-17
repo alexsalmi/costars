@@ -67,7 +67,7 @@ export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProp
             }
 					</span>
 					{numMovies === 2 && numHints === 0 ?
-						<strong>{"That's"} the optimal score!</strong>	
+						<strong>{"That's"} a perfect game!</strong>	
 						: <></>
 					}
 				</div>
@@ -82,7 +82,7 @@ export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProp
 					</CSTextDisplay>
 					<CSTextDisplay>
 						<span>{dailyStats.daysOptimal}</span>
-						<span>Optimal Scores</span>
+						<span>Perfect Games</span>
 					</CSTextDisplay>
 					<CSTextDisplay>
 						<span>{dailyStats.currentStreak}</span>
