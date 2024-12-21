@@ -1,0 +1,16 @@
+.profile-modal-container {
+  button {
+    min-width: min-content;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  hr {
+    width: 100%;
+		border-color: var(--highlight-primary);
+		margin: 12px;
+  }
+}

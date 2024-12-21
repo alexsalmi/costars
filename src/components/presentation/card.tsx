@@ -3,7 +3,7 @@ import '@/styles/components/card.scss'
 import Image from 'next/image';
 import { ExpandMoreOutlined, ExpandLessOutlined, QuestionMarkOutlined } from '@mui/icons-material';
 import { useState } from 'react';
-import CSDetailsModal from './details-modal';
+import CSDetailsModal from '../modals/details-modal';
 import CSButton from '../inputs/button';
 import { Tooltip } from '@mui/material';
 

@@ -2,7 +2,7 @@ import '@/styles/components/toolbar.scss'
 import CSButton from './button';
 import {QuestionMarkOutlined, ReplayOutlined, UnfoldMoreOutlined, UnfoldLessOutlined, UndoOutlined, RedoOutlined} from '@mui/icons-material';
 import useGameState from '@/store/game.state';
-import CSResetModal from '../game/reset-modal';
+import CSResetModal from '../modals/reset-modal';
 import { useState } from 'react';
 import CSTooltip from '../presentation/tooltip';
 

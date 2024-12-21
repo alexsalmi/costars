@@ -5,7 +5,7 @@ import Link from 'next/link';
 import CSButton from '../inputs/button';
 import '@/styles/game/success.scss';
 import { useState } from 'react';
-import CSStatsModal from './stats-modal';
+import CSStatsModal from '../modals/stats-modal';
 import CSBackButton from '../inputs/back-button';
 
 export default function Success({daily} : {daily?: DailyCostars}) {

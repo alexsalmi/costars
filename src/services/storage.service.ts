@@ -1,4 +1,4 @@
-import { isYesterday } from "./utils.service";
+import { isYesterday } from "@/utils/utils";
 
 const KEY_DAILY_STATS = 'costars-daily-stats';
 const KEY_HIGHSCORE = 'costars-highscore';

@@ -9,7 +9,7 @@ import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/solutions-toolbar';
 import { useState } from 'react';
 import { saveSolution } from '@/services/db.service';
-import { getScoreString } from '@/services/utils.service';
+import { getScoreString } from '@/utils/utils';
 
 interface ICSStatsModalProps {
 	isOpen: boolean,

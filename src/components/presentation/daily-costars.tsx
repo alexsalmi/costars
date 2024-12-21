@@ -4,7 +4,7 @@ import Link from 'next/link';
 import CSButton from '../inputs/button';
 import '@/styles/components/daily-costars.scss'
 import useGameState from '@/store/game.state';
-import { getScoreString, isToday } from '@/services/utils.service';
+import { getScoreString, isToday } from '@/utils/utils';
 
 interface IDailyCostarsProps {
 	starter: GameEntity,

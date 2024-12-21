@@ -1,8 +1,7 @@
 import Image from 'next/image';
 import logo from '@/../public/costars_primary_logo.png';
 import Link from 'next/link';
-import { AccountCircleOutlined, HelpOutlineOutlined, DarkModeOutlined, CalendarMonthOutlined } from '@mui/icons-material';
-import CSButton from '@/components/inputs/button';
+import CSNavMenu from './nav-menu';
 
 interface IHeaderProps {
 	showLogo?: boolean
@@ -20,20 +19,7 @@ export default function Header({ showLogo }: IHeaderProps) {
 						/>
 					</Link> : <></>
 				}
-				<div className='header-nav'>
-					<CSButton secondary>
-						<DarkModeOutlined />
-					</CSButton>
-					<CSButton secondary>
-						<HelpOutlineOutlined />
-					</CSButton>
-					<CSButton secondary>
-						<CalendarMonthOutlined />
-					</CSButton>
-					<CSButton secondary>
-						<AccountCircleOutlined />
-					</CSButton>
-				</div>
+				<CSNavMenu />
     </header>
   );
 }
