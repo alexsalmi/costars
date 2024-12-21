@@ -1,5 +1,5 @@
 'use client'
-import { AccountCircleOutlined, HelpOutlineOutlined, DarkModeOutlined, CalendarMonthOutlined } from '@mui/icons-material';
+import { AccountCircleOutlined } from '@mui/icons-material';
 import CSButton from '@/components/inputs/button';
 import { useState } from 'react';
 import CSProfileModal from '../modals/profile-modal';
