@@ -1,0 +1,36 @@
+.profile-modal-container {
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  > button:first-of-type:not(:only-of-type) {
+    background-color: white;
+    color: #1f1f1f;
+    border: 1px solid #747775;
+
+    svg {
+      color: white;
+    }
+  }
+
+  > button:nth-of-type(2) {
+    background-color: #1877F2;
+    color: white;
+    border: 1px solid #1877F2;
+
+    svg {
+      color: white;
+    }
+  }
+  
+  hr {
+    width: 100%;
+		border-color: var(--highlight-primary);
+		margin: 12px;
+  }
+
+
+}

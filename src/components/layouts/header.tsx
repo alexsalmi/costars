@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import logo from '@/../public/costars_primary_logo.png';
-import Menu from './menu';
 import Link from 'next/link';
+import CSNavMenu from './nav-menu';
 
 interface IHeaderProps {
 	showLogo?: boolean
@@ -19,7 +19,7 @@ export default function Header({ showLogo }: IHeaderProps) {
 						/>
 					</Link> : <></>
 				}
-				<Menu />
+				<CSNavMenu />
     </header>
   );
 }

@@ -1,3 +1,5 @@
+import { createBrowserClient } from "@supabase/ssr"
+
 export function isToday (date: Date) { 
   const today = new Date()
 
@@ -27,4 +29,18 @@ export function getScoreString (history: Array<GameEntity>, hints: Array<Hint>) 
   }
 
   return str;
+}
+
+export const getUserFromClient = async () => {
+  const supabase = createBrowserClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+
+  const { data, error } = await supabase.auth.getUser()
+  if (error || !data?.user) {
+    return null;
+  }
+  
+  return data.user;
 }

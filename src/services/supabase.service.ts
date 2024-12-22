@@ -1,22 +1,8 @@
 'use server';
-
-import { createClient } from '@supabase/supabase-js';
-import { SupabaseClient } from '@supabase/supabase-js';
-
-async function createSupabaseClient() {
-	const client = createClient<Database>(
-		process.env.NEXT_PUBLIC_SUPABASE_URL!,
-		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-	)
-
-	return client;
-}
-
-let supabase: SupabaseClient<Database>;
+import { createClient, createClientForCache } from "@/utils/supabase";
 
 export const saveSolution = async (history: Array<GameEntity>, hints: Array<Hint>, is_temporary: boolean = false): Promise<string> => {
-	if(!supabase)
-		supabase = await createSupabaseClient();
+	const supabase = await createClient();
 
 	const { data } = await supabase
 		.from('Solutions')
@@ -31,8 +17,7 @@ export const saveSolution = async (history: Array<GameEntity>, hints: Array<Hint
 }
 
 export const getSolution = async (uuid: string): Promise<Tables<"Solutions">> => {
-	if(!supabase)
-		supabase = await createSupabaseClient();
+	const supabase = await createClient();
 
   const { data } = await supabase
 		.from("Solutions")
@@ -46,8 +31,7 @@ export const getSolution = async (uuid: string): Promise<Tables<"Solutions">> =>
 }
 
 export const deleteOldSolutions = async (): Promise<void> => {
-	if(!supabase)
-		supabase = await createSupabaseClient();
+	const supabase = await createClient();
 
 	const date = new Date();
 	date.setDate(date.getDate() - 7);
@@ -60,8 +44,7 @@ export const deleteOldSolutions = async (): Promise<void> => {
 }
 
 export const saveCostars = async (costars: Array<DailyCostars>): Promise<void> => {
-	if(!supabase)
-		supabase = await createSupabaseClient();
+	const supabase = await createClient();
 
 	const data = costars.map((val, ind) => {
 		if(!val.date){
@@ -116,8 +99,7 @@ export const saveCostars = async (costars: Array<DailyCostars>): Promise<void> =
 }
 
 export const updateCostars = async (id: number, costars: DailyCostars): Promise<void> => {
-	if(!supabase)
-		supabase = await createSupabaseClient();
+	const supabase = await createClient();
 
 	await supabase
 		.from('Solutions')
@@ -142,16 +124,12 @@ export const updateCostars = async (id: number, costars: DailyCostars): Promise<
 }
 
 export const getDailyCostars = async (): Promise<DailyCostars> => {
-	if(!supabase)
-		supabase = await createSupabaseClient();
-
-	console.log("IN DAILY COSTARE")
+	const supabase = await createClientForCache();
 
 	const { data } = await supabase
 		.from('DailyCostars')
 		.select()
 		.eq('date', new Date().toLocaleString());
-
 
 	if(!data || data.length === 0)
 		throw Error("Invalid date");
@@ -177,8 +155,7 @@ export const getDailyCostars = async (): Promise<DailyCostars> => {
 }
 
 export const getAllFutureCostars = async (): Promise<Array<DailyCostars>> => {
-	if(!supabase)
-		supabase = await createSupabaseClient();
+	const supabase = await createClient();
 
 	const { data } = await supabase
 		.from('DailyCostars')

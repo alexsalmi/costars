@@ -1,6 +1,6 @@
 import CSBackButton from "@/components/inputs/back-button";
 import CardTrack from "@/components/presentation/card-track";
-import { getSolution } from "@/services/db.service";
+import { getSolution } from "@/services/supabase.service";
 import '@/styles/pages/solution.scss';
 
 interface ICustomGameProps {

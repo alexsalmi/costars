@@ -1,5 +1,6 @@
 import { atom } from "jotai";
-import { getDailyStats, getHighscore } from "@/services/storage.service";
+import { getDailyStats, getHighscore } from "@/services/localstorage.service";
+import { getUserFromClient } from "@/utils/utils";
 
 export const gameTypeAtom = atom('custom');
 export const targetAtom = atom({} as GameEntity);
@@ -19,3 +20,5 @@ export const isSolutionAtom = atom(() =>
 
 export const highScoreAtom = atom(getHighscore());
 export const dailyStatsAtom = atom(getDailyStats());
+
+export const userAtom = atom(async () => await getUserFromClient());

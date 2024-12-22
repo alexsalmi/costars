@@ -8,8 +8,8 @@ import { ShareOutlined } from '@mui/icons-material';
 import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/solutions-toolbar';
 import { useState } from 'react';
-import { saveSolution } from '@/services/db.service';
-import { getScoreString } from '@/services/utils.service';
+import { saveSolution } from '@/services/supabase.service';
+import { getScoreString } from '@/utils/utils';
 
 interface ICSStatsModalProps {
 	isOpen: boolean,
@@ -67,7 +67,7 @@ export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProp
             }
 					</span>
 					{numMovies === 2 && numHints === 0 ?
-						<strong>{"That's"} the optimal score!</strong>	
+						<strong>{"That's"} a perfect game!</strong>	
 						: <></>
 					}
 				</div>
@@ -82,7 +82,7 @@ export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProp
 					</CSTextDisplay>
 					<CSTextDisplay>
 						<span>{dailyStats.daysOptimal}</span>
-						<span>Optimal Scores</span>
+						<span>Perfect Games</span>
 					</CSTextDisplay>
 					<CSTextDisplay>
 						<span>{dailyStats.currentStreak}</span>

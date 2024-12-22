@@ -1,8 +1,7 @@
 'use server'
-
 import { unstable_cache } from 'next/cache';
 import { getCredits, getTrending } from "./tmdb.service";
-import { getDailyCostars } from './db.service';
+import { getDailyCostars } from './supabase.service';
 
 
 export const getRandomPerson = async () => {
