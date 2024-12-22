@@ -2,7 +2,7 @@ import { login, signOut } from '@/services/auth.service';
 import CSButton from '../inputs/button';
 import CSModal from '../presentation/modal';
 import useGameState from '@/store/game.state';
-import { FacebookOutlined, Google } from '@mui/icons-material';
+import { FacebookOutlined } from '@mui/icons-material';
 import '@/styles/components/profile-modal.scss'
 import Image from 'next/image';
 

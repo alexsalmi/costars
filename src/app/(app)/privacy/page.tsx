@@ -3,9 +3,9 @@ import '@/styles/pages/info-pages.scss';
 
 export default function Privacy() {
   return (
-    <div className="privacy-page-container">
+    <div className="info-page-container">
       <CSBackButton />
-      <section className='privacy-page-content'>
+      <section className='info-page-content'>
         <h3>Privacy Policy</h3>
         <span>
           Your privacy is important to us. To better protect your sensitive information, we provide this notice explaining our online information practices and how they relate specifically in regard of what type or quantity data might be collected from you by way of using the website at any given time during browsing sessions on either desktop computers, tablets, or mobile devices.
