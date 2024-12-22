@@ -3,7 +3,7 @@ import { useState } from 'react';
 import CSCostarsGenerator from '../inputs/costars-generator';
 import '@/styles/components/costars-editor.scss'
 import CSButton from '../inputs/button';
-import { saveCostars, updateCostars } from '@/services/db.service';
+import { saveCostars, updateCostars } from '@/services/supabase.service';
 import { getOptimalSolutions } from '@/services/cache.service';
 import { Input } from '@mui/material';
 import { revalidatePath } from 'next/cache';

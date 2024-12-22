@@ -1,42 +1,5 @@
 'use server';
-
 import { createClient, createClientForCache } from "@/utils/supabase";
-import { redirect } from "next/navigation";
-
-const getURL = () => {
-  let url =
-    process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
-    process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
-    'http://localhost:3000/'
-  // Make sure to include `https://` when not localhost.
-  url = url.startsWith('http') ? url : `https://${url}`
-  // Make sure to include a trailing `/`.
-  url = url.endsWith('/') ? url : `${url}/`
-  return url + 'api/authCallback'
-}
-
-export const login = async (type: 'google' | 'facebook') => {
-	const supabase = await createClient();
-
-	const { data } = await supabase.auth.signInWithOAuth({
-		provider: type,
-		options: {
-			redirectTo: getURL(),
-		},
-	})
-	
-	if (data.url) {
-		redirect(data.url) // use the redirect API for your server framework
-	}
-}
-
-export const signOut = async () => {
-	const supabase = await createClient();
-
-	const { error } = await supabase.auth.signOut({ scope: 'local' });
-	
-	return error;
-}
 
 export const saveSolution = async (history: Array<GameEntity>, hints: Array<Hint>, is_temporary: boolean = false): Promise<string> => {
 	const supabase = await createClient();
@@ -163,12 +126,10 @@ export const updateCostars = async (id: number, costars: DailyCostars): Promise<
 export const getDailyCostars = async (): Promise<DailyCostars> => {
 	const supabase = await createClientForCache();
 
-
 	const { data } = await supabase
 		.from('DailyCostars')
 		.select()
 		.eq('date', new Date().toLocaleString());
-
 
 	if(!data || data.length === 0)
 		throw Error("Invalid date");

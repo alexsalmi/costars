@@ -8,7 +8,7 @@ import { ShareOutlined } from '@mui/icons-material';
 import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/solutions-toolbar';
 import { useState } from 'react';
-import { saveSolution } from '@/services/db.service';
+import { saveSolution } from '@/services/supabase.service';
 import { getScoreString } from '@/utils/utils';
 
 interface ICSStatsModalProps {

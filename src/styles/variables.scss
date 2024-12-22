@@ -15,7 +15,7 @@
 	--max-width-mobile: 425px;
 }
 
-[data-light-mode] {
+:root.light {
 	--background-primary: #DFE4F5;
 	--text-secondary: #7A2010;
 	--highlight-primary: #7A2010;

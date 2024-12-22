@@ -1,4 +1,4 @@
-import { deleteOldSolutions } from '@/services/db.service';
+import { deleteOldSolutions } from '@/services/supabase.service';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {

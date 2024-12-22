@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom, completedAtom, hintsAtom, isSolutionAtom, userAtom } from "./atoms/game";
-import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave, updateDailyStats as updateDailyStatsStorage, getDailyStats } from "@/services/storage.service";
+import { getUnlimitedSave, incrementHighscore as incrementHighscoreStorage, updateUnlimitedSave, updateDailyStats as updateDailyStatsStorage, getDailyStats } from "@/services/localstorage.service";
 import { isToday } from "@/utils/utils";
 
 const useGameState = () => {

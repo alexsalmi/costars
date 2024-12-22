@@ -1,5 +1,5 @@
 import { getCostars } from '@/services/cache.service';
-import { saveCostars } from '@/services/db.service';
+import { saveCostars } from '@/services/supabase.service';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 

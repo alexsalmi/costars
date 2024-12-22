@@ -1,5 +1,5 @@
 import CSCostarsEditor from "@/components/presentation/costars-editor";
-import { getAllFutureCostars } from "@/services/db.service";
+import { getAllFutureCostars } from "@/services/supabase.service";
 import '@/styles/pages/admin.scss';
 
 export default async function Admin() {

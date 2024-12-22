@@ -1,4 +1,4 @@
-import { login, signOut } from '@/services/db.service';
+import { login, signOut } from '@/services/auth.service';
 import CSButton from '../inputs/button';
 import CSModal from '../presentation/modal';
 import useGameState from '@/store/game.state';
