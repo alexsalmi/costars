@@ -4,6 +4,7 @@ import CSModal from '../presentation/modal';
 import useGameState from '@/store/game.state';
 import { FacebookOutlined, Google } from '@mui/icons-material';
 import '@/styles/components/profile-modal.scss'
+import Image from 'next/image';
 
 interface ICSProfileModalProps {
 	isOpen: boolean,
@@ -34,10 +35,10 @@ export default function CSProfileModal({ isOpen, close }: ICSProfileModalProps) 
         <>
           <span>Sign in with one of the below providers:</span>
           <CSButton secondary onClick={() => login('google')}>
-            <Google /> Google
+            <Image src="/g-logo.png" alt='Google Logo' width={24} height={24}/> Sign in with Google
           </CSButton>
           <CSButton secondary onClick={() => login('facebook')}>
-            <FacebookOutlined /> Facebook
+            <FacebookOutlined /> Login with Facebook
           </CSButton>
           <hr />
           <h4>Why sign in?</h4>
