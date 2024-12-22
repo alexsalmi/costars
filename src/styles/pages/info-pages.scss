@@ -1,0 +1,42 @@
+.info-page-container {
+  margin: 12px 0 32px;
+
+  button {
+    width: min-content;
+  }
+}
+
+.info-page-content {
+  width: 100%;
+  background-color: var(--background-secondary);
+  opacity: 0.8;
+  padding: 24px 32px 32px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+
+  h3 {
+		text-decoration: underline;
+    margin-bottom: 6px;
+  }
+
+  h4 {
+    margin-top: 12px;
+  }
+}
+
+.info-page-image-section {
+  img {
+    float:inline-end;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background-color: var(--background-primary);
+  }
+
+  span {
+    text-align: justify;
+  }
+}
