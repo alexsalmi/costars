@@ -6,7 +6,7 @@
     gap: 10px;
   }
 
-  > button:first-of-type {
+  > button:first-of-type:not(:only-of-type) {
     background-color: white;
     color: #1f1f1f;
     border: 1px solid #747775;

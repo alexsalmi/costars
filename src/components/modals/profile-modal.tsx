@@ -27,7 +27,7 @@ export default function CSProfileModal({ isOpen, close }: ICSProfileModalProps) 
       {user ?
         <>
           <span>Signed in as {user.email}</span>
-          <CSButton onClick={signOutHandler}>
+          <CSButton secondary onClick={signOutHandler}>
               Sign Out
           </CSButton>
         </>  
