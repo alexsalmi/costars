@@ -5,7 +5,6 @@ import { isToday } from "@/utils/utils";
 import { getDailyStats, updateDailyStats as updateDailyStatsStorage, getUnlimitedStats, getUserDailySolutions, updateUnlimitedStats } from "@/services/userdata.service";
 import { getUser } from "@/services/auth.service";
 import localStorageService from "@/services/localstorage.service";
-import { getTodaysCostars, getTodaysSolutions } from "@/services/cache.service";
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
