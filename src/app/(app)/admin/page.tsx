@@ -1,12 +1,12 @@
 import CSCostarsEditor from "@/components/presentation/costars-editor";
-import { getAllFutureCostars } from "@/services/supabase.service";
+import { supabase_getAllFutureCostars } from "@/services/supabase.service";
 import '@/styles/pages/admin.scss';
 
 export default async function Admin() {
 	if(process.env.IS_PRODUCTION)
 		return <></>
 
-	const futureCostars = await getAllFutureCostars();
+	const futureCostars = await supabase_getAllFutureCostars();
 
 	return (
 		<div className="admin-page-container">

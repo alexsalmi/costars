@@ -1,5 +1,5 @@
 import { getCostars } from '@/services/cache.service';
-import supabaseService from '@/services/supabase.service';
+import { supabase_saveCostars } from '@/services/supabase.service';
 import { getDayNumber } from '@/utils/utils';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
@@ -51,7 +51,7 @@ export async function GET(req: Request) {
   console.log("----- Saving costars to DB -----");
 
   for (const dailyCostars of costars) {
-    await supabaseService.saveCostars(dailyCostars);
+    await supabase_saveCostars(dailyCostars);
   }
 
   revalidatePath('/admin');
