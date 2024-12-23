@@ -1,7 +1,7 @@
 'use server'
 import { unstable_cache } from 'next/cache';
 import { getCredits, getTrending } from "./tmdb.service";
-import { supabase_getDailyCostars } from './supabase.service';
+import { supabase_getDailyCostars, supabase_getDailySolutions } from './supabase.service';
 
 export const getRandomPerson = async () => {
   const pool = await getRandomPool();
@@ -64,7 +64,14 @@ export const getRandomPool = unstable_cache(async () => {
 }, [], { tags: ['random_pool'] });
 
 export const getTodaysCostars = unstable_cache(async () => {
+  console.log("TODAYS COSTARS")
   return await supabase_getDailyCostars(new Date());
+}, [], { tags: ['daily_costars'] }); 
+
+
+export const getTodaysSolutions = unstable_cache(async () => {
+  console.log("TODAYS SOLUTIONS")
+  return await supabase_getDailySolutions((await getTodaysCostars()).id!);
 }, [], { tags: ['daily_costars'] }); 
 
 

@@ -8,6 +8,7 @@ import "@/styles/resets.scss";
 import "@/styles/variables.scss";
 import "@/styles/global.scss";
 import ThemeProvider from "@/components/layouts/theme-provider";
+import BootstrapData from "@/components/layouts/bootstrap-data";
 
 const quicksand = Quicksand({
   subsets: ['latin'],
@@ -34,7 +35,9 @@ export default function RootLayout({
         >
           <AppRouterCacheProvider>
             <StoreProvider>
-              {children}
+              <BootstrapData>
+                {children}
+              </BootstrapData>
             </StoreProvider>
           </AppRouterCacheProvider>
         </ThemeProvider>

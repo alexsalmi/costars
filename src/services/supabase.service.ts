@@ -42,7 +42,7 @@ export const supabase_getUserDailySolutions = async (user_id: string): Promise<A
 }
 
 export const supabase_getDailySolutions = async (daily_id: number): Promise<Array<Solution>> => {
-	const supabase = await createClient();
+	const supabase = await createClientForCache();
 
 	const { data } = await supabase
 		.from("Solutions")

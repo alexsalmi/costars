@@ -13,17 +13,18 @@ import CSBackButton from '../inputs/back-button';
 
 interface IGameProps {
 	initPeople?: [GameEntity, GameEntity],
-	daily?: boolean
+	daily?: DailyCostars,
+	solutions?: Array<Solution>
 }
 
-export default function GameContainer({ initPeople, daily }: IGameProps) {
+export default function GameContainer({ initPeople, daily, solutions }: IGameProps) {
 	const { gameType, target, score, highScore, hints, completed, initGame, addEntity } = useGameState();
 
 	const isUnlimited = !initPeople;
 
 	useEffect(() => {
 		if (!isUnlimited)
-			initGame(initPeople, daily);
+			initGame(initPeople, daily, solutions);
 	}, []);
 
 

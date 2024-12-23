@@ -1,11 +1,9 @@
-import { createBrowserClient } from "@supabase/ssr"
-
 export function isToday (date: Date) { 
-  const today = new Date()
+  const today = new Date();
 
-  return date.getDate() === today.getDate() &&
-        date.getMonth() === today.getMonth() &&
-        date.getFullYear() === today.getFullYear()
+  return date.getUTCDate() === today.getUTCDate() &&
+        date.getUTCMonth() === today.getUTCMonth() &&
+        date.getUTCFullYear() === today.getUTCFullYear()
 }
 
 export function getDayNumber (date: string) {
@@ -24,18 +22,4 @@ export function getScoreString (history: Array<GameEntity>, hints: Array<Hint>) 
   }
 
   return str;
-}
-
-export const getUserFromClient = async () => {
-  const supabase = createBrowserClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    )
-
-  const { data, error } = await supabase.auth.getUser()
-  if (error || !data?.user) {
-    return null;
-  }
-  
-  return data.user;
 }

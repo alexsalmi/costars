@@ -3,27 +3,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import CSButton from '../inputs/button';
 import '@/styles/components/daily-costars.scss'
-import { getScoreString, isToday } from '@/utils/utils';
-import { useEffect, useState } from 'react';
-import { getDailyStats, getUserDailySolutions } from '@/services/userdata.service';
+import { getScoreString } from '@/utils/utils';
+import useGameState from '@/store/game.state';
 
 interface IDailyCostarsProps {
 	starter: GameEntity,
 	target: GameEntity
 }
 
-export default function CSDailyCostars({starter, target}: IDailyCostarsProps) {
-	const [lastSolve, setLastSolve] = useState<Solution | null>(null);
-	const [completed, setCompleted] = useState(false);
-	
-	useEffect(() => {
-		getDailyStats().then(async dailyStats => {
-			const solutions = await getUserDailySolutions();
-			console.log("Last: " + solutions)
-			setLastSolve(solutions.find(sol => sol.daily_id === dailyStats.last_played_id) || null);
-			setCompleted((dailyStats.last_played && isToday(new Date(dailyStats.last_played))) || false);
-		})
-	}, []);
+export default function CSDailyCostars({ starter, target }: IDailyCostarsProps) {
+	const { lastSolve, dailyCompleted } = useGameState();
 
   return (
 		<div className='daily-costars-container'>
@@ -45,7 +34,7 @@ export default function CSDailyCostars({starter, target}: IDailyCostarsProps) {
 			</div>
 			<Link href="/daily">
 				<CSButton>
-					{completed && lastSolve ? getScoreString(lastSolve.solution, lastSolve.hints!) : 'Play!'}
+					{dailyCompleted && lastSolve ? getScoreString(lastSolve.solution, lastSolve.hints!) : 'Play!'}
 				</CSButton>
 			</Link>
 		</div>

@@ -1,34 +1,24 @@
-import { getUserFromClient } from "@/utils/utils"
 import localStorageService from "./localstorage.service";
 import { supabase_getDailyCostars, supabase_getDailyStats, supabase_getUnlimitedStats, supabase_getUserDailySolutions, supabase_saveSolution, supabase_updateDailyStats, supabase_updateUnlimitedStats } from "./supabase.service";
 import { getTodaysCostars } from "./cache.service";
 
-export const getDailyStats = async () => {
-  const user = await getUserFromClient();
-
-  if (!user)
-    return localStorageService.getDailyStats();
+export const getDailyStats = async (user: UserInfo) => {
+  if (user && localStorageService.getAuthStatus() === 'pending') {
+    const dbStats = await supabase_getDailyStats(user.id);
+    localStorageService.setDailyStats(dbStats);
+  }
   
-  return await supabase_getDailyStats(user.id);
+  return localStorageService.getDailyStats();
 }
 
-export const updateDailyStats = async (solution: Array<GameEntity>, hints: Array<Hint>) => {
-  const user = await getUserFromClient();
+export const updateDailyStats = async (user: UserInfo, solution: Array<GameEntity>, hints: Array<Hint>) => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() + 1);
   const todaysCostars = await supabase_getDailyCostars(new Date());
   const yesterdaysCostars = await supabase_getDailyCostars(yesterday);
 
-  let dailyStats: DailyStats;
-  let solutions: Array<Solution>;
-  if (!user) {
-    dailyStats = localStorageService.getDailyStats();
-    solutions = localStorageService.getSolutions();
-  }
-  else {
-    dailyStats = await supabase_getDailyStats(user.id);
-    solutions = await supabase_getUserDailySolutions(user.id);
-  }
+  const dailyStats: DailyStats = await getDailyStats(user);
+  const solutions: Array<Solution> = await getUserDailySolutions(user);
   
   const lastSolution = solutions[solutions.length - 1];
 
@@ -50,15 +40,7 @@ export const updateDailyStats = async (solution: Array<GameEntity>, hints: Array
   dailyStats.last_played = new Date().toISOString();
   dailyStats.last_played_id = (await getTodaysCostars()).id;
 
-  if (!user) {
-    localStorageService.updateDailyStats(dailyStats);
-    localStorageService.saveSolution({
-      daily_id: todaysCostars.id,
-      solution,
-      hints
-    });
-  }
-  else {
+  if (user) {
     supabase_updateDailyStats(dailyStats);
     supabase_saveSolution({
       daily_id: todaysCostars.id,
@@ -67,20 +49,26 @@ export const updateDailyStats = async (solution: Array<GameEntity>, hints: Array
       user_id: user.id
     });
   }
+
+  localStorageService.setDailyStats(dailyStats);
+  localStorageService.saveSolution({
+    daily_id: todaysCostars.id,
+    solution,
+    hints
+  });
 }
 
-export const getUnlimitedStats = async () => {
-  const user = await getUserFromClient();
-
-  if (!user)
-    return localStorageService.getUnlimitedStats();
-
-  return await supabase_getUnlimitedStats(user.id);
+export const getUnlimitedStats = async (user: UserInfo) => {
+  if (user && localStorageService.getAuthStatus() === 'pending') {
+    const dbStats = await supabase_getUnlimitedStats(user.id);
+    localStorageService.setUnlimitedStats(dbStats);
+  }
+  
+  return localStorageService.getUnlimitedStats();
 }
 
-export const updateUnlimitedStats = async (history: Array<GameEntity>, hints: Array<Hint>) => {
-  const user = await getUserFromClient();
-  const unlimitedStats = await getUnlimitedStats();
+export const updateUnlimitedStats = async (user: UserInfo, history: Array<GameEntity>, hints: Array<Hint>) => {
+  const unlimitedStats = await getUnlimitedStats(user);
 
   if (history.length > unlimitedStats.high_score!)
     unlimitedStats.high_score = history.length;
@@ -88,17 +76,17 @@ export const updateUnlimitedStats = async (history: Array<GameEntity>, hints: Ar
   unlimitedStats.history = history;
   unlimitedStats.hints = hints;
 
-  if (!user)
-    localStorageService.updateUnlimitedStats(unlimitedStats);
-  else
+  if (user)
     supabase_updateUnlimitedStats(unlimitedStats);
+
+  localStorageService.setUnlimitedStats(unlimitedStats);
 }
 
-export const getUserDailySolutions = async () => {
-  const user = await getUserFromClient();
-
-  if (!user) 
-    return localStorageService.getSolutions();
-
-  return supabase_getUserDailySolutions(user.id);
+export const getUserDailySolutions = async (user: UserInfo) => {
+  if (user && localStorageService.getAuthStatus() === 'pending') {
+    const solutions = await supabase_getUserDailySolutions(user.id);
+    localStorageService.setSolutions(solutions);
+  }
+  
+  return localStorageService.getSolutions();
 }

@@ -23,3 +23,10 @@ interface Hint {
 interface NewDailyCostars extends DailyCostars {
   solutions: Array<Array<GameEntity>>
 }
+
+type UserInfo = {
+  id: string,
+  email: string
+} | null
+
+type AuthStatus = 'true' | 'pending' | 'false'
