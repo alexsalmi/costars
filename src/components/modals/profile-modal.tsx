@@ -5,6 +5,8 @@ import useGameState from '@/store/game.state';
 import { FacebookOutlined } from '@mui/icons-material';
 import '@/styles/components/profile-modal.scss'
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { getUserFromClient } from '@/utils/utils';
 
 interface ICSProfileModalProps {
 	isOpen: boolean,
@@ -12,7 +14,13 @@ interface ICSProfileModalProps {
 }
 
 export default function CSProfileModal({ isOpen, close }: ICSProfileModalProps) {
-  const { user } = useGameState();
+  const { user, setUser } = useGameState();
+
+  useEffect(() => {
+    getUserFromClient().then((res) => {
+      setUser(res);
+    })
+  }, []);
   
   const signOutHandler = async () => {
     const error = await signOut();

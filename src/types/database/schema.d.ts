@@ -69,6 +69,8 @@ type Database = {
           id: number
           optimal_solutions: number
           user_id: string
+          last_played?: string
+          last_played_id?: number
         }
         Insert: {
           current_streak?: number
@@ -77,6 +79,8 @@ type Database = {
           id?: number
           optimal_solutions?: number
           user_id?: string
+          last_played?: string
+          last_played_id?: number
         }
         Update: {
           current_streak?: number
@@ -85,6 +89,8 @@ type Database = {
           id?: number
           optimal_solutions?: number
           user_id?: string
+          last_played?: string
+          last_played_id?: number
         }
         Relationships: []
       }

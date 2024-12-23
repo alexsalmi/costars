@@ -1,6 +1,5 @@
 import { atom } from "jotai";
-import { getDailyStats, getHighscore } from "@/services/localstorage.service";
-import { getUserFromClient } from "@/utils/utils";
+import { User } from "@supabase/auth-js";
 
 export const gameTypeAtom = atom('custom');
 export const targetAtom = atom({} as GameEntity);
@@ -18,7 +17,7 @@ export const isSolutionAtom = atom(() =>
 	: false
 )
 
-export const highScoreAtom = atom(getHighscore());
-export const dailyStatsAtom = atom(getDailyStats());
+export const highScoreAtom = atom(0);
 
-export const userAtom = atom(async () => await getUserFromClient());
+export const dailyStatsAtom = atom<DailyStats | null>(null);
+export const userAtom = atom<User | null>(null);

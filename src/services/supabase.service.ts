@@ -1,25 +1,10 @@
 'use server';
 import { createClient, createClientForCache } from "@/utils/supabase";
 
-export const saveSolution = async (history: Array<GameEntity>, hints: Array<Hint>, is_temporary: boolean = false): Promise<string> => {
+export const supabase_getSolution = async (uuid: string): Promise<Solution> => {
 	const supabase = await createClient();
 
 	const { data } = await supabase
-		.from('Solutions')
-		.insert({ 
-			solution: history.map(entity => ({...entity, credits: undefined})),
-			hints: hints,
-			is_temporary: is_temporary
-		})
-		.select();
-
-	return data![0].id;
-}
-
-export const getSolution = async (uuid: string): Promise<Tables<"Solutions">> => {
-	const supabase = await createClient();
-
-  const { data } = await supabase
 		.from("Solutions")
 		.select()
 		.eq('id', uuid);
@@ -30,7 +15,48 @@ export const getSolution = async (uuid: string): Promise<Tables<"Solutions">> =>
 	return data[0];
 }
 
-export const deleteOldSolutions = async (): Promise<void> => {
+export const supabase_saveSolution = async (solution: Solution): Promise<string> => {
+	const supabase = await createClient();
+
+	const { data } = await supabase
+		.from('Solutions')
+		.insert(solution)
+		.select();
+
+	return data![0].id;
+}
+
+export const supabase_getUserDailySolutions = async (user_id: string): Promise<Array<Solution>> => {
+	const supabase = await createClient();
+
+	const { data } = await supabase
+		.from("Solutions")
+		.select()
+		.eq('user_id', user_id)
+		.not('daily_id', 'is', null);
+	
+	if (!data)
+		return [];
+
+	return data;
+}
+
+export const supabase_getDailySolutions = async (daily_id: number): Promise<Array<Solution>> => {
+	const supabase = await createClient();
+
+	const { data } = await supabase
+		.from("Solutions")
+		.select()
+		.eq('daily_id', daily_id)
+		.eq('is_daily_optimal', true);
+	
+	if(!data || data.length === 0)
+		throw Error("Invalid daily_id");
+
+	return data;
+}
+
+export const supabase_deleteOldSolutions = async (): Promise<void> => {
 	const supabase = await createClient();
 
 	const date = new Date();
@@ -43,62 +69,104 @@ export const deleteOldSolutions = async (): Promise<void> => {
 		.lt('created_at', date.toUTCString());
 }
 
-export const saveCostars = async (costars: Array<DailyCostars>): Promise<void> => {
+export const supabase_getDailyStats = async (user_id: string): Promise<DailyStats> => {
 	const supabase = await createClient();
 
-	const data = costars.map((val, ind) => {
-		if(!val.date){
-			const date = new Date();
-			date.setDate(date.getDate() + ind + 7);
-			date.setHours(0, 0, 0, 0);
-
-			val.date = date.toISOString();
-		}
-		else{
-			const date = new Date(val.date);
-			date.setHours(0, 0, 0, 0);
-
-			val.date = date.toISOString();
-		}		
-		
-		return {
-			starter: val.starter,
-			target: val.target,
-			date: val.date,
-			num_solutions: val.solutions.count,
-			solutions: val.solutions.mostPopular,
-			day_number: Math.floor((new Date(val.date).getTime() - new Date("12/31/2024").getTime()) / (1000*60*60*24))
-		}
-	});
-
-	for (const entry of data) {
-		try{
-			const { data } = await supabase
-				.from('DailyCostars')
-				.insert({
-					...entry,
-					solutions: undefined
-				})
-				.select();
-			
-			const id = data![0].id;
+	const { data } = await supabase
+		.from("DailyStats")
+		.select()
+		.eq('user_id', user_id);
 	
-			const solData = entry.solutions.map(sol => ({
-				daily_id: id,
-				solution: sol.map(entity => ({...entity, popularity: undefined})),
-				is_daily_optimal: true
-			}))
-			
-			await supabase
-				.from('Solutions')
-				.insert(solData);
-		} catch {
-			continue;
-		}
+	if (!data || data.length === 0) {
+		const { data } = await supabase
+			.from("DailyStats")
+			.insert({
+				user_id,
+				days_played: 0,
+				current_streak: 0,
+				highest_streak: 0,
+				optimal_solutions: 0
+			})
+			.select();
+		
+		return data![0];
+	}
+
+	return data[0];
+}
+
+export const supabase_updateDailyStats = async (dailyStats: DailyStats) => {
+	const supabase = await createClient();
+	
+	await supabase
+		.from("DailyStats")
+		.update(dailyStats)
+		.eq('id', dailyStats.id);
+}
+
+export const supabase_getUnlimitedStats = async (user_id: string): Promise<UnlimitedStats> => {
+	const supabase = await createClient();
+
+	const { data } = await supabase
+		.from("UnlimitedStats")
+		.select()
+		.eq('user_id', user_id);
+	
+	if (!data || data.length === 0) {
+		const { data } = await supabase
+			.from("UnlimitedStats")
+			.insert({
+				user_id,
+				history: [],
+				hints: [],
+				high_score: 0
+			})
+			.select();
+		
+		return data![0];
+	}
+
+	return data[0];
+}
+
+export const supabase_updateUnlimitedStats = async (unlimitedStats: UnlimitedStats) => {
+	const supabase = await createClient();
+	
+	await supabase
+		.from("UnlimitedStats")
+		.update(unlimitedStats)
+		.eq('id', unlimitedStats.id);
+}
+
+export const supabase_saveCostars = async (costars: NewDailyCostars): Promise<void> => {
+	const supabase = await createClient();
+
+	try{
+		const { data } = await supabase
+			.from('DailyCostars')
+			.insert({
+				...costars,
+				solutions: undefined
+			})
+			.select();
+		
+		const id = data![0].id;
+
+		const solData = costars.solutions.map(sol => ({
+			daily_id: id,
+			solution: sol.map(entity => ({...entity, popularity: undefined})),
+			is_daily_optimal: true
+		}))
+		
+		await supabase
+			.from('Solutions')
+			.insert(solData);
+	} catch {
+		console.log(`Couldn't save costars for date ${costars.date}`);
 	}
 }
 
-export const updateCostars = async (id: number, costars: DailyCostars): Promise<void> => {
+export const supabase_updateCostars = async (id: number, costars: NewDailyCostars): Promise<void> => {
 	const supabase = await createClient();
 
 	await supabase
@@ -109,10 +177,10 @@ export const updateCostars = async (id: number, costars: DailyCostars): Promise<
 
 	await supabase
 		.from('DailyCostars')
-		.update({ starter: costars.starter, target: costars.target, num_solutions: costars.solutions.count })
+		.update({ starter: costars.starter, target: costars.target, num_solutions: costars.num_solutions })
 		.eq('id', id);
 
-	const solData = costars.solutions.mostPopular.map(sol => ({
+	const solData = costars.solutions.map(sol => ({
 		daily_id: id,
 		solution: sol.map(entity => ({...entity, popularity: undefined})),
 		is_daily_optimal: true
@@ -123,38 +191,21 @@ export const updateCostars = async (id: number, costars: DailyCostars): Promise<
 	.insert(solData);
 }
 
-export const getDailyCostars = async (): Promise<DailyCostars> => {
+export const supabase_getDailyCostars = async (date: Date): Promise<DailyCostars> => {
 	const supabase = await createClientForCache();
 
 	const { data } = await supabase
 		.from('DailyCostars')
 		.select()
-		.eq('date', new Date().toLocaleString());
+		.eq('date', date.toLocaleString());
 
 	if(!data || data.length === 0)
 		throw Error("Invalid date");
 
-	const { data: data2 } = await supabase
-		.from('Solutions')
-		.select()
-		.eq('daily_id', data[0].id)
-		.eq('is_daily_optimal', true);
-	
-	if(!data2 || data2.length === 0)
-		throw Error("Invalid date");
-
-	return {
-		day_number: data[0].day_number,
-		starter: data[0].starter,
-		target: data[0].target,
-		solutions: {
-			count: data[0].num_solutions,
-			mostPopular: data2.map(solution => solution.solution)
-		}
-	};
+	return data[0];
 }
 
-export const getAllFutureCostars = async (): Promise<Array<DailyCostars>> => {
+export const supabase_getAllFutureCostars = async (): Promise<Array<DailyCostars>> => {
 	const supabase = await createClient();
 
 	const { data } = await supabase
@@ -163,11 +214,5 @@ export const getAllFutureCostars = async (): Promise<Array<DailyCostars>> => {
 		.gt('date', new Date().toLocaleString())
 		.order('date', { ascending: true });
 
-	return data!.map(costars => ({
-		...costars,
-		solutions: {
-			count: costars.num_solutions,
-			mostPopular: []
-		}
-	}));
+	return data!;
 }

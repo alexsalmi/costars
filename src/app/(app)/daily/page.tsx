@@ -5,6 +5,6 @@ export default async function DailyGame() {
   const daily = await getTodaysCostars();
 
   return (
-    <GameContainer initPeople={[daily.target, daily.starter]} daily={daily} />
+    <GameContainer initPeople={[daily.target, daily.starter]} daily={true} />
   );
 }

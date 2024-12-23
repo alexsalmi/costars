@@ -8,13 +8,8 @@ export function isToday (date: Date) {
         date.getFullYear() === today.getFullYear()
 }
 
-export function isYesterday (date: Date) { 
-  const yesterday = new Date()
-  yesterday.setDate(yesterday.getDate() - 1)
-
-  return date.getDate() === yesterday.getDate() &&
-        date.getMonth() === yesterday.getMonth() &&
-        date.getFullYear() === yesterday.getFullYear()
+export function getDayNumber (date: string) {
+  return Math.floor((new Date(date!).getTime() - new Date("12/31/2024").getTime()) / (1000 * 60 * 60 * 24));
 }
 
 export function getScoreString (history: Array<GameEntity>, hints: Array<Hint>) {
