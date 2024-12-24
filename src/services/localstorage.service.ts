@@ -1,80 +1,113 @@
-import { isYesterday } from "@/utils/utils";
+const KEY_DAILY_STATS = 'cs-daily-stats';
+const KEY_SOLUTIONS = 'cs-solutions';
+const KEY_UNLIMITED_STATS = 'cs-unlimited-stats';
+const KEY_AUTH_STATUS = 'cs-authenticated';
+const KEY_FRESH_STATUS = 'cs-fresh';
 
-const KEY_DAILY_STATS = 'costars-daily-stats';
-const KEY_HIGHSCORE = 'costars-highscore';
-const KEY_UNLIMITED_SAVE = 'costars-unimited-save';
-const KEY_UNLIMITED_HINTS = 'costars-unlimited-hints';
-
-export const getDailyStats = (): DailyStats => {
-  if (typeof window !== 'undefined' && (window.localStorage.getItem(KEY_DAILY_STATS) !== null)){
-    const stats = JSON.parse(atob(window.localStorage.getItem(KEY_DAILY_STATS)!)) as DailyStats;
-    if(!stats.daysOptimal)
-      stats.daysOptimal = 0;
-    return stats;
+class LocalStorageService {
+  hasSolutions = (): boolean => {
+    return typeof window !== 'undefined' && (window.localStorage.getItem(KEY_SOLUTIONS) !== null);
   }
 
-  return {
-    daysPlayed: 0,
-    currentStreak: 0,
-    highestStreak: 0,
-    daysOptimal: 0,
+  getSolutions = (): Array<Solution> => {
+    if (this.hasSolutions()){
+      const solutions = JSON.parse(atob(window.localStorage.getItem(KEY_SOLUTIONS)!)) as Array<Solution>;
+      return solutions;
+    }
+
+    const initialSolutions: Array<Solution> = [];
+
+    window.localStorage.setItem(KEY_SOLUTIONS, btoa(JSON.stringify(initialSolutions)));
+
+    return initialSolutions;
+  }
+
+  setSolutions = (solutions: Array<Solution>) => {
+    window.localStorage.setItem(KEY_SOLUTIONS, btoa(JSON.stringify(solutions)));
+  }
+
+  saveSolution = (solution: Solution) => {
+    const solutions = this.getSolutions();
+
+    solutions.push(solution);
+        
+    window.localStorage.setItem(KEY_SOLUTIONS, btoa(JSON.stringify(solutions)));
+  }
+
+  hasDailyStats = (): boolean => {
+    return typeof window !== 'undefined' && (window.localStorage.getItem(KEY_DAILY_STATS) !== null);
+  }
+
+  getDailyStats = (): DailyStats => {
+    if (this.hasDailyStats()){
+      const stats = JSON.parse(atob(window.localStorage.getItem(KEY_DAILY_STATS)!)) as DailyStats;
+      return stats;
+    }
+
+    const initialDailyStats: DailyStats = {
+      days_played: 0,
+      current_streak: 0,
+      highest_streak: 0,
+      optimal_solutions: 0
+    };
+
+    window.localStorage.setItem(KEY_DAILY_STATS, btoa(JSON.stringify(initialDailyStats)));
+    window.localStorage.setItem(KEY_FRESH_STATUS, 'fresh');
+
+    return initialDailyStats;
+  }
+
+  setDailyStats = (dailyStats: DailyStats) => {
+    window.localStorage.setItem(KEY_DAILY_STATS, btoa(JSON.stringify(dailyStats)));
+    window.localStorage.removeItem(KEY_FRESH_STATUS);
+  }
+
+  hasUnlimitedStats = (): boolean => {
+    return typeof window !== 'undefined' && (window.localStorage.getItem(KEY_UNLIMITED_STATS) !== null);
+  }
+
+  getUnlimitedStats = (): UnlimitedStats => {
+    if (this.hasUnlimitedStats()){
+      const stats = JSON.parse(atob(window.localStorage.getItem(KEY_UNLIMITED_STATS)!)) as UnlimitedStats;
+      return stats;
+    }
+
+    const initialUnlimitedStats: UnlimitedStats = {
+      history: [],
+      hints: [],
+      high_score: 0
+    };
+
+    window.localStorage.setItem(KEY_UNLIMITED_STATS, btoa(JSON.stringify(initialUnlimitedStats)));
+    window.localStorage.setItem(KEY_FRESH_STATUS, 'fresh');
+
+    return initialUnlimitedStats;
+  }
+
+  setUnlimitedStats = (unlimitedStats: UnlimitedStats) => {
+    window.localStorage.setItem(KEY_UNLIMITED_STATS, btoa(JSON.stringify(unlimitedStats)));
+    window.localStorage.removeItem(KEY_FRESH_STATUS);
+  }
+
+  setAuthStatus = (status: AuthStatus) => {
+    window.localStorage.setItem(KEY_AUTH_STATUS, status);
+  }
+
+  getAuthStatus = ():  AuthStatus => {
+    return window.localStorage.getItem(KEY_AUTH_STATUS) as AuthStatus;
+  }
+
+  clearStorage = () => {
+    window.localStorage.removeItem(KEY_SOLUTIONS);
+    window.localStorage.removeItem(KEY_DAILY_STATS);
+    window.localStorage.removeItem(KEY_UNLIMITED_STATS);
+  }
+
+  isFresh = () => {
+    return typeof window !== 'undefined' && (window.localStorage.getItem(KEY_FRESH_STATUS) !== null);
   }
 }
 
-export const updateDailyStats = (history: Array<GameEntity>, hints: Array<Hint>) => {
-  const dailyStats = getDailyStats();
+const localStorageService = new LocalStorageService();
 
-  dailyStats.daysPlayed++;
-  
-  const score = (history.length - 1) / 2;
-  hints = hints.filter(hint => history.some(entity => entity.id === hint.id && entity.type === hint.type));
-  if(score === 2 && hints.length === 0)
-    dailyStats.daysOptimal++;
-
-  if (!dailyStats.lastPlayed || isYesterday(new Date(dailyStats.lastPlayed)))
-    dailyStats.currentStreak++;
-  else
-    dailyStats.currentStreak = 1;
-
-  if (dailyStats.currentStreak > dailyStats.highestStreak)
-    dailyStats.highestStreak = dailyStats.currentStreak;
-
-  dailyStats.lastPlayed = new Date().toString();
-
-  dailyStats.lastSolve = history;
-  dailyStats.lastSolveHints = hints;
-
-  window.localStorage.setItem(KEY_DAILY_STATS, btoa(JSON.stringify(dailyStats)));
-}
-
-export const getHighscore = () => {
-  return parseInt(typeof window !== 'undefined' ?
-    window.localStorage.getItem(KEY_HIGHSCORE) || '0'
-    : '0')
-}
-
-export const incrementHighscore = () => {
-  const highScore = getHighscore();
-
-  window.localStorage.setItem(KEY_HIGHSCORE, (highScore + 1).toString());
-}
-
-export const getUnlimitedSave = () => {
-  const save = {
-    history: [],
-    hints: [],
-  };
-
-  if (typeof window !== 'undefined' && (window.localStorage.getItem(KEY_UNLIMITED_SAVE) !== null))
-    save.history = JSON.parse(atob(window.localStorage.getItem(KEY_UNLIMITED_SAVE)!));
-
-  if (typeof window !== 'undefined' && (window.localStorage.getItem(KEY_UNLIMITED_HINTS) !== null))
-    save.hints = JSON.parse(atob(window.localStorage.getItem(KEY_UNLIMITED_HINTS)!));
-  
-  return save;
-}
-
-export const updateUnlimitedSave = (history: Array<GameEntity>, hints: Array<Hint>) => {
-  window.localStorage.setItem(KEY_UNLIMITED_SAVE, btoa(JSON.stringify(history)));
-  window.localStorage.setItem(KEY_UNLIMITED_HINTS, btoa(JSON.stringify(hints)));
-}
+export default localStorageService;

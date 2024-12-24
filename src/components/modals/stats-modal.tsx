@@ -8,17 +8,16 @@ import { ShareOutlined } from '@mui/icons-material';
 import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/solutions-toolbar';
 import { useState } from 'react';
-import { saveSolution } from '@/services/supabase.service';
 import { getScoreString } from '@/utils/utils';
+import { supabase_saveSolution } from '@/services/supabase.service';
 
 interface ICSStatsModalProps {
 	isOpen: boolean,
-	close: () => void,
-	daily: DailyCostars
+	close: () => void
 }
 
-export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProps) {
-	const { score, dailyStats, history, hints } = useGameState();
+export default function CSStatsModal({ isOpen, close }: ICSStatsModalProps) {
+	const { score, history, hints, dailyStats, todaysCostars, todaysSolutions } = useGameState();
 	const [solutionInd, setSolutionInd] = useState(0);
 	const [shareLoading, setShareLoading] = useState(false);
 
@@ -29,22 +28,30 @@ export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProp
 		0
 	);
 
-  const shareScore = async () => {
+	const shareScore = async () => {
+		if (!todaysCostars)
+			return;
+
 		setShareLoading(true);
-		const uuid = await saveSolution(history, hints, true);
+		const uuid = await supabase_saveSolution({
+			daily_id: todaysCostars.id!,
+			solution: history,
+			hints,
+			is_temporary: true
+		});
 		setShareLoading(false);
 
     try{
       window.navigator.share({
         title: "Costars",
-        text: `Daily Costars #${daily.day_number}\n${getScoreString(history, hints)}\nCheck out my solution!
+        text: `Daily Costars #${todaysCostars.day_number}\n${getScoreString(history, hints)}\nCheck out my solution!
 				`,
         url: `${location.origin}/solution/${uuid}`
       })
     } catch {
       window.navigator.clipboard.writeText(`${location.origin}/solution/${uuid}`);
     }
-  }
+	}
 	
   return (
 		<CSModal isOpen={isOpen} close={close}>
@@ -73,23 +80,23 @@ export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProp
 				</div>
 				<div className='stats-modal-stats'>
 					<CSTextDisplay>
-						<span>{dailyStats.daysPlayed}</span>
+						<span>{dailyStats?.days_played}</span>
 						<span>Days Played</span>
 					</CSTextDisplay>
 					<CSTextDisplay>
-						<span>{Math.round(dailyStats.daysOptimal/dailyStats.daysPlayed*100)}%</span>
+						<span>{dailyStats ? Math.round(dailyStats!.optimal_solutions!/dailyStats!.days_played!*100) : 0}%</span>
 						<span>Percent Optimal</span>
 					</CSTextDisplay>
 					<CSTextDisplay>
-						<span>{dailyStats.daysOptimal}</span>
+						<span>{dailyStats?.optimal_solutions}</span>
 						<span>Perfect Games</span>
 					</CSTextDisplay>
 					<CSTextDisplay>
-						<span>{dailyStats.currentStreak}</span>
+						<span>{dailyStats?.current_streak}</span>
 						<span>Current Streak</span>
 					</CSTextDisplay>
 					<CSTextDisplay>
-						<span>{dailyStats.highestStreak}</span>
+						<span>{dailyStats?.highest_streak}</span>
 						<span>Highest Streak</span>
 					</CSTextDisplay>
 				</div>
@@ -101,16 +108,16 @@ export default function CSStatsModal({ isOpen, close, daily }: ICSStatsModalProp
 				</div>
 				<hr />
 				<div className='stats-modal-optimal'>
-					Here are a few of the <strong>{daily.solutions.count} different ways</strong> to connect <strong>{daily.starter.label}</strong> and <strong>{daily.target.label}</strong> in 2 movies:
+					Here are a few of the <strong>{todaysCostars?.num_solutions} different ways</strong> to connect <strong>{todaysCostars?.starter.label}</strong> and <strong>{todaysCostars?.target.label}</strong> in 2 movies:
 				</div>
 				<div className='stats-modal-solutions'>
 					<CSSolutionsToolbar 
 						leftClick={() => setSolutionInd(solutionInd-1)}
 						rightClick={() => setSolutionInd(solutionInd+1)}
 						leftDisabled={solutionInd === 0}
-						rightDisabled={solutionInd === daily.solutions.mostPopular.length-1}
+						rightDisabled={solutionInd === (todaysSolutions?.length || 1)-1}
 					/>
-					<CSCardTrack cards={daily.solutions.mostPopular[solutionInd]} hideHints={true} fullHeight={true} />
+					<CSCardTrack cards={todaysSolutions ? todaysSolutions[solutionInd]?.solution : []} hideHints={true} fullHeight={true} />
 				</div>
 			</div>
 		</CSModal>

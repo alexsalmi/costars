@@ -1,7 +1,9 @@
 import { getCostars } from '@/services/cache.service';
-import { saveCostars } from '@/services/supabase.service';
+import { supabase_saveCostars } from '@/services/supabase.service';
+import { getDayNumber } from '@/utils/utils';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
+
 
 export async function GET(req: Request) {
   if (process.env.NODE_ENV === 'production' && 
@@ -11,39 +13,46 @@ export async function GET(req: Request) {
   }
 
   console.log("----- GETTING NEW COSTARS -----");
-  let costars = [] as Array<DailyCostars>;
+  let costars = [] as Array<NewDailyCostars>;
   const actorSet = new Set<number>();
 
-  while (costars.length < 7) {
+  let day = 0;
+  while (day < 7) {
     const newCostars = await getCostars(actorSet);
 
     actorSet.add(newCostars.starter.id);
     actorSet.add(newCostars.target.id);
 
-    newCostars.starter = {
-      ...newCostars.starter,
-      popularity: undefined
-    }
+    const date = new Date();
+    date.setDate(date.getDate() + 7 + day);
+    date.setHours(0, 0, 0, 0);
 
-    newCostars.target = {
-      ...newCostars.target,
-      popularity: undefined
-    }
+    costars.push({
+      starter: newCostars.starter,
+      target: newCostars.target,
+      num_solutions: newCostars.solutions.total_count,
+      date: date.toISOString(),
+      day_number: getDayNumber(date.toISOString()),
+      solutions: newCostars.solutions.solutions
+    });
 
-    costars.push(newCostars);
+    day++;
   }
 
   // Sort the costars pairings by the total popularity score of all their top 10 optimal solutions
   costars = costars.sort((a, b) => 
-    b.solutions.mostPopular.reduce((acc, solution) => acc +
+    b.solutions.reduce((acc, solution) => acc +
       solution.reduce((acc2, entity) => acc2 + (entity.popularity || 0), 0), 0)
     -
-    a.solutions.mostPopular.reduce((acc, solution) => acc +
+    a.solutions.reduce((acc, solution) => acc +
       solution.reduce((acc2, entity) => acc2 + (entity.popularity || 0), 0), 0)
   );
 
   console.log("----- Saving costars to DB -----");
-  await saveCostars(costars);
+
+  for (const dailyCostars of costars) {
+    await supabase_saveCostars(dailyCostars);
+  }
 
   revalidatePath('/admin');
 

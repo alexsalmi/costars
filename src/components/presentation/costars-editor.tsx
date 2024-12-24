@@ -3,10 +3,11 @@ import { useState } from 'react';
 import CSCostarsGenerator from '../inputs/costars-generator';
 import '@/styles/components/costars-editor.scss'
 import CSButton from '../inputs/button';
-import { saveCostars, updateCostars } from '@/services/supabase.service';
 import { getOptimalSolutions } from '@/services/cache.service';
 import { Input } from '@mui/material';
 import { revalidatePath } from 'next/cache';
+import { getDayNumber } from '@/utils/utils';
+import { supabase_saveCostars, supabase_updateCostars } from '@/services/supabase.service';
 
 interface ICSCostarsEditorProps {
 	costars?: DailyCostars
@@ -34,19 +35,24 @@ export default function CSCostarsEditor({costars}: ICSCostarsEditorProps) {
 
 		const solutions = await getOptimalSolutions(starter, target);
 
-		if(solutions.score !== 2){
-			setError(`Lowest possible solution is ${solutions.score} moves`);
+		if(solutions === null){
+			setError(`Isn't possible in min 2 moves`);
 			return;
 		}
 
-		const newCostars: DailyCostars = {
-			starter, target, solutions, date: date!
+		const newCostars: NewDailyCostars = {
+			starter,
+			target,
+			date: date!,
+			num_solutions: solutions.total_count,
+			day_number: getDayNumber(date!),
+			solutions: solutions.solutions
 		}
 
 		if(costars === undefined)
-			await saveCostars([newCostars]);
+			await supabase_saveCostars(newCostars);
 		else
-			await updateCostars(costars.id!, newCostars);
+			await supabase_updateCostars(costars.id!, newCostars);
 
 		setEditing(false);
 		revalidatePath('/admin');

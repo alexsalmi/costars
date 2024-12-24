@@ -1,8 +1,7 @@
 'use server'
 import { unstable_cache } from 'next/cache';
 import { getCredits, getTrending } from "./tmdb.service";
-import { getDailyCostars } from './supabase.service';
-
+import { supabase_getDailyCostars, supabase_getDailySolutions } from './supabase.service';
 
 export const getRandomPerson = async () => {
   const pool = await getRandomPool();
@@ -64,8 +63,23 @@ export const getRandomPool = unstable_cache(async () => {
   return pool;
 }, [], { tags: ['random_pool'] });
 
-export const getTodaysCostars = unstable_cache(getDailyCostars, [], { tags: ['daily_costars'] }); 
+export const getTodaysCostars = unstable_cache(async () => {
+  console.log("TODAYS COSTARS")
+  return supabase_getDailyCostars(new Date());
+}, [], { tags: ['daily_costars'] }); 
 
+
+export const getTodaysSolutions = unstable_cache(async () => {
+  console.log("TODAYS SOLUTIONS")
+  return supabase_getDailySolutions((await supabase_getDailyCostars(new Date())).id || 0);
+}, [], { tags: ['daily_costars'] }); 
+
+export const getYesterdaysCostars = unstable_cache(async () => {
+  console.log("YESTERDAYS COSTARS")
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() + 1);
+  return supabase_getDailyCostars(yesterday);
+}, [], { tags: ['daily_costars'] }); 
 
 
 interface OptimalQueueValue {
@@ -95,7 +109,7 @@ export const getCostars = async (actorSet: Set<number>) => {
   } while(actorSet.has(target.id))
 
   let starter = {} as GameEntity;
-  let solutions = {} as DailySolutions;
+  let solutions = null as OptimalSolutions | null;
 
   do {
     do {
@@ -103,7 +117,7 @@ export const getCostars = async (actorSet: Set<number>) => {
     } while(actorSet.has(starter.id))
 
     solutions = await(getOptimalSolutions(starter, target));
-  } while (solutions.score !== 2)
+  } while (solutions === null)
 
   console.log(`----- Newly generated costars are ${target.label} and ${starter.label} -----`);
   console.log("----- Finished Generating New Costars -----\n");
@@ -115,8 +129,13 @@ export const getCostars = async (actorSet: Set<number>) => {
   };
 };
 
+interface OptimalSolutions {
+  solutions: Array<Array<GameEntity>>,
+  total_count: number
+}
+
 export const getOptimalSolutions = async (person1: GameEntity, person2: GameEntity)
-    : Promise<DailySolutions> => {
+    : Promise<OptimalSolutions | null> => {
   console.log("----- Getting Optimal Solutions -----");
   let solutions = [] as Array<Array<GameEntity>>;
   let level = 0;
@@ -205,11 +224,12 @@ export const getOptimalSolutions = async (person1: GameEntity, person2: GameEnti
 
     level++;
 
-    if(level === 3 && solutions.length === 0){
-      level = -1;
+    if(level > 2 && solutions.length === 0)
       break;
-    }
   }
+
+  if (level !== 2)
+    return null;
 
   // Filter out any solutions longer than optimal, and sort by total popularity
   solutions = solutions.filter(solution => solution.length === ((level*2)+1))
@@ -240,9 +260,8 @@ export const getOptimalSolutions = async (person1: GameEntity, person2: GameEnti
   console.log("----- Finished Getting Optimal Solutions -----\n");
   
   return {
-    score: level,
-    count: solutions.length,
-    mostPopular: best_solutions
+    total_count: solutions.length,
+    solutions: best_solutions
   }
 }
 
@@ -250,7 +269,6 @@ const getCreditEntities = async (id: number, type: TmdbType, path: Array<GameEnt
   await getCredits(id, type)
     .then(credits => {
       if(!credits){
-        console.log("Credits undefined: " + JSON.stringify(credits))
         return [];
       }
       const entities = credits

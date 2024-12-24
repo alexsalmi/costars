@@ -3,40 +3,37 @@ import Image from 'next/image';
 import Link from 'next/link';
 import CSButton from '../inputs/button';
 import '@/styles/components/daily-costars.scss'
+import { getScoreString } from '@/utils/utils';
 import useGameState from '@/store/game.state';
-import { getScoreString, isToday } from '@/utils/utils';
 
 interface IDailyCostarsProps {
-	starter: GameEntity,
-	target: GameEntity
+	daily?: DailyCostars
 }
 
-export default function CSDailyCostars({starter, target}: IDailyCostarsProps) {
-	const {dailyStats} = useGameState();
-
-	const completed = dailyStats.lastPlayed && isToday(new Date(dailyStats.lastPlayed));
+export default function CSDailyCostars({ daily }: IDailyCostarsProps) {
+	const { lastSolve } = useGameState();
 
   return (
 		<div className='daily-costars-container'>
 			<h3 className='daily-costars-header'>Daily Costars</h3>
 			<div className='daily-costars-previews'>
 				<Image 
-					src={starter.image ? `https://image.tmdb.org/t/p/w185${starter.image}` : '/placeholder.webp'}
-					width={80} height={120} alt={`Image of ${starter.label}`}
+					src={daily?.starter.image ? `https://image.tmdb.org/t/p/w185${daily?.starter.image}` : '/placeholder.webp'}
+					width={80} height={120} alt={`Image of ${daily?.starter.label}`}
 				/>
 				<div className='daily-costars-names'>
-					<span>{starter.label}</span>
+					<span>{daily?.starter.label}</span>
 					<span>and</span>
-					<span>{target.label}</span>
+					<span>{daily?.target.label}</span>
 				</div>
 				<Image
-					src={starter.image ? `https://image.tmdb.org/t/p/w185${target.image}` : '/placeholder.webp'}
-					width={80} height={120} alt={`Image of ${target.label}`}
+					src={daily?.starter.image ? `https://image.tmdb.org/t/p/w185${daily?.target.image}` : '/placeholder.webp'}
+					width={80} height={120} alt={`Image of ${daily?.target.label}`}
 				/>
 			</div>
 			<Link href="/daily">
 				<CSButton>
-					{completed ? getScoreString(dailyStats.lastSolve!, dailyStats.lastSolveHints!) : 'Play!'}
+					{lastSolve && daily?.id === lastSolve.daily_id ? getScoreString(lastSolve.solution, lastSolve.hints!) : 'Play!'}
 				</CSButton>
 			</Link>
 		</div>

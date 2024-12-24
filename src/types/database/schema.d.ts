@@ -69,6 +69,9 @@ type Database = {
           id: number
           optimal_solutions: number
           user_id: string
+          updated_at: string
+          last_played?: string
+          last_played_id?: number
         }
         Insert: {
           current_streak?: number
@@ -77,6 +80,9 @@ type Database = {
           id?: number
           optimal_solutions?: number
           user_id?: string
+          last_played?: string
+          last_played_id?: number
+          updated_at?: string
         }
         Update: {
           current_streak?: number
@@ -85,6 +91,9 @@ type Database = {
           id?: number
           optimal_solutions?: number
           user_id?: string
+          last_played?: string
+          last_played_id?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -136,6 +145,7 @@ type Database = {
           history: Array<GameEntity>
           id: number
           user_id: string
+          updated_at: string
         }
         Insert: {
           high_score?: number
@@ -143,6 +153,7 @@ type Database = {
           history?: Array<GameEntity>
           id?: number
           user_id?: string
+          updated_at?: string
         }
         Update: {
           high_score?: number
@@ -150,6 +161,7 @@ type Database = {
           history?: Array<GameEntity>
           id?: number
           user_id?: string
+          updated_at?: string
         }
         Relationships: []
       }

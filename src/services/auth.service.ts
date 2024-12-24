@@ -2,10 +2,17 @@
 import { createClient } from "@/utils/supabase";
 import { redirect } from "next/navigation";
 
-export const login = async (type: 'google' | 'facebook') => {
+export const getUser = async (): Promise<UserInfo> => {
+	const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+
+	return data.user ? { id:  data.user.id, email:  data.user.email! } : null;
+}
+
+export const signIn = async (type: 'google' | 'facebook') => {
   const supabase = await createClient();
 
-  const { data } = await supabase.auth.signInWithOAuth({
+  const { data, error } = await supabase.auth.signInWithOAuth({
     provider: type,
     options: {
       redirectTo: getRedirectURL(),
@@ -15,12 +22,15 @@ export const login = async (type: 'google' | 'facebook') => {
   if (data.url) {
     redirect(data.url);
   }
+  else {
+    return error;
+  }
 }
 
 export const signOut = async () => {
 	const supabase = await createClient();
 
-	const { error } = await supabase.auth.signOut({ scope: 'local' });
+  const { error } = await supabase.auth.signOut({ scope: 'local' });
 	
 	return error;
 }

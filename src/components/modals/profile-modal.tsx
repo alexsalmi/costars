@@ -1,10 +1,11 @@
-import { login, signOut } from '@/services/auth.service';
+import { signIn, signOut } from '@/services/auth.service';
 import CSButton from '../inputs/button';
 import CSModal from '../presentation/modal';
 import useGameState from '@/store/game.state';
 import { FacebookOutlined } from '@mui/icons-material';
 import '@/styles/components/profile-modal.scss'
 import Image from 'next/image';
+import localStorageService from '@/services/localstorage.service';
 
 interface ICSProfileModalProps {
 	isOpen: boolean,
@@ -13,12 +14,25 @@ interface ICSProfileModalProps {
 
 export default function CSProfileModal({ isOpen, close }: ICSProfileModalProps) {
   const { user } = useGameState();
+
+  const signInHandler = async (type: 'google' | 'facebook') => {
+    localStorageService.setAuthStatus('pending');
+
+    const error = await signIn(type);
+
+    if (error) {
+      localStorageService.setAuthStatus('false');
+    }
+  }
   
   const signOutHandler = async () => {
     const error = await signOut();
 
-    if (!error)
+    if (!error) {
+      localStorageService.setAuthStatus('false');
+      localStorageService.clearStorage();
       window.location.reload();
+    }
   }
 
   return (
@@ -34,10 +48,10 @@ export default function CSProfileModal({ isOpen, close }: ICSProfileModalProps) 
         :
         <>
           <span>Sign in with one of the below providers:</span>
-          <CSButton secondary onClick={() => login('google')}>
+          <CSButton secondary onClick={() => signInHandler('google')}>
             <Image src="/g-logo.png" alt='Google Logo' width={24} height={24}/> Sign in with Google
           </CSButton>
-          <CSButton secondary onClick={() => login('facebook')}>
+          <CSButton secondary onClick={() => signInHandler('facebook')}>
             <FacebookOutlined /> Login with Facebook
           </CSButton>
           <hr />
