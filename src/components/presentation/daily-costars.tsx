@@ -18,22 +18,22 @@ export default function CSDailyCostars({ daily }: IDailyCostarsProps) {
 			<h3 className='daily-costars-header'>Daily Costars</h3>
 			<div className='daily-costars-previews'>
 				<Image 
-					src={daily.starter.image ? `https://image.tmdb.org/t/p/w185${daily.starter.image}` : '/placeholder.webp'}
-					width={80} height={120} alt={`Image of ${daily.starter.label}`}
+					src={daily?.starter.image ? `https://image.tmdb.org/t/p/w185${daily?.starter.image}` : '/placeholder.webp'}
+					width={80} height={120} alt={`Image of ${daily?.starter.label}`}
 				/>
 				<div className='daily-costars-names'>
-					<span>{daily.starter.label}</span>
+					<span>{daily?.starter.label}</span>
 					<span>and</span>
-					<span>{daily.target.label}</span>
+					<span>{daily?.target.label}</span>
 				</div>
 				<Image
-					src={daily.starter.image ? `https://image.tmdb.org/t/p/w185${daily.target.image}` : '/placeholder.webp'}
-					width={80} height={120} alt={`Image of ${daily.target.label}`}
+					src={daily?.starter.image ? `https://image.tmdb.org/t/p/w185${daily?.target.image}` : '/placeholder.webp'}
+					width={80} height={120} alt={`Image of ${daily?.target.label}`}
 				/>
 			</div>
 			<Link href="/daily">
 				<CSButton>
-					{lastSolve && daily.id === lastSolve.daily_id ? getScoreString(lastSolve.solution, lastSolve.hints!) : 'Play!'}
+					{lastSolve && daily?.id === lastSolve.daily_id ? getScoreString(lastSolve.solution, lastSolve.hints!) : 'Play!'}
 				</CSButton>
 			</Link>
 		</div>

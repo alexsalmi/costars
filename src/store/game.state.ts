@@ -50,8 +50,6 @@ const useGameState = () => {
     if (migrationNeeded)
       await migrateSaveDate();
 
-    console.log("Continuing auth")
-
     const promises = [];
 
     if (dailyStats === null) {

@@ -101,13 +101,10 @@ export const supabase_getDailyStats = async (user_id: string): Promise<DailyStat
 export const supabase_hasDailyStats = async (user_id: string): Promise<boolean> => {
 	const supabase = await createClient();
 
-	console.log("Checking for daily costars")
 	const { data } = await supabase
 		.from("DailyStats")
 		.select()
 		.eq('user_id', user_id);
-	
-	console.log(JSON.stringify(data));
 
 	return (data && data.length > 0) || false;
 }

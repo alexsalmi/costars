@@ -5,7 +5,7 @@ export default function NewCustomGame() {
   return (
     <>
       <CSCustomGameModal />
-      <Home starter={{} as GameEntity} target={{} as GameEntity}/>
+      <Home daily={{} as DailyCostars}/>
     </>
   );
 }

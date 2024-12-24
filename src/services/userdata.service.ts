@@ -94,13 +94,11 @@ export const migrateSaveDate = async () => {
   const unlimitedStats = localStorageService.getUnlimitedStats();
   const solutions = localStorageService.getSolutions();
 
-  console.log("Migrating Data")
   await Promise.all([
     supabase_updateDailyStats(dailyStats),
     supabase_updateUnlimitedStats(unlimitedStats),
     supabase_saveSolution(solutions)
   ]);
-  console.log("Migration Complete")
 
   return;
 }

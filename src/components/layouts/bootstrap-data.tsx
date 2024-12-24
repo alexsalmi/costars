@@ -9,7 +9,6 @@ export default function BootstrapData({ children }: Readonly<{
   const { bootstrapState } = useGameState();
 
   useEffect(() => {
-    console.log("BOOTSTRAPPING DATA")
     bootstrapState();
   }, []);
 
