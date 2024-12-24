@@ -7,34 +7,33 @@ import { getScoreString } from '@/utils/utils';
 import useGameState from '@/store/game.state';
 
 interface IDailyCostarsProps {
-	starter: GameEntity,
-	target: GameEntity
+	daily: DailyCostars
 }
 
-export default function CSDailyCostars({ starter, target }: IDailyCostarsProps) {
-	const { lastSolve, dailyCompleted } = useGameState();
+export default function CSDailyCostars({ daily }: IDailyCostarsProps) {
+	const { lastSolve } = useGameState();
 
   return (
 		<div className='daily-costars-container'>
 			<h3 className='daily-costars-header'>Daily Costars</h3>
 			<div className='daily-costars-previews'>
 				<Image 
-					src={starter.image ? `https://image.tmdb.org/t/p/w185${starter.image}` : '/placeholder.webp'}
-					width={80} height={120} alt={`Image of ${starter.label}`}
+					src={daily.starter.image ? `https://image.tmdb.org/t/p/w185${daily.starter.image}` : '/placeholder.webp'}
+					width={80} height={120} alt={`Image of ${daily.starter.label}`}
 				/>
 				<div className='daily-costars-names'>
-					<span>{starter.label}</span>
+					<span>{daily.starter.label}</span>
 					<span>and</span>
-					<span>{target.label}</span>
+					<span>{daily.target.label}</span>
 				</div>
 				<Image
-					src={starter.image ? `https://image.tmdb.org/t/p/w185${target.image}` : '/placeholder.webp'}
-					width={80} height={120} alt={`Image of ${target.label}`}
+					src={daily.starter.image ? `https://image.tmdb.org/t/p/w185${daily.target.image}` : '/placeholder.webp'}
+					width={80} height={120} alt={`Image of ${daily.target.label}`}
 				/>
 			</div>
 			<Link href="/daily">
 				<CSButton>
-					{dailyCompleted && lastSolve ? getScoreString(lastSolve.solution, lastSolve.hints!) : 'Play!'}
+					{lastSolve && daily.id === lastSolve.daily_id ? getScoreString(lastSolve.solution, lastSolve.hints!) : 'Play!'}
 				</CSButton>
 			</Link>
 		</div>

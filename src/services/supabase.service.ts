@@ -15,15 +15,18 @@ export const supabase_getSolution = async (uuid: string): Promise<Solution> => {
 	return data[0];
 }
 
-export const supabase_saveSolution = async (solution: Solution): Promise<string> => {
+export const supabase_saveSolution = async (solutions: Solution | Array<Solution>): Promise<string> => {
 	const supabase = await createClient();
 
 	const { data } = await supabase
 		.from('Solutions')
-		.insert(solution)
+		.insert(solutions)
 		.select();
+	
+	if (!data || data.length === 0)
+		return '';
 
-	return data![0].id;
+	return data[0].id;
 }
 
 export const supabase_getUserDailySolutions = async (user_id: string): Promise<Array<Solution>> => {
@@ -93,6 +96,20 @@ export const supabase_getDailyStats = async (user_id: string): Promise<DailyStat
 	}
 
 	return data[0];
+}
+
+export const supabase_hasDailyStats = async (user_id: string): Promise<boolean> => {
+	const supabase = await createClient();
+
+	console.log("Checking for daily costars")
+	const { data } = await supabase
+		.from("DailyStats")
+		.select()
+		.eq('user_id', user_id);
+	
+	console.log(JSON.stringify(data));
+
+	return (data && data.length > 0) || false;
 }
 
 export const supabase_updateDailyStats = async (dailyStats: DailyStats) => {

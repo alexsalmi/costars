@@ -6,11 +6,10 @@ import Link from 'next/link';
 import CSDailyCostars from '@/components/presentation/daily-costars';
 
 interface IHomeProps {
-	starter: GameEntity,
-	target: GameEntity
+	daily: DailyCostars
 }
 
-export default async function Home({ starter, target }: IHomeProps) {
+export default async function Home({ daily }: IHomeProps) {
   return (
     <div className="home-page">
       <Image
@@ -18,7 +17,7 @@ export default async function Home({ starter, target }: IHomeProps) {
         alt="Costars logo"
         height={80}
       />
-      <CSDailyCostars starter={starter} target={target}/>
+      <CSDailyCostars daily={daily} />
       <div className='home-page-button-container'>
         <Link href="/custom">
           <CSButton secondary>

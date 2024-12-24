@@ -74,6 +74,12 @@ export const getTodaysSolutions = unstable_cache(async () => {
   return await supabase_getDailySolutions((await getTodaysCostars()).id!);
 }, [], { tags: ['daily_costars'] }); 
 
+export const getYesterdaysCostars = unstable_cache(async () => {
+  console.log("YESTERDAYS COSTARS")
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() + 1);
+  return await supabase_getDailyCostars(yesterday);
+}, [], { tags: ['daily_costars'] }); 
 
 
 interface OptimalQueueValue {

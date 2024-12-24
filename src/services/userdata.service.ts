@@ -1,6 +1,6 @@
 import localStorageService from "./localstorage.service";
-import { supabase_getDailyCostars, supabase_getDailyStats, supabase_getUnlimitedStats, supabase_getUserDailySolutions, supabase_saveSolution, supabase_updateDailyStats, supabase_updateUnlimitedStats } from "./supabase.service";
-import { getTodaysCostars } from "./cache.service";
+import { supabase_getDailyStats, supabase_getUnlimitedStats, supabase_getUserDailySolutions, supabase_saveSolution, supabase_updateDailyStats, supabase_updateUnlimitedStats } from "./supabase.service";
+import { getTodaysCostars, getYesterdaysCostars } from "./cache.service";
 
 export const getDailyStats = async (user: UserInfo) => {
   if (user && localStorageService.getAuthStatus() === 'pending') {
@@ -12,10 +12,8 @@ export const getDailyStats = async (user: UserInfo) => {
 }
 
 export const updateDailyStats = async (user: UserInfo, solution: Array<GameEntity>, hints: Array<Hint>) => {
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() + 1);
-  const todaysCostars = await supabase_getDailyCostars(new Date());
-  const yesterdaysCostars = await supabase_getDailyCostars(yesterday);
+  const todaysCostars = await getTodaysCostars();
+  const yesterdaysCostars = await getYesterdaysCostars();
 
   const dailyStats: DailyStats = await getDailyStats(user);
   const solutions: Array<Solution> = await getUserDailySolutions(user);
@@ -37,7 +35,7 @@ export const updateDailyStats = async (user: UserInfo, solution: Array<GameEntit
   if (dailyStats.current_streak! > dailyStats.highest_streak!)
     dailyStats.highest_streak = dailyStats.current_streak;
 
-  dailyStats.last_played = new Date().toISOString();
+  dailyStats.last_played = new Date().toUTCString();
   dailyStats.last_played_id = (await getTodaysCostars()).id;
 
   if (user) {
@@ -89,4 +87,20 @@ export const getUserDailySolutions = async (user: UserInfo) => {
   }
   
   return localStorageService.getSolutions();
+}
+
+export const migrateSaveDate = async () => {
+  const dailyStats = localStorageService.getDailyStats();
+  const unlimitedStats = localStorageService.getUnlimitedStats();
+  const solutions = localStorageService.getSolutions();
+
+  console.log("Migrating Data")
+  await Promise.all([
+    supabase_updateDailyStats(dailyStats),
+    supabase_updateUnlimitedStats(unlimitedStats),
+    supabase_saveSolution(solutions)
+  ]);
+  console.log("Migration Complete")
+
+  return;
 }

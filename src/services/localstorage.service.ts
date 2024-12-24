@@ -2,6 +2,7 @@ const KEY_DAILY_STATS = 'cs-daily-stats';
 const KEY_SOLUTIONS = 'cs-solutions';
 const KEY_UNLIMITED_STATS = 'cs-unlimited-stats';
 const KEY_AUTH_STATUS = 'cs-authenticated';
+const KEY_FRESH_STATUS = 'cs-fresh';
 
 class LocalStorageService {
   hasSolutions = (): boolean => {
@@ -51,12 +52,14 @@ class LocalStorageService {
     };
 
     window.localStorage.setItem(KEY_DAILY_STATS, btoa(JSON.stringify(initialDailyStats)));
+    window.localStorage.setItem(KEY_FRESH_STATUS, 'fresh');
 
     return initialDailyStats;
   }
 
   setDailyStats = (dailyStats: DailyStats) => {
     window.localStorage.setItem(KEY_DAILY_STATS, btoa(JSON.stringify(dailyStats)));
+    window.localStorage.removeItem(KEY_FRESH_STATUS);
   }
 
   hasUnlimitedStats = (): boolean => {
@@ -76,12 +79,14 @@ class LocalStorageService {
     };
 
     window.localStorage.setItem(KEY_UNLIMITED_STATS, btoa(JSON.stringify(initialUnlimitedStats)));
+    window.localStorage.setItem(KEY_FRESH_STATUS, 'fresh');
 
     return initialUnlimitedStats;
   }
 
   setUnlimitedStats = (unlimitedStats: UnlimitedStats) => {
     window.localStorage.setItem(KEY_UNLIMITED_STATS, btoa(JSON.stringify(unlimitedStats)));
+    window.localStorage.removeItem(KEY_FRESH_STATUS);
   }
 
   setAuthStatus = (status: AuthStatus) => {
@@ -96,6 +101,10 @@ class LocalStorageService {
     window.localStorage.removeItem(KEY_SOLUTIONS);
     window.localStorage.removeItem(KEY_DAILY_STATS);
     window.localStorage.removeItem(KEY_UNLIMITED_STATS);
+  }
+
+  isFresh = () => {
+    return typeof window !== 'undefined' && (window.localStorage.getItem(KEY_FRESH_STATUS) !== null);
   }
 }
 
