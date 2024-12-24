@@ -5,7 +5,7 @@ export default function NewCustomGame() {
   return (
     <>
       <CSCustomGameModal />
-      <Home daily={{} as DailyCostars}/>
+      <Home />
     </>
   );
 }

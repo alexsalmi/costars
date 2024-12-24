@@ -7,7 +7,7 @@ import { getScoreString } from '@/utils/utils';
 import useGameState from '@/store/game.state';
 
 interface IDailyCostarsProps {
-	daily: DailyCostars
+	daily?: DailyCostars
 }
 
 export default function CSDailyCostars({ daily }: IDailyCostarsProps) {

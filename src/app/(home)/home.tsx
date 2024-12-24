@@ -6,7 +6,7 @@ import Link from 'next/link';
 import CSDailyCostars from '@/components/presentation/daily-costars';
 
 interface IHomeProps {
-	daily: DailyCostars
+	daily?: DailyCostars
 }
 
 export default async function Home({ daily }: IHomeProps) {
