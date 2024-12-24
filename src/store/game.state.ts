@@ -47,8 +47,10 @@ const useGameState = () => {
     if(authConflict)
       await warnForConflict();
 
-    if (migrationNeeded)
-      await migrateSaveDate();
+    if (migrationNeeded) {
+      await migrateSaveDate(localUser);
+      localStorageService.setAuthStatus('true');
+    }
 
     const promises = [];
 

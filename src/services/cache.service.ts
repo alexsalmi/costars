@@ -65,20 +65,20 @@ export const getRandomPool = unstable_cache(async () => {
 
 export const getTodaysCostars = unstable_cache(async () => {
   console.log("TODAYS COSTARS")
-  return await supabase_getDailyCostars(new Date());
+  return supabase_getDailyCostars(new Date());
 }, [], { tags: ['daily_costars'] }); 
 
 
 export const getTodaysSolutions = unstable_cache(async () => {
   console.log("TODAYS SOLUTIONS")
-  return await supabase_getDailySolutions((await getTodaysCostars()).id!);
+  return supabase_getDailySolutions((await supabase_getDailyCostars(new Date())).id || 0);
 }, [], { tags: ['daily_costars'] }); 
 
 export const getYesterdaysCostars = unstable_cache(async () => {
   console.log("YESTERDAYS COSTARS")
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() + 1);
-  return await supabase_getDailyCostars(yesterday);
+  return supabase_getDailyCostars(yesterday);
 }, [], { tags: ['daily_costars'] }); 
 
 

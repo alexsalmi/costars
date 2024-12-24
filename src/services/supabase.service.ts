@@ -109,10 +109,18 @@ export const supabase_hasDailyStats = async (user_id: string): Promise<boolean> 
 	return (data && data.length > 0) || false;
 }
 
+export const supabase_setDailyStats = async (dailyStats: DailyStats) => {
+	const supabase = await createClient();
+	
+	return await supabase
+		.from("DailyStats")
+		.insert(dailyStats);
+}
+
 export const supabase_updateDailyStats = async (dailyStats: DailyStats) => {
 	const supabase = await createClient();
 	
-	await supabase
+	return await supabase
 		.from("DailyStats")
 		.update(dailyStats)
 		.eq('id', dailyStats.id);
@@ -143,10 +151,18 @@ export const supabase_getUnlimitedStats = async (user_id: string): Promise<Unlim
 	return data[0];
 }
 
+export const supabase_setUnlimitedStats = async (unlimitedStats: UnlimitedStats) => {
+	const supabase = await createClient();
+	
+	return await supabase
+		.from("UnlimitedStats")
+		.insert(unlimitedStats);
+}
+
 export const supabase_updateUnlimitedStats = async (unlimitedStats: UnlimitedStats) => {
 	const supabase = await createClient();
 	
-	await supabase
+	return await supabase
 		.from("UnlimitedStats")
 		.update(unlimitedStats)
 		.eq('id', unlimitedStats.id);

@@ -30,7 +30,7 @@ class LocalStorageService {
     const solutions = this.getSolutions();
 
     solutions.push(solution);
-    
+        
     window.localStorage.setItem(KEY_SOLUTIONS, btoa(JSON.stringify(solutions)));
   }
 

@@ -1,5 +1,5 @@
 import localStorageService from "./localstorage.service";
-import { supabase_getDailyStats, supabase_getUnlimitedStats, supabase_getUserDailySolutions, supabase_saveSolution, supabase_updateDailyStats, supabase_updateUnlimitedStats } from "./supabase.service";
+import { supabase_getDailyStats, supabase_getUnlimitedStats, supabase_getUserDailySolutions, supabase_saveSolution, supabase_setDailyStats, supabase_setUnlimitedStats, supabase_updateDailyStats, supabase_updateUnlimitedStats } from "./supabase.service";
 import { getTodaysCostars, getYesterdaysCostars } from "./cache.service";
 
 export const getDailyStats = async (user: UserInfo) => {
@@ -89,16 +89,24 @@ export const getUserDailySolutions = async (user: UserInfo) => {
   return localStorageService.getSolutions();
 }
 
-export const migrateSaveDate = async () => {
+export const migrateSaveDate = async (user: UserInfo) => {
   const dailyStats = localStorageService.getDailyStats();
   const unlimitedStats = localStorageService.getUnlimitedStats();
   const solutions = localStorageService.getSolutions();
 
-  await Promise.all([
-    supabase_updateDailyStats(dailyStats),
-    supabase_updateUnlimitedStats(unlimitedStats),
-    supabase_saveSolution(solutions)
-  ]);
+  return await Promise.all([
+    supabase_setDailyStats({
+      ...dailyStats,
+      user_id: user?.id,
 
-  return;
+    }),
+    supabase_setUnlimitedStats({
+      ...unlimitedStats,
+      user_id: user?.id
+    }),
+    supabase_saveSolution(solutions.map(sol => ({
+      ...sol,
+      user_id: user?.id
+    })))
+  ]);
 }
