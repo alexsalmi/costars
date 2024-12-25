@@ -221,13 +221,27 @@ export const supabase_updateCostars = async (id: number, costars: NewDailyCostar
 	.insert(solData);
 }
 
-export const supabase_getDailyCostars = async (date: Date): Promise<DailyCostars> => {
+export const supabase_getDailyCostarsByDate = async (date: Date): Promise<DailyCostars> => {
 	const supabase = await createClientForCache();
 
 	const { data } = await supabase
 		.from('DailyCostars')
 		.select()
 		.eq('date', date.toLocaleString());
+
+	if(!data || data.length === 0)
+		throw Error("Invalid date");
+
+	return data[0];
+}
+
+export const supabase_getDailyCostarsByDayNumber = async (day_number: number): Promise<DailyCostars> => {
+	const supabase = await createClientForCache();
+
+	const { data } = await supabase
+		.from('DailyCostars')
+		.select()
+		.eq('day_number', day_number);
 
 	if(!data || data.length === 0)
 		throw Error("Invalid date");

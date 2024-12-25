@@ -100,8 +100,8 @@ const useGameState = () => {
     setCompleted(false);
   }
 
-  const initGame = async ([target, starter]: [GameEntity, GameEntity], daily?: DailyCostars, solutions?: Array<Solution>) => {
-    setGameType(daily ? 'daily' : 'custom');
+  const initGame = async ([target, starter]: [GameEntity, GameEntity], daily?: DailyCostars, solutions?: Array<Solution>, archive?: boolean) => {
+    setGameType(archive ? 'archive' : daily ? 'daily' : 'custom');
     setCompleted(false);
 
     let stats = dailyStats;
@@ -113,19 +113,19 @@ const useGameState = () => {
     if (solutions)
       setTodaysSolutions(solutions);
 
-    if (daily && stats === null) {
+    if (daily && !archive && stats === null) {
       stats = await getDailyStats(user);
       setDailyStats(stats);
     }
 
-    if (daily && lastSolve === null && stats?.last_played_id) {
+    if (daily) {
       const solutions = await getUserDailySolutions(user);
-      solve = solutions.find(sol => sol.daily_id === stats.last_played_id) || null;
-      setLastSolve(solve);
+      solve = solutions.find(sol => sol.daily_id === daily.id) || null;
+      setLastSolve(solve);      
     }
 
-    if (solve && stats?.last_played && stats.last_played_id === (daily?.id || -1)){
-      setTarget(solve.solution[solve.solution.length-1]);
+    if (daily && solve){
+      setTarget(daily.target);
       setHistory(solve.solution);
       setHints(solve.hints || []);
       setCompleted(true);

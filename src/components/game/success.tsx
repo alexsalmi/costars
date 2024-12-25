@@ -22,7 +22,7 @@ export default function Success() {
 
   return (
     <>
-      <CSBackButton/>
+      <CSBackButton link={gameType === 'archive' ? '/daily/archive' : ''} />
       <div className='success-container'>
         <div className='success-message-container'>
           <h3>Congratulations!</h3>
@@ -47,13 +47,20 @@ export default function Success() {
               <span>!</span>
             }
           </span>
-          {gameType !== 'daily' ?
+          {gameType === 'daily' ?
+            <CSButton onClick={() => setStatsOpen(true)}>See Stats</CSButton>
+          : gameType === 'archive' ?
+            <Link href="/daily/archive">
+              <CSButton>
+                Go back to the Archive
+              </CSButton>
+            </Link>   
+          :
             <Link href="/custom">
               <CSButton>
                 New Game
               </CSButton>
-            </Link>
-            : <CSButton onClick={() => setStatsOpen(true)}>See Stats</CSButton>
+            </Link>            
           }
         </div>
         <CSCardTrack />

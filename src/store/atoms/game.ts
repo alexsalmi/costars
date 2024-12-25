@@ -21,6 +21,7 @@ export const highScoreAtom = atom(0);
 export const dailyStatsAtom = atom<DailyStats | null>(null);
 export const unlimitedStatsAtom = atom<UnlimitedStats | null>(null);
 export const lastSolveAtom = atom<Solution | null>(null);
+export const userDailySolutionsAtom = atom<Array<Solution> | null>(null);
 export const todaysCostarsAtom = atom<DailyCostars | null>(null);
 export const todaysSolutionsAtom = atom<Array<Solution> | null>(null);
 export const userAtom = atom<UserInfo | null>(null);
