@@ -7,15 +7,27 @@
 	gap: 24px;
 	margin: 12px 0 50px;
   color: var(--highlight-primary);
+	text-align: center;
+
+	> span {
+		display: flex;
+		gap: 2px;
+
+		svg {
+			margin-left: 12px;
+		}
+
+		:first-child {
+			margin-left: 0;
+		}
+	}
 }
 
 .archive-calendar {
-  margin-top: 24px !important;
   color: var(--text-primary);
   background-color: var(--background-secondary);
 	opacity: 0.9;
   border-radius: 10px;
-
 }
 
 .archive-day-icon {
@@ -25,20 +37,16 @@
 	text-align: center;
 	background-color: var(--background-secondary);
 	border-radius: 50%;
-	width: 28px;
-	height: 28px;
+	width: 30px;
+	height: 30px;
 	font-weight: 500;
 
 	svg {
 		color: var(--highlight-primary);
 	}
-
-	span {
-		margin: 4px;
-	}
 }
 
 .archive-day-icon.completed {
   background-color: var(--highlight-secondary);	
-	border-radius: 50%;
+	border-radius: 6px;
 }

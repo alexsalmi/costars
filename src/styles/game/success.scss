@@ -25,3 +25,19 @@
 		width: fit-content;
 	}
 }
+
+.success-buttons-container {
+	display: flex;
+	gap: 12px;
+
+}
+
+
+.success-share-button {	
+	button {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 24px;
+	}
+}

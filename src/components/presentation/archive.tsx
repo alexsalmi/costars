@@ -82,6 +82,11 @@ export default function CSArchive() {
             } as PickersDayProps<Dayjs> & { prevResults: Array<IPrevResults> },
           }}
         />
+
+        <span>
+          <Star /> = Perfect Game
+          <StarBorderOutlined /> = Completed
+        </span>
       </div>
     </LocalizationProvider>
   )
