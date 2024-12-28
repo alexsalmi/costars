@@ -15,9 +15,6 @@ export const updateDailyStats = async (user: UserInfo, solution: Array<GameEntit
   const yesterdaysCostars = await getYesterdaysCostars();
 
   const dailyStats: DailyStats = await getDailyStats(user);
-  const solutions: Array<Solution> = await getUserDailySolutions(user);
-  
-  const lastSolution = solutions[solutions.length - 1];
 
   dailyStats.days_played!++;
   
@@ -26,7 +23,7 @@ export const updateDailyStats = async (user: UserInfo, solution: Array<GameEntit
   if(score === 2 && hints.length === 0)
     dailyStats.optimal_solutions!++;
 
-  if (!lastSolution || lastSolution.daily_id === yesterdaysCostars.id)
+  if (dailyStats.last_played_id === yesterdaysCostars.id)
     dailyStats.current_streak!++;
   else
     dailyStats.current_streak = 1;
