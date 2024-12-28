@@ -7,6 +7,6 @@ index 7cab977..dfe3482 100644
    "description": "👻 Primitive and flexible state management for React",
    "private": false,
 -  "type": "commonjs",
-   "version": "2.10.3",
+   "version": "2.11.0",
    "main": "./index.js",
    "types": "./index.d.ts",

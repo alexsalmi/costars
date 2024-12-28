@@ -20,7 +20,7 @@ export default function Credits() {
             height={60}
           />  
           <span>
-            All data and images related to movies and actors used in Costars are supplied by TMDB (The Movie Database). This product uses the TMDB API but is not endorsed or certified by TMDB.
+            All images and data related to movies and actors used in Costars are supplied by TMDB (The Movie Database). This product uses the TMDB API but is not endorsed or certified by TMDB.
           </span>
         </span>
       </section>

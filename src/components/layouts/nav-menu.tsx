@@ -1,10 +1,11 @@
 'use client'
-import { AccountCircleOutlined, DarkModeOutlined, HelpOutlineOutlined, LightModeOutlined } from '@mui/icons-material';
+import { AccountCircleOutlined, CalendarMonthOutlined, DarkModeOutlined, HelpOutlineOutlined, LightModeOutlined } from '@mui/icons-material';
 import CSButton from '@/components/inputs/button';
 import { useEffect, useState } from 'react';
 import CSProfileModal from '../modals/profile-modal';
 import { useTheme } from 'next-themes';
 import CSHowToModal from '../modals/how-to-modal';
+import Link from 'next/link';
 
 export default function CSNavMenu() {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -30,6 +31,11 @@ export default function CSNavMenu() {
           </CSButton>
           : <CSButton secondary><LightModeOutlined /></CSButton>
         }
+        <Link href='/daily/archive'>
+          <CSButton secondary>
+            <CalendarMonthOutlined />
+          </CSButton>
+        </Link>
         <CSButton secondary onClick={() => setHowToOpen(true)}>
           <HelpOutlineOutlined />
         </CSButton>

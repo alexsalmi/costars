@@ -12,13 +12,9 @@ export const getDailyStats = async (user: UserInfo) => {
 }
 
 export const updateDailyStats = async (user: UserInfo, solution: Array<GameEntity>, hints: Array<Hint>) => {
-  const todaysCostars = await getTodaysCostars();
   const yesterdaysCostars = await getYesterdaysCostars();
 
   const dailyStats: DailyStats = await getDailyStats(user);
-  const solutions: Array<Solution> = await getUserDailySolutions(user);
-  
-  const lastSolution = solutions[solutions.length - 1];
 
   dailyStats.days_played!++;
   
@@ -27,7 +23,7 @@ export const updateDailyStats = async (user: UserInfo, solution: Array<GameEntit
   if(score === 2 && hints.length === 0)
     dailyStats.optimal_solutions!++;
 
-  if (!lastSolution || lastSolution.daily_id === yesterdaysCostars.id)
+  if (dailyStats.last_played_id === yesterdaysCostars.id)
     dailyStats.current_streak!++;
   else
     dailyStats.current_streak = 1;
@@ -38,19 +34,24 @@ export const updateDailyStats = async (user: UserInfo, solution: Array<GameEntit
   dailyStats.last_played = new Date().toUTCString();
   dailyStats.last_played_id = (await getTodaysCostars()).id;
 
-  if (user) {
+  if (user)
     supabase_updateDailyStats(dailyStats);
+
+  localStorageService.setDailyStats(dailyStats);
+}
+
+export const saveSolution = async (user: UserInfo, solution: Array<GameEntity>, hints: Array<Hint>, dailyId?: number) => {
+  if (user) {
     supabase_saveSolution({
-      daily_id: todaysCostars.id,
+      daily_id: dailyId,
       solution,
       hints,
       user_id: user.id
     });
   }
 
-  localStorageService.setDailyStats(dailyStats);
   localStorageService.saveSolution({
-    daily_id: todaysCostars.id,
+    daily_id: dailyId,
     solution,
     hints
   });

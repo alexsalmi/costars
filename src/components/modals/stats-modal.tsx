@@ -3,13 +3,12 @@ import CSModal from '../presentation/modal';
 import useGameState from '@/store/game.state';
 import '@/styles/game/stats-modal.scss'
 import CSTextDisplay from '../presentation/display';
-import CSButton from '../inputs/button';
-import { ShareOutlined } from '@mui/icons-material';
 import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/solutions-toolbar';
 import { useState } from 'react';
-import { getScoreString } from '@/utils/utils';
-import { supabase_saveSolution } from '@/services/supabase.service';
+import CSButton from '../inputs/button';
+import Link from 'next/link';
+import { CalendarMonthOutlined } from '@mui/icons-material';
 
 interface ICSStatsModalProps {
 	isOpen: boolean,
@@ -19,7 +18,6 @@ interface ICSStatsModalProps {
 export default function CSStatsModal({ isOpen, close }: ICSStatsModalProps) {
 	const { score, history, hints, dailyStats, todaysCostars, todaysSolutions } = useGameState();
 	const [solutionInd, setSolutionInd] = useState(0);
-	const [shareLoading, setShareLoading] = useState(false);
 
 	const numMovies = (score-1)/2;
 	const numHints = history.reduce(
@@ -27,31 +25,6 @@ export default function CSStatsModal({ isOpen, close }: ICSStatsModalProps) {
 			acc + (hints.some(hint => hint.id === curr.id && hint.type === curr.type) ? 1 : 0), 
 		0
 	);
-
-	const shareScore = async () => {
-		if (!todaysCostars)
-			return;
-
-		setShareLoading(true);
-		const uuid = await supabase_saveSolution({
-			daily_id: todaysCostars.id!,
-			solution: history,
-			hints,
-			is_temporary: true
-		});
-		setShareLoading(false);
-
-    try{
-      window.navigator.share({
-        title: "Costars",
-        text: `Daily Costars #${todaysCostars.day_number}\n${getScoreString(history, hints)}\nCheck out my solution!
-				`,
-        url: `${location.origin}/solution/${uuid}`
-      })
-    } catch {
-      window.navigator.clipboard.writeText(`${location.origin}/solution/${uuid}`);
-    }
-	}
 	
   return (
 		<CSModal isOpen={isOpen} close={close}>
@@ -100,12 +73,12 @@ export default function CSStatsModal({ isOpen, close }: ICSStatsModalProps) {
 						<span>Highest Streak</span>
 					</CSTextDisplay>
 				</div>
-				<div className='stats-modal-share-button'>
-					<CSButton onClick={shareScore} loading={shareLoading}>
-          	<ShareOutlined />
-						Share your score
+				<Link href='/daily/archive' className='stats-modal-archive-button'>
+					<CSButton>
+						<CalendarMonthOutlined />
+						Explore the Daily Archive
 					</CSButton>
-				</div>
+				</Link>
 				<hr />
 				<div className='stats-modal-optimal'>
 					Here are a few of the <strong>{todaysCostars?.num_solutions} different ways</strong> to connect <strong>{todaysCostars?.starter.label}</strong> and <strong>{todaysCostars?.target.label}</strong> in 2 movies:

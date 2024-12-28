@@ -67,13 +67,14 @@
 	}
 }
 
-.stats-modal-share-button {
+.stats-modal-archive-button {
 	margin-top: 12px;
-	width: 220px;
-	
+	text-decoration: none;
+
 	button {
     display: flex;
     justify-content: center;
+		align-items: center;
     gap: 6px;
     padding: 6px 24px;
 	}

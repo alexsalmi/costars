@@ -1,4 +1,4 @@
-type GameType = 'daily' | 'custom' | 'unlimited'
+type GameType = 'daily' | 'custom' | 'unlimited' | 'archive'
 
 interface GameEntity {
   id: number,

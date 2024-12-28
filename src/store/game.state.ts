@@ -1,8 +1,8 @@
 import { useAtom } from "jotai";
-import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom, completedAtom, hintsAtom, isSolutionAtom, userAtom, unlimitedStatsAtom, lastSolveAtom, todaysCostarsAtom, todaysSolutionsAtom } from "./atoms/game";
+import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom, completedAtom, hintsAtom, isSolutionAtom, userAtom, unlimitedStatsAtom, lastSolveAtom, todaysCostarsAtom, todaysSolutionsAtom, userDailySolutionsAtom } from "./atoms/game";
 
 import { warnForConflict } from "@/utils/utils";
-import { getDailyStats, updateDailyStats as updateDailyStatsStorage, getUnlimitedStats, getUserDailySolutions, updateUnlimitedStats, migrateSaveDate } from "@/services/userdata.service";
+import { getDailyStats, updateDailyStats as updateDailyStatsStorage, getUnlimitedStats, getUserDailySolutions, updateUnlimitedStats, migrateSaveDate, saveSolution as saveSolutionStorage } from "@/services/userdata.service";
 import { getUser } from "@/services/auth.service";
 import localStorageService from "@/services/localstorage.service";
 import { supabase_hasDailyStats } from "@/services/supabase.service";
@@ -21,6 +21,7 @@ const useGameState = () => {
   const [isSolution] = useAtom(isSolutionAtom);
   const [dailyStats, setDailyStats] = useAtom(dailyStatsAtom);
   const [unlimitedStats, setUnlimitedStats] = useAtom(unlimitedStatsAtom);
+  const [userDailySolutions, setUserDailySolutions] = useAtom(userDailySolutionsAtom);
   const [lastSolve, setLastSolve] = useAtom(lastSolveAtom);
   const [todaysCostars, setTodaysCostars] = useAtom(todaysCostarsAtom);
   const [todaysSolutions, setTodaysSolutions] = useAtom(todaysSolutionsAtom);
@@ -58,9 +59,10 @@ const useGameState = () => {
       promises.push(getDailyStats(localUser).then(async res => {
         setDailyStats(res);
 
-        if (lastSolve === null && res.last_played_id) {
+        if (lastSolve === null) {
           const solutions = await getUserDailySolutions(localUser);
           const solve = solutions.find(sol => sol.daily_id === res.last_played_id) || null;
+          setUserDailySolutions(solutions);
           setLastSolve(solve);
         }
       }))
@@ -100,8 +102,8 @@ const useGameState = () => {
     setCompleted(false);
   }
 
-  const initGame = async ([target, starter]: [GameEntity, GameEntity], daily?: DailyCostars, solutions?: Array<Solution>) => {
-    setGameType(daily ? 'daily' : 'custom');
+  const initGame = async ([target, starter]: [GameEntity, GameEntity], daily?: DailyCostars, solutions?: Array<Solution>, archive?: boolean) => {
+    setGameType(archive ? 'archive' : daily ? 'daily' : 'custom');
     setCompleted(false);
 
     let stats = dailyStats;
@@ -113,19 +115,19 @@ const useGameState = () => {
     if (solutions)
       setTodaysSolutions(solutions);
 
-    if (daily && stats === null) {
+    if (daily && !archive && stats === null) {
       stats = await getDailyStats(user);
       setDailyStats(stats);
     }
 
-    if (daily && lastSolve === null && stats?.last_played_id) {
+    if (daily) {
       const solutions = await getUserDailySolutions(user);
-      solve = solutions.find(sol => sol.daily_id === stats.last_played_id) || null;
-      setLastSolve(solve);
+      solve = solutions.find(sol => sol.daily_id === daily.id) || null;
+      setLastSolve(solve);      
     }
 
-    if (solve && stats?.last_played && stats.last_played_id === (daily?.id || -1)){
-      setTarget(solve.solution[solve.solution.length-1]);
+    if (daily && solve){
+      setTarget(daily.target);
       setHistory(solve.solution);
       setHints(solve.hints || []);
       setCompleted(true);
@@ -137,7 +139,7 @@ const useGameState = () => {
     }
   }
 
-  const addEntity = (entity: GameEntity) => {
+  const addEntity = async (entity: GameEntity) => {
 		const isMatch = !current || current.credits!.includes(entity.id);
 
 		if (!isMatch)
@@ -149,7 +151,10 @@ const useGameState = () => {
 			const isTargetMatch = target.id === entity.id && target.type == entity.type;
 
 			if (isTargetMatch && gameType === 'daily')
-				updateDailyStats(entity);
+        updateDailyStats(entity);
+      
+      if (isTargetMatch && (gameType === 'daily' || gameType === 'archive'))
+        saveSolution(entity);
 
       if(isTargetMatch){
         setCompleted(true);
@@ -164,11 +169,13 @@ const useGameState = () => {
       if (history.length >= highScore)
         incrementHighscore();
 
-      updateUnlimitedStats(user, newHistory, hints);
+      await updateUnlimitedStats(user, newHistory, hints);
+
+      setUnlimitedStats(await getUnlimitedStats(user));
 		}
   }
 
-  const addHint = (entity: GameEntity) => {
+  const addHint = async (entity: GameEntity) => {
     const hintData: Hint = {
       id: entity.id,
       type: entity.type
@@ -180,7 +187,9 @@ const useGameState = () => {
     ])
 
     if (gameType === 'unlimited') {      
-      updateUnlimitedStats(user, history, [...hints, hintData]);
+      await updateUnlimitedStats(user, history, [...hints, hintData]);
+
+      setUnlimitedStats(await getUnlimitedStats(user));
 		}
   }
 
@@ -189,14 +198,21 @@ const useGameState = () => {
     setDailyStats(await getDailyStats(user));
   }
 
+  const saveSolution = async(value: GameEntity) => {
+    await saveSolutionStorage(user, [value, ...history].reverse(), hints, todaysCostars?.id);
+    setUserDailySolutions(await getUserDailySolutions(user));
+  }
+
   const incrementHighscore = () => {
     setHighScore(highScore + 1);
   }
 
-  const reset = () => {
+  const reset = async () => {
     if (gameType === 'unlimited') {
       setHistory([]);
-      updateUnlimitedStats(user, [], []);
+      await updateUnlimitedStats(user, [], []);
+
+      setUnlimitedStats(await getUnlimitedStats(user));
     }
     else {
       setHistory(history.slice(-1));
@@ -234,6 +250,7 @@ const useGameState = () => {
     completed,
     dailyStats,
     unlimitedStats,
+    userDailySolutions,
     lastSolve,
     isSolution,
     user,

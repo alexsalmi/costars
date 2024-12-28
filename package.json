@@ -1,6 +1,6 @@
 {
   "name": "costars",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -16,10 +16,12 @@
     "@mui/icons-material": "^6.1.8",
     "@mui/material": "^6.1.8",
     "@mui/material-nextjs": "^6.1.8",
+    "@mui/x-date-pickers": "^7.23.3",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.2",
     "@vercel/analytics": "^1.4.1",
     "@vercel/speed-insights": "^1.1.0",
+    "dayjs": "^1.11.13",
     "debounce": "^2.2.0",
     "jotai": "^2.10.3",
     "next": "15.0.3",

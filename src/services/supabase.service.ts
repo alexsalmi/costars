@@ -1,5 +1,6 @@
 'use server';
 import { createClient, createClientForCache } from "@/utils/supabase";
+import { unstable_cache } from "next/cache";
 
 export const supabase_getSolution = async (uuid: string): Promise<Solution> => {
 	const supabase = await createClient();
@@ -221,7 +222,7 @@ export const supabase_updateCostars = async (id: number, costars: NewDailyCostar
 	.insert(solData);
 }
 
-export const supabase_getDailyCostars = async (date: Date): Promise<DailyCostars> => {
+export const supabase_getDailyCostarsByDate = unstable_cache(async (date: Date): Promise<DailyCostars> => {
 	const supabase = await createClientForCache();
 
 	const { data } = await supabase
@@ -233,7 +234,45 @@ export const supabase_getDailyCostars = async (date: Date): Promise<DailyCostars
 		throw Error("Invalid date");
 
 	return data[0];
-}
+}, [], {tags: ['daily_costars']})
+
+export const supabase_getDailyCostarsByMonth = unstable_cache(async (date: Date): Promise<Array<DailyCostars>> => {
+	const supabase = await createClientForCache();
+
+	const start = new Date(date);
+	start.setDate(1);
+	start.setHours(0, 0, 0, 0);
+
+	const end = new Date(date);
+	end.setDate(1);
+	end.setMonth(end.getMonth() + 1);
+	end.setHours(0, 0, 0, 0);
+
+	const { data } = await supabase
+		.from('DailyCostars')
+		.select()
+		.gte('date', start.toISOString())
+		.lt('date', end.toISOString());
+
+	if(!data)
+		throw Error("Invalid date");
+
+	return data;
+}, [], {tags: ['daily_costars']})
+
+export const supabase_getDailyCostarsByDayNumber = unstable_cache(async (day_number: number): Promise<DailyCostars> => {
+	const supabase = await createClientForCache();
+
+	const { data } = await supabase
+		.from('DailyCostars')
+		.select()
+		.eq('day_number', day_number);
+
+	if (!data || data.length === 0)
+		throw Error("Invalid date");
+
+	return data[0];
+}, [], { tags: ['daily_costars'] });
 
 export const supabase_getAllFutureCostars = async (): Promise<Array<DailyCostars>> => {
 	const supabase = await createClient();

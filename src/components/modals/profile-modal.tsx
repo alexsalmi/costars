@@ -6,6 +6,7 @@ import { FacebookOutlined } from '@mui/icons-material';
 import '@/styles/components/profile-modal.scss'
 import Image from 'next/image';
 import localStorageService from '@/services/localstorage.service';
+import Link from 'next/link';
 
 interface ICSProfileModalProps {
 	isOpen: boolean,
@@ -55,8 +56,12 @@ export default function CSProfileModal({ isOpen, close }: ICSProfileModalProps) 
             <FacebookOutlined /> Login with Facebook
           </CSButton>
           <hr />
-          <h4>Why sign in?</h4>
-          <span>Signing in will ensure none of your stats or streaks are lost, and will allow you to save your progress accross devices!</span>
+          <div className='profile-modal-why-section'>
+            <h4>Why sign in?</h4>
+            <span>Signing in will ensure none of your stats or streaks are lost, and will allow you to save your progress accross devices!</span>
+            <span className='profile-modal-disclosure first'>Don&apos;t worry, your privacy is important to us. We don&apos;t collect any personal information other than the email address you choose to identify yourself with.</span>
+            <span className='profile-modal-disclosure' onClick={close}><Link href='/privacy' onClick={close}>Click here</Link> to view our Privacy Policy</span>
+          </div>
         </>
       }
 		</CSModal>

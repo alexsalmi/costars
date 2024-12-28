@@ -14,17 +14,18 @@ import CSBackButton from '../inputs/back-button';
 interface IGameProps {
 	initPeople?: [GameEntity, GameEntity],
 	daily?: DailyCostars,
-	solutions?: Array<Solution>
+	solutions?: Array<Solution>,
+	archive?: boolean
 }
 
-export default function GameContainer({ initPeople, daily, solutions }: IGameProps) {
+export default function GameContainer({ initPeople, daily, solutions, archive }: IGameProps) {
 	const { gameType, target, score, highScore, hints, completed, initGame, addEntity } = useGameState();
 
 	const isUnlimited = !initPeople;
 
 	useEffect(() => {
 		if (!isUnlimited)
-			initGame(initPeople, daily, solutions);
+			initGame(initPeople, daily, solutions, archive);
 	}, []);
 
 
@@ -41,7 +42,7 @@ export default function GameContainer({ initPeople, daily, solutions }: IGamePro
 
   return (
 		<div className='game-container'>
-			<CSBackButton/>
+			<CSBackButton link={gameType === 'archive' ? '/daily/archive' : ''} />
 			<CSSearchBar onSubmit={onSubmit} />
 			{gameType === 'unlimited' ?
 				<div className='game-scores'>

@@ -3,9 +3,13 @@ import CSButton from "./button";
 import { KeyboardArrowLeftOutlined } from "@mui/icons-material";
 import '@/styles/components/back-button.scss';
 
-export default function CSBackButton() {
+interface ICSBackButtonProps {
+	link?: string
+}
+
+export default function CSBackButton({link}: ICSBackButtonProps) {
 	return (
-		<Link href='/' className='back-button-container'>
+		<Link href={link || '/'} className='back-button-container'>
 			<CSButton secondary>
 				<KeyboardArrowLeftOutlined/>
 				Back

@@ -23,6 +23,7 @@ export default function CSGameToolbar() {
         <CSTooltip title="Click on any actor or movie to use a hint and see their credits"
           disableFocusListener
           enterTouchDelay={10}
+          leaveTouchDelay={3000}
         >
           <span>
             <CSButton secondary>

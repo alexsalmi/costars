@@ -34,3 +34,23 @@
 
 
 }
+
+.profile-modal-why-section {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  padding: 0 6px;
+
+  span {
+    text-align: left;
+  }
+}
+
+.profile-modal-disclosure {
+  font-size: 14px;
+}
+
+
+.profile-modal-disclosure.first {
+  margin-top: 24px;
+}
