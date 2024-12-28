@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 
-export const gameTypeAtom = atom('custom');
+export const gameTypeAtom = atom<GameType>('custom');
 export const targetAtom = atom({} as GameEntity);
 export const historyAtom = atom([] as Array<GameEntity>);
 export const hintsAtom = atom([] as Array<Hint>);

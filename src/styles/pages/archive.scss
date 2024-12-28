@@ -13,6 +13,32 @@
   margin-top: 24px !important;
   color: var(--text-primary);
   background-color: var(--background-secondary);
+	opacity: 0.9;
   border-radius: 10px;
 
+}
+
+.archive-day-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	background-color: var(--background-secondary);
+	border-radius: 50%;
+	width: 28px;
+	height: 28px;
+	font-weight: 500;
+
+	svg {
+		color: var(--highlight-primary);
+	}
+
+	span {
+		margin: 4px;
+	}
+}
+
+.archive-day-icon.completed {
+  background-color: var(--highlight-secondary);	
+	border-radius: 50%;
 }

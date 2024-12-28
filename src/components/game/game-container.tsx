@@ -42,7 +42,7 @@ export default function GameContainer({ initPeople, daily, solutions, archive }:
 
   return (
 		<div className='game-container'>
-			<CSBackButton/>
+			<CSBackButton link={gameType === 'archive' ? '/daily/archive' : ''} />
 			<CSSearchBar onSubmit={onSubmit} />
 			{gameType === 'unlimited' ?
 				<div className='game-scores'>

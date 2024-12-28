@@ -235,6 +235,30 @@ export const supabase_getDailyCostarsByDate = async (date: Date): Promise<DailyC
 	return data[0];
 }
 
+export const supabase_getDailyCostarsByMonth = async (date: Date): Promise<Array<DailyCostars>> => {
+	const supabase = await createClientForCache();
+
+	const start = new Date(date);
+	start.setDate(1);
+	start.setHours(0, 0, 0, 0);
+
+	const end = new Date(date);
+	end.setDate(1);
+	end.setMonth(end.getMonth() + 1);
+	end.setHours(0, 0, 0, 0);
+
+	const { data } = await supabase
+		.from('DailyCostars')
+		.select()
+		.gte('date', start.toISOString())
+		.lt('date', end.toISOString());
+
+	if(!data)
+		throw Error("Invalid date");
+
+	return data;
+}
+
 export const supabase_getDailyCostarsByDayNumber = async (day_number: number): Promise<DailyCostars> => {
 	const supabase = await createClientForCache();
 

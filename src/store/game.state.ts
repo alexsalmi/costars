@@ -1,8 +1,8 @@
 import { useAtom } from "jotai";
-import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom, completedAtom, hintsAtom, isSolutionAtom, userAtom, unlimitedStatsAtom, lastSolveAtom, todaysCostarsAtom, todaysSolutionsAtom } from "./atoms/game";
+import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom, completedAtom, hintsAtom, isSolutionAtom, userAtom, unlimitedStatsAtom, lastSolveAtom, todaysCostarsAtom, todaysSolutionsAtom, userDailySolutionsAtom } from "./atoms/game";
 
 import { warnForConflict } from "@/utils/utils";
-import { getDailyStats, updateDailyStats as updateDailyStatsStorage, getUnlimitedStats, getUserDailySolutions, updateUnlimitedStats, migrateSaveDate } from "@/services/userdata.service";
+import { getDailyStats, updateDailyStats as updateDailyStatsStorage, getUnlimitedStats, getUserDailySolutions, updateUnlimitedStats, migrateSaveDate, saveSolution as saveSolutionStorage } from "@/services/userdata.service";
 import { getUser } from "@/services/auth.service";
 import localStorageService from "@/services/localstorage.service";
 import { supabase_hasDailyStats } from "@/services/supabase.service";
@@ -21,6 +21,7 @@ const useGameState = () => {
   const [isSolution] = useAtom(isSolutionAtom);
   const [dailyStats, setDailyStats] = useAtom(dailyStatsAtom);
   const [unlimitedStats, setUnlimitedStats] = useAtom(unlimitedStatsAtom);
+  const [userDailySolutions, setUserDailySolutions] = useAtom(userDailySolutionsAtom);
   const [lastSolve, setLastSolve] = useAtom(lastSolveAtom);
   const [todaysCostars, setTodaysCostars] = useAtom(todaysCostarsAtom);
   const [todaysSolutions, setTodaysSolutions] = useAtom(todaysSolutionsAtom);
@@ -58,9 +59,10 @@ const useGameState = () => {
       promises.push(getDailyStats(localUser).then(async res => {
         setDailyStats(res);
 
-        if (lastSolve === null && res.last_played_id) {
+        if (lastSolve === null) {
           const solutions = await getUserDailySolutions(localUser);
           const solve = solutions.find(sol => sol.daily_id === res.last_played_id) || null;
+          setUserDailySolutions(solutions);
           setLastSolve(solve);
         }
       }))
@@ -149,7 +151,10 @@ const useGameState = () => {
 			const isTargetMatch = target.id === entity.id && target.type == entity.type;
 
 			if (isTargetMatch && gameType === 'daily')
-				updateDailyStats(entity);
+        updateDailyStats(entity);
+      
+      if (isTargetMatch && (gameType === 'daily' || gameType === 'archive'))
+        saveSolution(entity);
 
       if(isTargetMatch){
         setCompleted(true);
@@ -187,6 +192,11 @@ const useGameState = () => {
   const updateDailyStats = async(value: GameEntity) => {
     await updateDailyStatsStorage(user, [value, ...history].reverse(), hints);
     setDailyStats(await getDailyStats(user));
+  }
+
+  const saveSolution = async(value: GameEntity) => {
+    await saveSolutionStorage(user, [value, ...history].reverse(), hints, todaysCostars?.id);
+    setUserDailySolutions(await getUserDailySolutions(user));
   }
 
   const incrementHighscore = () => {
@@ -234,6 +244,7 @@ const useGameState = () => {
     completed,
     dailyStats,
     unlimitedStats,
+    userDailySolutions,
     lastSolve,
     isSolution,
     user,
