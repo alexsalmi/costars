@@ -139,7 +139,7 @@ const useGameState = () => {
     }
   }
 
-  const addEntity = (entity: GameEntity) => {
+  const addEntity = async (entity: GameEntity) => {
 		const isMatch = !current || current.credits!.includes(entity.id);
 
 		if (!isMatch)
@@ -169,11 +169,13 @@ const useGameState = () => {
       if (history.length >= highScore)
         incrementHighscore();
 
-      updateUnlimitedStats(user, newHistory, hints);
+      await updateUnlimitedStats(user, newHistory, hints);
+
+      setUnlimitedStats(await getUnlimitedStats(user));
 		}
   }
 
-  const addHint = (entity: GameEntity) => {
+  const addHint = async (entity: GameEntity) => {
     const hintData: Hint = {
       id: entity.id,
       type: entity.type
@@ -185,7 +187,9 @@ const useGameState = () => {
     ])
 
     if (gameType === 'unlimited') {      
-      updateUnlimitedStats(user, history, [...hints, hintData]);
+      await updateUnlimitedStats(user, history, [...hints, hintData]);
+
+      setUnlimitedStats(await getUnlimitedStats(user));
 		}
   }
 
@@ -203,10 +207,12 @@ const useGameState = () => {
     setHighScore(highScore + 1);
   }
 
-  const reset = () => {
+  const reset = async () => {
     if (gameType === 'unlimited') {
       setHistory([]);
-      updateUnlimitedStats(user, [], []);
+      await updateUnlimitedStats(user, [], []);
+
+      setUnlimitedStats(await getUnlimitedStats(user));
     }
     else {
       setHistory(history.slice(-1));
