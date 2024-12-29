@@ -140,11 +140,6 @@ const useGameState = () => {
   }
 
   const addEntity = async (entity: GameEntity) => {
-		const isMatch = !current || current.credits!.includes(entity.id);
-
-		if (!isMatch)
-			throw Error("Invalid guess");
-
     let newHistory = [entity, ...history];
 
 		if (gameType !== 'unlimited') {
