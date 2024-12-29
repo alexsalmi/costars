@@ -17,7 +17,8 @@ export default function CSDailyCostars({ daily }: IDailyCostarsProps) {
 		<div className='daily-costars-container'>
 			<h3 className='daily-costars-header'>Daily Costars</h3>
 			<div className='daily-costars-previews'>
-				<Image 
+				<Image
+					priority
 					src={daily?.starter.image ? `https://image.tmdb.org/t/p/w185${daily?.starter.image}` : '/placeholder.webp'}
 					width={80} height={120} alt={`Image of ${daily?.starter.label}`}
 				/>
@@ -27,6 +28,7 @@ export default function CSDailyCostars({ daily }: IDailyCostarsProps) {
 					<span>{daily?.target.label}</span>
 				</div>
 				<Image
+					priority
 					src={daily?.starter.image ? `https://image.tmdb.org/t/p/w185${daily?.target.image}` : '/placeholder.webp'}
 					width={80} height={120} alt={`Image of ${daily?.target.label}`}
 				/>

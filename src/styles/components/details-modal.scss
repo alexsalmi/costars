@@ -78,12 +78,10 @@
 	span {
 		background-color: var(--background-primary);
 		font-size: 11px;
-		transform: translateY(-100%);
+		transform: translateY(-90%);
 		padding: 2px;
 		text-align: center;
 		border-bottom-left-radius: 5px;
 		border-bottom-right-radius: 5px;
-		min-height: fit-content;
-		overflow: hidden;
 	}
 }

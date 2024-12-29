@@ -1,7 +1,7 @@
 'use server'
 import { unstable_cache } from 'next/cache';
 import { getCredits, getTrending } from "./tmdb.service";
-import { supabase_getDailyCostarsByDate, supabase_getDailySolutions } from './supabase.service';
+import { supabase_getDailyCostarsByDate, supabase_getDailyCostarsByDayNumber, supabase_getDailyCostarsByMonth, supabase_getDailySolutions } from './supabase.service';
 
 export const getRandomPerson = async () => {
   const pool = await getRandomPool();
@@ -64,23 +64,30 @@ export const getRandomPool = unstable_cache(async () => {
 }, [], { tags: ['random_pool'] });
 
 export const getTodaysCostars = unstable_cache(async () => {
-  console.log("TODAYS COSTARS")
-  return supabase_getDailyCostarsByDate(new Date());
+  return await supabase_getDailyCostarsByDate(new Date());
 }, [], { tags: ['daily_costars'] }); 
 
-
 export const getTodaysSolutions = unstable_cache(async () => {
-  console.log("TODAYS SOLUTIONS")
-  return supabase_getDailySolutions((await supabase_getDailyCostarsByDate(new Date())).id || 0);
+  return await supabase_getDailySolutions((await supabase_getDailyCostarsByDate(new Date())).id || 0);
 }, [], { tags: ['daily_costars'] }); 
 
 export const getYesterdaysCostars = unstable_cache(async () => {
-  console.log("YESTERDAYS COSTARS")
   const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() + 1);
-  return supabase_getDailyCostarsByDate(yesterday);
+  yesterday.setDate(yesterday.getDate() - 1);
+  return await supabase_getDailyCostarsByDate(yesterday);
 }, [], { tags: ['daily_costars'] }); 
 
+export const getCostarsByDayNumber = unstable_cache(async (day_number: number) => {
+  return await supabase_getDailyCostarsByDayNumber(day_number);
+}, [], { tags: ['daily_costars'] }); 
+
+export const getDailySolutions= unstable_cache(async (daily_id: number) => {
+  return await supabase_getDailySolutions(daily_id);
+}, [], { tags: ['daily_costars'] }); 
+
+export const getDailyCostarsByMonth = unstable_cache(async (month: number, year: number) => {
+  return await supabase_getDailyCostarsByMonth(month, year);
+}, [], { tags: ['daily_costars'] }); 
 
 interface OptimalQueueValue {
   entity: GameEntity,
