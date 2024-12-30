@@ -14,7 +14,7 @@ export default function CSModal({children, isOpen, className, close}: ICSModalPr
 	if(!isOpen) return <></>;
 
   return (
-		<Modal open={isOpen} sx={{overflowY: 'scroll'}}>
+		<Modal open={isOpen} sx={{overflowY: 'scroll'}} onClose={close}>
 			<div className={`modal-container ${className || ''}`}>
 				{close ?
 					<div className='modal-close-button'>
