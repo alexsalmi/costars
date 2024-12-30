@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={quicksand.className}>
       <head>
-        <PlausibleProvider domain="costarsgame.com" />        
+        <PlausibleProvider domain="costarsgame.com" trackOutboundLinks taggedEvents/>        
       </head>
       <body className="app">
       <ThemeProvider
