@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import PlausibleProvider from 'next-plausible';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { Provider as StoreProvider } from 'jotai'
 import { Quicksand } from 'next/font/google';
@@ -27,22 +26,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={quicksand.className}>
+      <head>
+        <PlausibleProvider domain="costarsgame.com" />        
+      </head>
       <body className="app">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-        >
-          <AppRouterCacheProvider>
-            <StoreProvider>
-              <BootstrapData>
-                {children}
-              </BootstrapData>
-            </StoreProvider>
-          </AppRouterCacheProvider>
-        </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+      >
+        <AppRouterCacheProvider>
+          <StoreProvider>
+            <BootstrapData>
+              {children}
+            </BootstrapData>
+          </StoreProvider>
+        </AppRouterCacheProvider>
+      </ThemeProvider>
       </body>
     </html>
   );
