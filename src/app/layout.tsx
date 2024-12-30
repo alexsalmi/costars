@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PlausibleProvider from 'next-plausible';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { Provider as StoreProvider } from 'jotai'
 import { Quicksand } from 'next/font/google';
@@ -42,7 +43,8 @@ export default function RootLayout({
             </BootstrapData>
           </StoreProvider>
         </AppRouterCacheProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
