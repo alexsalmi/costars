@@ -24,6 +24,43 @@
   }
 }
 
+.card-hint-icon {
+  font-size: 12px;
+  background-color: var(--highlight-secondary);
+  border: 2px solid var(--highlight-primary);
+  border-radius: 50%;
+  height: 22px;
+  min-width: 22px;
+  margin: 2px -6px;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+
+  svg {
+    height: 12px;
+    width: 12px;
+    color: var(--highlight-text) !important;
+  }
+}
+
+.card-label {
+  padding: 0 12px;
+}
+
+.card-image {
+  border-radius: 5px;
+}
+
+.card-expand-icon {
+  position: absolute;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .card-container.reverse {
   flex-direction: row-reverse;
 }
@@ -33,7 +70,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 6px;
+  padding: 6px;
 
   .card-label {
     max-width: 260px;
@@ -41,15 +78,6 @@
 
   .card-hint-icon {
     margin: 0;
-  }
-}
-
-.card-container.condensed.reverse {
-  flex-direction: row-reverse;
-  align-items: flex-start;
-
-  .card-hint-icon {
-    align-self: flex-end;
   }
 }
 
@@ -73,6 +101,15 @@
   }
 }
 
+.card-container.condensed.reverse {
+  flex-direction: row-reverse;
+  align-items: flex-start;
+
+  .card-hint-icon {
+    align-self: flex-end;
+  }
+}
+
 @media (hover: hover) {
   .card-container:hover {
     cursor: pointer;
@@ -91,46 +128,5 @@
     justify-content: center;
     gap: 6px;
     max-width: 250px;
-  }
-}
-
-.card-container.hintUsed {
-  border: 3px solid var(--highlight-primary);
-}
-
-.card-image {
-  border-radius: 5px;
-}
-
-.card-label {
-  padding: 0 12px;
-}
-
-.card-expand-icon {
-  position: absolute;
-  align-self: flex-start;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card-hint-icon {
-  font-size: 12px;
-  background-color: var(--highlight-secondary);
-  border: 2px solid var(--highlight-primary);
-  border-radius: 50%;
-  height: 22px;
-  min-width: 22px;
-  margin: 2px -6px;
-  align-self: flex-start;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-
-  svg {
-    height: 12px;
-    width: 12px;
-    color: var(--highlight-text) !important;
   }
 }

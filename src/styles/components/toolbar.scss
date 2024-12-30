@@ -14,28 +14,6 @@
   svg {
     font-size: 1.25em;
   }
-
-  > :first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-right: none;
-
-    button {
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
-      border-right: none;
-    }
-
-    svg {
-      padding: 1px;
-    }
-  }
-
-  > :last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-left: none;
-  }
 }
 
 .cs-solutions-toolbar {
@@ -48,4 +26,26 @@
       padding: 0;
     }
   }
+}
+
+.cs-toolbar > :first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-right: none;
+
+  button {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-right: none;
+  }
+
+  svg {
+    padding: 1px;
+  }
+}
+
+.cs-toolbar > :last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-left: none;
 }

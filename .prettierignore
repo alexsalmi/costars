@@ -4,3 +4,4 @@ node_modules
 .stylelintignore
 .eslintignore
 *.log
+package-lock.json

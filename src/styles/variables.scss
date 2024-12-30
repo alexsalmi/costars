@@ -1,16 +1,15 @@
 :root {
   --background-primary: #252e3f;
   --background-secondary: #909cc2;
-  --background-faded: rgba(144, 156, 194, 0.5);
+  --background-faded: rgba(144 156 194 / 50%);
   --background-hover: #cad0e3;
   --text-primary: #252e3f;
   --text-secondary: #e39e27;
-  --text-faded: rgba(144, 156, 194, 0.5);
+  --text-faded: rgba(144 156 194 / 50%);
   --highlight-primary: #e39e27;
   --highlight-secondary: #7a2010;
   --highlight-text: #fabb07;
-  --highlight-faded: rgb(227, 158, 39, 0.5);
-
+  --highlight-faded: rgb(227 158 39 / 50%);
   --max-width-desktop: 770px;
   --max-width-mobile: 425px;
 }
@@ -21,5 +20,5 @@
   --highlight-primary: #7a2010;
   --highlight-secondary: #e39e27;
   --highlight-text: #7a2010;
-  --highlight-faded: rgb(122, 32, 16, 0.5);
+  --highlight-faded: rgb(122 32 16 / 50%);
 }

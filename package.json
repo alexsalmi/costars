@@ -3,7 +3,7 @@
   "version": "0.8.2",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "prettier --check . && stylelint --allow-empty-input \"**/*.{css,scss}\" && next dev --turbopack",
     "build": "prettier --check . && stylelint --allow-empty-input \"**/*.{css,scss}\" && next build",
     "start": "next start",
     "lint": "next lint",

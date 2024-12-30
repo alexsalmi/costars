@@ -62,8 +62,7 @@
 .details-modal-credits.revealed {
   flex-direction: row;
   font-size: 12px;
-  overflow-y: hidden;
-  overflow-x: scroll;
+  overflow: scroll hidden;
   align-items: flex-start;
   justify-content: flex-start;
 }
