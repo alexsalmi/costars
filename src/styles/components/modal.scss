@@ -3,9 +3,7 @@
   top: 0;
   left: 50%;
 	transform: translateX(-50%);
-	min-width: min(100%, fit-content);
-	width: fit-content;
-	max-width: min(var(--max-width-mobile), 98vw);
+	width: min(var(--max-width-mobile), 98vw);
 	padding: 12px 16px 24px;
 	margin-top: 75px;
 	background-color: var(--background-primary);
