@@ -13,6 +13,7 @@ export default async function Home({ daily }: IHomeProps) {
   return (
     <div className="home-page">
       <Image
+        priority
         src={logo}
         alt="Costars logo"
         height={80}

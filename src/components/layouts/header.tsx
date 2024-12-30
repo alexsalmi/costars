@@ -13,6 +13,7 @@ export default function Header({ showLogo }: IHeaderProps) {
 				{showLogo ?
 					<Link href="/">
 						<Image
+							priority
 							src={logo}
 							alt="Costars logo"
 							height={32}

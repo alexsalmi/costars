@@ -46,6 +46,7 @@ export const supabase_getUserDailySolutions = async (user_id: string): Promise<A
 }
 
 export const supabase_getDailySolutions = async (daily_id: number): Promise<Array<Solution>> => {
+  console.log("SOLUTIONS")
 	const supabase = await createClientForCache();
 
 	const { data } = await supabase
@@ -223,6 +224,7 @@ export const supabase_updateCostars = async (id: number, costars: NewDailyCostar
 }
 
 export const supabase_getDailyCostarsByDate = unstable_cache(async (date: Date): Promise<DailyCostars> => {
+  console.log("COSTARS")
 	const supabase = await createClientForCache();
 
 	const { data } = await supabase
@@ -236,8 +238,10 @@ export const supabase_getDailyCostarsByDate = unstable_cache(async (date: Date):
 	return data[0];
 }, [], {tags: ['daily_costars']})
 
-export const supabase_getDailyCostarsByMonth = unstable_cache(async (date: Date): Promise<Array<DailyCostars>> => {
+export const supabase_getDailyCostarsByMonth = unstable_cache(async (month: number, year: number): Promise<Array<DailyCostars>> => {
 	const supabase = await createClientForCache();
+
+	const date = new Date(`${year}/${month}/01`);
 
 	const start = new Date(date);
 	start.setDate(1);

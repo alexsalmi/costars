@@ -1,6 +1,7 @@
 import '@/styles/components/modal.scss'
 import CSButton from '../inputs/button';
 import { CloseOutlined } from '@mui/icons-material';
+import { Modal } from '@mui/material';
 
 interface ICSModalProps {
 	children: React.ReactNode,
@@ -13,8 +14,8 @@ export default function CSModal({children, isOpen, className, close}: ICSModalPr
 	if(!isOpen) return <></>;
 
   return (
-		<div className='modal-background' onClick={() => close && close()}>
-			<div className={`modal-container ${className || ''}`} onClick={(e) => e.stopPropagation()}>
+		<Modal open={isOpen} sx={{overflowY: 'scroll'}} onClose={close}>
+			<div className={`modal-container ${className || ''}`}>
 				{close ?
 					<div className='modal-close-button'>
 						<CSButton secondary onClick={(e) => {
@@ -28,7 +29,7 @@ export default function CSModal({children, isOpen, className, close}: ICSModalPr
 				: <></>
 				}
 				{children}
-			</div>
-		</div>
+				</div>
+			</Modal>
   );
 }

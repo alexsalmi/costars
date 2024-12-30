@@ -43,15 +43,17 @@ export default function CSSearchBar({ onSubmit } : ICSSearchBar) {
 
 		if (!value) return;
 
-		setValue('');
+		const isMatch = !current || current.credits!.includes(value.id);
 
-		try {
-			await onSubmit(value);
-		}
-		catch {
+		if (!isMatch) {
 			setError(true);
 			setTimeout(() => setError(false), 1000);
+			return;
 		}
+
+		setValue('');
+
+		onSubmit(value);
 
 		inputRef.current?.querySelector("input")?.focus();
 	};

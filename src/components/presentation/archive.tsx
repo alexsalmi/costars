@@ -12,8 +12,8 @@ import { useEffect, useState } from 'react';
 import { PickerSelectionState } from '@mui/x-date-pickers/internals';
 import { DateView } from '@mui/x-date-pickers/models';
 import useGameState from '@/store/game.state';
-import { supabase_getDailyCostarsByMonth } from '@/services/supabase.service';
 import { StarBorderOutlined, Star } from '@mui/icons-material';
+import { getDailyCostarsByMonth } from '@/services/cache.service';
 
 interface IPrevResults {
   score: number,
@@ -34,7 +34,7 @@ export default function CSArchive() {
       return;
 
     setLoading(true);
-    const costars = await supabase_getDailyCostarsByMonth(date.toDate());
+    const costars = await getDailyCostarsByMonth(date.month() + 1, date.year());
 
     const results = userDailySolutions?.filter(sol => costars.some(c => c.id === sol.daily_id)).map(res => ({
       score: res.solution.reduce((acc, curr) => acc + (curr.type === 'movie' ? 1 : 0), 0),
