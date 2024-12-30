@@ -1,45 +1,45 @@
 .game-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-bottom: 20px;
-	flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-grow: 1;
 }
 
 .game-target {
-	margin-top: 14px;
+  margin-top: 14px;
 }
 
 .game-target > div {
-	width: 329px;
+  width: 329px;
 }
 
 .game-scores {
-	width: 100%;
-	max-width: var(--max-width-mobile);
-	margin-top: 14px;
-	display: flex;
-	justify-content: space-evenly;
-	gap: 16px;
+  width: 100%;
+  max-width: var(--max-width-mobile);
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 16px;
 }
 
 .game-scores > div {
-	width: 50%;
-	display: flex;
-	justify-content: center;
-	font-size: 14px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
 }
 
 .game-card-section {
-	display: flex;
-	flex-direction: column;
-	flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 
-	> :first-child {
-		transform: translateY(50%);
-	}
+  > :first-child {
+    transform: translateY(50%);
+  }
 
-	> :last-child {
-		max-height: 75vh;
-	}
+  > :last-child {
+    max-height: 75vh;
+  }
 }

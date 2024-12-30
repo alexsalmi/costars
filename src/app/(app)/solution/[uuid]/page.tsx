@@ -1,10 +1,10 @@
-import CSBackButton from "@/components/inputs/back-button";
-import CardTrack from "@/components/presentation/card-track";
-import { supabase_getSolution } from "@/services/supabase.service";
+import CSBackButton from '@/components/inputs/back-button';
+import CardTrack from '@/components/presentation/card-track';
+import { supabase_getSolution } from '@/services/supabase.service';
 import '@/styles/pages/solution.scss';
 
 interface ICustomGameProps {
-  params: Promise<{ uuid: string }>
+  params: Promise<{ uuid: string }>;
 }
 
 export default async function CustomGame({ params }: ICustomGameProps) {
@@ -14,8 +14,8 @@ export default async function CustomGame({ params }: ICustomGameProps) {
 
   return (
     <>
-      <CSBackButton/>
-      <div className="solution-page-container">
+      <CSBackButton />
+      <div className='solution-page-container'>
         <h3>{"Here's"} my solution:</h3>
         <CardTrack cards={solution} hints={hints} />
       </div>

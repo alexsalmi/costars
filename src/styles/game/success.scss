@@ -1,43 +1,41 @@
 .success-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-bottom: 20px;
-	flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-grow: 1;
   gap: 40px;
 }
 
 .success-message-container {
-	color: var(--highlight-text);
+  color: var(--highlight-text);
   max-width: var(--max-width-mobile);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	gap: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
 
-	strong {
-		font-size: 18px;
-		font-weight: 900;
-	}
+  strong {
+    font-size: 18px;
+    font-weight: 900;
+  }
 
-	button {
-		width: fit-content;
-	}
+  button {
+    width: fit-content;
+  }
 }
 
 .success-buttons-container {
-	display: flex;
-	gap: 12px;
-
+  display: flex;
+  gap: 12px;
 }
 
-
-.success-share-button {	
-	button {
+.success-share-button {
+  button {
     display: flex;
     justify-content: center;
     gap: 6px;
     padding: 6px 24px;
-	}
+  }
 }

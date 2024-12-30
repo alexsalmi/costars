@@ -1,67 +1,67 @@
 .cs-button {
-	width: 100%;
-	height: min-content;
-	padding: 6px 32px;
-	border-radius: 50ch;
-	border: 3px solid var(--highlight-primary);
-	font-weight: 600;
-	transition: all 250ms ease-in-out;
+  width: 100%;
+  height: min-content;
+  padding: 6px 32px;
+  border-radius: 50ch;
+  border: 3px solid var(--highlight-primary);
+  font-weight: 600;
+  transition: all 250ms ease-in-out;
 
-	* {
-		transition: all 250ms ease-in-out;
-	}
+  * {
+    transition: all 250ms ease-in-out;
+  }
 }
 
 .cs-button.primary {
-	background-color: var(--highlight-primary);
-	color: var(--background-primary);
+  background-color: var(--highlight-primary);
+  color: var(--background-primary);
 
-	svg {
-		color: var(--background-primary);
-	}
+  svg {
+    color: var(--background-primary);
+  }
 }
 
 .cs-button.secondary {
-	background-color: var(--background-primary);
-	color: var(--highlight-text);
+  background-color: var(--background-primary);
+  color: var(--highlight-text);
 
-	svg {
-		color: var(--highlight-text);
-	}
+  svg {
+    color: var(--highlight-text);
+  }
 }
 
 .cs-button.disabled {
-	color: var(--text-faded);
-	cursor: auto;
+  color: var(--text-faded);
+  cursor: auto;
 
-	svg {
-		color: var(--text-faded);
-	}
+  svg {
+    color: var(--text-faded);
+  }
 }
 
 @media (hover: hover) {
-	.cs-button:hover {
-		background-color: var(--highlight-secondary);
-		color: var(--highlight-text);
+  .cs-button:hover {
+    background-color: var(--highlight-secondary);
+    color: var(--highlight-text);
 
-		svg {
-			color: var(--highlight-text);
-		}
-	}
+    svg {
+      color: var(--highlight-text);
+    }
+  }
 
-	.cs-button.disabled:hover {
-		color: var(--text-faded);
+  .cs-button.disabled:hover {
+    color: var(--text-faded);
 
-		svg {
-			color: var(--text-faded);
-		}
-	}
+    svg {
+      color: var(--text-faded);
+    }
+  }
 
-	.cs-button.primary.disabled:hover {
-		background-color: var(--highlight-primary);
-	}
+  .cs-button.primary.disabled:hover {
+    background-color: var(--highlight-primary);
+  }
 
-	.cs-button.secondary.disabled:hover {
-		background-color: var(--background-primary);
-	}
+  .cs-button.secondary.disabled:hover {
+    background-color: var(--background-primary);
+  }
 }

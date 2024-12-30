@@ -1,12 +1,12 @@
-'use client'
+'use client';
 import CSModal from '../presentation/modal';
 import CSButton from '../inputs/button';
 import { useEffect, useState } from 'react';
-import {ShareOutlined, SkipNextOutlined } from '@mui/icons-material';
+import { ShareOutlined, SkipNextOutlined } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import Slide from '@mui/material/Slide';
 import Link from 'next/link';
-import '@/styles/game/custom-game-modal.scss'
+import '@/styles/game/custom-game-modal.scss';
 import { useRouter } from 'next/navigation';
 import useGameState from '@/store/game.state';
 import CSCostarsGenerator from '../inputs/costars-generator';
@@ -22,70 +22,75 @@ export default function CSCustomGameModal() {
     initCustomGame();
   }, []);
 
-
   const shareLink = () => {
-    if (!target || !starter)
-      return;
+    if (!target || !starter) return;
 
-    try{
+    try {
       window.navigator.share({
-        title: "Costars",
+        title: 'Costars',
         text: `Connect ${starter.label} and ${target.label} in as few movies as possible!`,
-        url: `${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`
-      })
+        url: `${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`,
+      });
     } catch {
-      window.navigator.clipboard.writeText(`${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`);
+      window.navigator.clipboard.writeText(
+        `${location.origin}/custom/${target.id.toString(36)}..${starter.id.toString(36)}`,
+      );
       setOpenToast(true);
     }
-  }
-
+  };
 
   const handleCloseToast = () => {
     setOpenToast(false);
-  }
-
+  };
 
   return (
-    <CSModal isOpen close={() => {router.push('/')}} className='custom-game-modal'>
+    <CSModal
+      isOpen
+      close={() => {
+        router.push('/');
+      }}
+      className='custom-game-modal'
+    >
       <div className='custom-game-header'>
-			  <h3>Custom Game</h3>
-        <span>
-          Choose two actors to connect!
-        </span>
+        <h3>Custom Game</h3>
+        <span>Choose two actors to connect!</span>
       </div>
-      <CSCostarsGenerator target={target} starter={starter} setTarget={setTarget} setStarter={setStarter} />
-			<div className="custom-game-modal-buttons">
-				<CSButton 
-          secondary
-          disabled={!target || !starter}
-          onClick={shareLink}
-        >
+      <CSCostarsGenerator
+        target={target}
+        starter={starter}
+        setTarget={setTarget}
+        setStarter={setStarter}
+      />
+      <div className='custom-game-modal-buttons'>
+        <CSButton secondary disabled={!target || !starter} onClick={shareLink}>
           <ShareOutlined />
-					Share
+          Share
         </CSButton>
-        {!target || !starter ?
+        {!target || !starter ? (
           <CSButton disabled>
             Start
             <SkipNextOutlined />
           </CSButton>
-        :
-          <Link href={`/custom/${target.id.toString(36)}..${starter.id.toString(36)}`}>
+        ) : (
+          <Link
+            href={`/custom/${target.id.toString(36)}..${starter.id.toString(36)}`}
+          >
             <CSButton>
               <span>Start</span>
               <SkipNextOutlined />
             </CSButton>
           </Link>
-        }
+        )}
       </div>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={openToast}
         onClose={handleCloseToast}
         autoHideDuration={3000}
-        message="Copied link to clipboard!"
+        message='Copied link to clipboard!'
         TransitionComponent={Slide}
         className='custom-game-modal-toast'
       />
-		</CSModal>
+    </CSModal>
   );
 }

@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 import { withPlausibleProxy } from 'next-plausible';
 
 const nextConfig: NextConfig = {
@@ -21,8 +21,8 @@ const nextConfig: NextConfig = {
     ],
   },
   sassOptions: {
-    silenceDeprecations: ["legacy-js-api"],
-  }
+    silenceDeprecations: ['legacy-js-api'],
+  },
 };
 
 export default withPlausibleProxy()(nextConfig);

@@ -1,10 +1,12 @@
-"use client";
+'use client';
 
-import useGameState from "@/store/game.state";
-import { useEffect } from "react";
+import useGameState from '@/store/game.state';
+import { useEffect } from 'react';
 
-export default function BootstrapData({ children }: Readonly<{
-  children: React.ReactNode
+export default function BootstrapData({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
 }>) {
   const { bootstrapState } = useGameState();
 
@@ -12,9 +14,5 @@ export default function BootstrapData({ children }: Readonly<{
     bootstrapState();
   }, []);
 
-  return (
-    <>
-      { children }
-    </>
-  );
+  return <>{children}</>;
 }

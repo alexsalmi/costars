@@ -1,136 +1,136 @@
 .card-container {
-	width: 300px;
-	height: max-content;
-	background-color: var(--background-secondary);
-	border-radius: 10px;
-	padding: 6px 12px;
-	font-weight: 600;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border: 2px solid var(--background-secondary);
+  width: 300px;
+  height: max-content;
+  background-color: var(--background-secondary);
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid var(--background-secondary);
 
-	button {
-		padding: 0;
-		width: min-content;
-		height: 1.5em;
-		align-self: flex-start;
-		background-color: inherit !important;
-		border: none;
-	}
+  button {
+    padding: 0;
+    width: min-content;
+    height: 1.5em;
+    align-self: flex-start;
+    background-color: inherit !important;
+    border: none;
+  }
 
-	svg {
-		color: var(--highlight-text) !important;
-	}
+  svg {
+    color: var(--highlight-text) !important;
+  }
 }
 
 .card-container.reverse {
-	flex-direction: row-reverse;
+  flex-direction: row-reverse;
 }
 
 .card-container.condensed {
-	height: min-content;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	padding: 6px 6px;
+  height: min-content;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 6px;
 
-	.card-label {
-		max-width: 260px;
-	}
+  .card-label {
+    max-width: 260px;
+  }
 
-	.card-hint-icon {
-		margin: 0;
-	}
+  .card-hint-icon {
+    margin: 0;
+  }
 }
 
 .card-container.condensed.reverse {
-	flex-direction: row-reverse;
-	align-items: flex-start;
+  flex-direction: row-reverse;
+  align-items: flex-start;
 
-	.card-hint-icon {
-		align-self: flex-end;
-	}
+  .card-hint-icon {
+    align-self: flex-end;
+  }
 }
 
 .card-container.target {
-	border: 3px solid var(--highlight-primary);
-	background-color: var(--highlight-secondary);
-	color: var(--highlight-text);
-	padding: 6px 12px;
+  border: 3px solid var(--highlight-primary);
+  background-color: var(--highlight-secondary);
+  color: var(--highlight-text);
+  padding: 6px 12px;
 
-	.card-label {
-		margin-left: 24px;
-	}
+  .card-label {
+    margin-left: 24px;
+  }
 
-	.card-expand-icon {
-		margin-right: 275px
-	}
+  .card-expand-icon {
+    margin-right: 275px;
+  }
 
-	.card-hint-icon {
-		align-self: flex-end;
-		margin-left: 1px;
-	}
+  .card-hint-icon {
+    align-self: flex-end;
+    margin-left: 1px;
+  }
 }
 
 @media (hover: hover) {
-	.card-container:hover {
-		cursor: pointer;
-		border-color: var(--highlight-faded);
-	}
+  .card-container:hover {
+    cursor: pointer;
+    border-color: var(--highlight-faded);
+  }
 }
 
 .card-container.target.condensed {
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	
-	.card-label {
-		display: flex;
-		flex-grow: 1;
-		justify-content: center;
-		gap: 6px;
-		max-width: 250px;
-	}
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .card-label {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    gap: 6px;
+    max-width: 250px;
+  }
 }
 
 .card-container.hintUsed {
-	border: 3px solid var(--highlight-primary);
+  border: 3px solid var(--highlight-primary);
 }
 
 .card-image {
-	border-radius: 5px;
+  border-radius: 5px;
 }
 
 .card-label {
-	padding: 0 12px;
+  padding: 0 12px;
 }
 
 .card-expand-icon {
-	position: absolute;
-	align-self: flex-start;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  position: absolute;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-hint-icon {
-	font-size: 12px;
-	background-color: var(--highlight-secondary);
-	border: 2px solid var(--highlight-primary);
-	border-radius: 50%;
-	height: 22px;
-	min-width: 22px;
-	margin: 2px -6px;
-	align-self: flex-start;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-weight: 900;
+  font-size: 12px;
+  background-color: var(--highlight-secondary);
+  border: 2px solid var(--highlight-primary);
+  border-radius: 50%;
+  height: 22px;
+  min-width: 22px;
+  margin: 2px -6px;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
 
-	svg {
-		height: 12px;
-		width: 12px;
-			color: var(--highlight-text) !important;
-	}
+  svg {
+    height: 12px;
+    width: 12px;
+    color: var(--highlight-text) !important;
+  }
 }

@@ -1,5 +1,5 @@
-import Footer from "@/components/layouts/footer";
-import Header from "@/components/layouts/header";
+import Footer from '@/components/layouts/footer';
+import Header from '@/components/layouts/header';
 
 export default function MenuLayout({
   children,
@@ -9,10 +9,8 @@ export default function MenuLayout({
   return (
     <>
       <Header showLogo />
-        <main>
-          {children}
-        </main>
-      <Footer/>
+      <main>{children}</main>
+      <Footer />
     </>
   );
 }
