@@ -4,16 +4,16 @@ import { SupabaseClient } from '@supabase/supabase-js';
 
 export const sbGetSolutions = async (
   params: SolutionParams,
-  clientSide?: boolean,
+  forCache?: boolean,
 ): Promise<Array<Solution>> => {
   let supabase: SupabaseClient;
 
-  if (clientSide) supabase = await createClientForCache();
+  if (forCache) supabase = await createClientForCache();
   else supabase = await createClient();
 
   const { uuid, user_id, daily_id, all_daily } = params;
 
-  let query = supabase.from('Solutions').select('*');
+  let query = supabase.from('Solutions').select();
   if (uuid) query = query.eq('id', uuid);
   if (user_id) query = query.eq('user_id', user_id);
   if (daily_id) query = query.eq('daily_id', daily_id);
@@ -31,6 +31,18 @@ export const sbPostSolutions = async (
 ): Promise<string> => {
   const supabase = await createClient();
 
+  if (!Array.isArray(solutions)) solutions = [solutions];
+
+  // Remove credits array before saing to DB, takes up unnecessary space
+  solutions = solutions.map((row) => ({
+    ...row,
+    solution: row.solution.map((sol) => ({
+      ...sol,
+      credits: undefined,
+      popularity: undefined,
+    })),
+  }));
+
   const { data } = await supabase.from('Solutions').insert(solutions).select();
 
   if (!data || data.length === 0) return '';
@@ -43,11 +55,14 @@ export const sbDeleteSolutions = async (
 ): Promise<void> => {
   const supabase = await createClient();
 
-  const { is_temporary, after_date } = params;
+  const { daily_id, is_daily_optimal, is_temporary, before_date } = params;
 
-  await supabase
-    .from('Solutions')
-    .delete()
-    .eq('is_temporary', is_temporary)
-    .lt('created_at', after_date);
+  let query = supabase.from('Solutions').delete();
+
+  if (daily_id) query = query.eq('daily_id', daily_id);
+  if (is_daily_optimal) query = query.eq('is_daily_optimal', is_daily_optimal);
+  if (is_temporary) query = query.eq('is_temporary', is_temporary);
+  if (before_date) query = query.lt('created_at', before_date);
+
+  await query;
 };

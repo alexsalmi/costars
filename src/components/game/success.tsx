@@ -8,8 +8,8 @@ import CSStatsModal from '../modals/stats-modal';
 import CSBackButton from '../inputs/buttons/back-button';
 import { ShareOutlined } from '@mui/icons-material';
 import { getScoreString } from '@/utils/utils';
+import { sb_PostSolutions } from '@/services/supabase';
 import '@/styles/game/success.scss';
-import supabaseService from '@/services/supabase';
 
 export default function Success() {
   const { history, target, score, hints, gameType, todaysCostars } =
@@ -32,7 +32,7 @@ export default function Success() {
     if (!todaysCostars) return;
 
     setShareLoading(true);
-    const uuid = await supabaseService.solutions.post({
+    const uuid = await sb_PostSolutions({
       daily_id: todaysCostars.id!,
       solution: history,
       hints,

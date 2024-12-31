@@ -1,10 +1,15 @@
 'use server';
-import { createClient } from '@/utils/supabase';
+import { createClient, createClientForCache } from '@/utils/supabase';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 export const sbGetDailyStats = async (
   params: DailyStatsParams,
+  forCache?: boolean,
 ): Promise<DailyStats | null> => {
-  const supabase = await createClient();
+  let supabase: SupabaseClient;
+
+  if (forCache) supabase = await createClientForCache();
+  else supabase = await createClient();
 
   const { user_id } = params;
 

@@ -8,9 +8,11 @@ import { Input } from '@mui/material';
 import { revalidatePath } from 'next/cache';
 import { getDayNumber } from '@/utils/utils';
 import {
-  supabase_saveCostars,
-  supabase_updateCostars,
-} from '@/services/supabase/supabase.service';
+  sb_DeleteSolutions,
+  sb_PostDailyCostars,
+  sb_PostSolutions,
+  sb_UpdateDailyCostars,
+} from '@/services/supabase';
 
 interface ICSCostarsEditorProps {
   costars?: DailyCostars;
@@ -43,17 +45,36 @@ export default function CSCostarsEditor({ costars }: ICSCostarsEditorProps) {
       return;
     }
 
-    const newCostars: NewDailyCostars = {
+    const newCostars: DailyCostars = {
       starter,
       target,
       date: date!,
       num_solutions: solutions.total_count,
       day_number: getDayNumber(date!),
-      solutions: solutions.solutions,
     };
 
-    if (costars === undefined) await supabase_saveCostars(newCostars);
-    else await supabase_updateCostars(costars.id!, newCostars);
+    let daily_id: number | null;
+
+    if (costars === undefined) {
+      daily_id = await sb_PostDailyCostars(newCostars);
+    } else {
+      daily_id = costars.id!;
+
+      await sb_DeleteSolutions({
+        daily_id,
+        is_daily_optimal: true,
+      });
+
+      await sb_UpdateDailyCostars(newCostars);
+    }
+
+    await sb_PostSolutions(
+      solutions.solutions.map((solution) => ({
+        daily_id,
+        solution,
+        is_daily_optimal: true,
+      })),
+    );
 
     setEditing(false);
     revalidatePath('/admin');

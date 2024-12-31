@@ -32,7 +32,7 @@ import {
 } from '@/services/userdata.service';
 import { getUser } from '@/services/supabase/auth.service';
 import localStorageService from '@/services/localstorage.service';
-import SupabaseService from '@/services/supabase';
+import { sb_GetDailyStats } from '@/services/supabase';
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
@@ -71,8 +71,7 @@ const useGameState = () => {
 
     if (authPending && !localStorageService.isFresh()) {
       const hasDailyStats =
-        (await SupabaseService.dailyStats.get({ user_id: localUser!.id })) !==
-        null;
+        (await sb_GetDailyStats({ user_id: localUser!.id })) !== null;
 
       migrationNeeded = !localStorageService.isFresh() && !hasDailyStats;
       authConflict = !localStorageService.isFresh() && hasDailyStats;

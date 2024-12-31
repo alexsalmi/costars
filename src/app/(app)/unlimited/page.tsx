@@ -8,7 +8,7 @@ export default function UnlimitedGame() {
 
   useEffect(() => {
     initUnlimitedGame();
-  }, [initUnlimitedGame]);
+  }, []);
 
   return <CSGameContainer />;
 }

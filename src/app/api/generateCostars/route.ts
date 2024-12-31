@@ -1,5 +1,5 @@
 import { getCostars } from '@/services/cache.service';
-import { supabase_saveCostars } from '@/services/supabase/supabase.service';
+import { sb_PostDailyCostars, sb_PostSolutions } from '@/services/supabase';
 import { getDayNumber } from '@/utils/utils';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
@@ -62,7 +62,25 @@ export async function GET(req: Request) {
   console.log('----- Saving costars to DB -----');
 
   for (const dailyCostars of costars) {
-    await supabase_saveCostars(dailyCostars);
+    const costars: DailyCostars = {
+      starter: dailyCostars.starter,
+      target: dailyCostars.target,
+      num_solutions: dailyCostars.num_solutions,
+      date: dailyCostars.date,
+      day_number: dailyCostars.day_number,
+    };
+
+    const daily_id = await sb_PostDailyCostars(costars);
+
+    if (!daily_id) continue;
+
+    const solutions: Array<Solution> = dailyCostars.solutions.map((sol) => ({
+      daily_id,
+      solution: sol,
+      is_daily_optimal: true,
+    }));
+
+    await sb_PostSolutions(solutions);
   }
 
   revalidatePath('/admin');

@@ -35,10 +35,9 @@ export default function CSGameContainer({
     addEntity,
   } = useGameState();
 
-  const isUnlimited = !initPeople;
-
   useEffect(() => {
-    if (!isUnlimited) initGame(initPeople, daily, solutions, archive);
+    if (gameType !== 'unlimited' && initPeople)
+      initGame(initPeople, daily, solutions, archive);
   }, []);
 
   const onSubmit = async (value: GameEntity) => {
@@ -50,13 +49,13 @@ export default function CSGameContainer({
     });
   };
 
-  if (!isUnlimited && completed) {
+  if (gameType !== 'unlimited' && completed) {
     return <Success />;
   }
 
   return (
     <div className='game-container'>
-      <CSBackButton link={gameType === 'archive' ? '/daily/archive' : ''} />
+      <CSBackButton link={gameType === 'archive' ? '/daily/archive' : '/'} />
       <CSSearchBar onSubmit={onSubmit} />
       {gameType === 'unlimited' ? (
         <div className='game-scores'>

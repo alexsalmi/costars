@@ -1,19 +1,21 @@
 import localStorageService from './localstorage.service';
-import {
-  supabase_getUnlimitedStats,
-  supabase_setUnlimitedStats,
-  supabase_updateUnlimitedStats,
-} from './supabase/supabase.service';
 import { getTodaysCostars, getYesterdaysCostars } from './cache.service';
-import supabaseService from '@/services/supabase';
-import SupabaseService from '@/services/supabase';
+import {
+  sb_GetDailyStats,
+  sb_GetSolutions,
+  sb_GetUnlimitedStats,
+  sb_PostDailyStats,
+  sb_PostSolutions,
+  sb_PostUnlimitedStats,
+  sb_UpdateDailyStats,
+  sb_UpdateUnlimitedStats,
+} from './supabase';
 
 export const getDailyStats = async (user: UserInfo) => {
   if (user && localStorageService.getAuthStatus() === 'pending') {
-    let dbStats = await SupabaseService.dailyStats.get({ user_id: user.id });
+    let dbStats = await sb_GetDailyStats({ user_id: user.id });
 
-    if (!dbStats)
-      dbStats = await SupabaseService.dailyStats.post({ user_id: user.id });
+    if (!dbStats) dbStats = await sb_PostDailyStats({ user_id: user.id });
 
     localStorageService.setDailyStats(dbStats);
   }
@@ -27,6 +29,8 @@ export const updateDailyStats = async (
   hints: Array<Hint>,
 ) => {
   const yesterdaysCostars = await getYesterdaysCostars();
+
+  if (!yesterdaysCostars) return;
 
   const dailyStats: DailyStats = await getDailyStats(user);
 
@@ -43,7 +47,7 @@ export const updateDailyStats = async (
   );
   if (score === 2 && hints.length === 0) dailyStats.optimal_solutions!++;
 
-  if (dailyStats.last_played_id === yesterdaysCostars.id)
+  if (dailyStats.last_played_id === yesterdaysCostars?.id)
     dailyStats.current_streak = (dailyStats.current_streak || 0) + 1;
   else dailyStats.current_streak = 1;
 
@@ -51,9 +55,9 @@ export const updateDailyStats = async (
     dailyStats.highest_streak = dailyStats.current_streak;
 
   dailyStats.last_played = new Date().toUTCString();
-  dailyStats.last_played_id = (await getTodaysCostars()).id;
+  dailyStats.last_played_id = (await getTodaysCostars())!.id;
 
-  if (user) SupabaseService.dailyStats.update(dailyStats);
+  if (user) sb_UpdateDailyStats(dailyStats);
 
   localStorageService.setDailyStats(dailyStats);
 };
@@ -65,7 +69,7 @@ export const saveSolution = async (
   dailyId?: number,
 ) => {
   if (user) {
-    supabaseService.solutions.post({
+    sb_PostSolutions({
       daily_id: dailyId,
       solution,
       hints,
@@ -82,7 +86,12 @@ export const saveSolution = async (
 
 export const getUnlimitedStats = async (user: UserInfo) => {
   if (user && localStorageService.getAuthStatus() === 'pending') {
-    const dbStats = await supabase_getUnlimitedStats(user.id);
+    let dbStats = await sb_GetUnlimitedStats({
+      user_id: user.id,
+    });
+
+    if (!dbStats) dbStats = await sb_PostUnlimitedStats({ user_id: user.id });
+
     localStorageService.setUnlimitedStats(dbStats);
   }
 
@@ -102,14 +111,14 @@ export const updateUnlimitedStats = async (
   unlimitedStats.history = history;
   unlimitedStats.hints = hints;
 
-  if (user) supabase_updateUnlimitedStats(unlimitedStats);
+  if (user) sb_UpdateUnlimitedStats(unlimitedStats);
 
   localStorageService.setUnlimitedStats(unlimitedStats);
 };
 
 export const getUserDailySolutions = async (user: UserInfo) => {
   if (user && localStorageService.getAuthStatus() === 'pending') {
-    const solutions = await supabaseService.solutions.get({
+    const solutions = await sb_GetSolutions({
       user_id: user.id,
       all_daily: true,
     });
@@ -125,15 +134,15 @@ export const migrateSaveDate = async (user: UserInfo) => {
   const solutions = localStorageService.getSolutions();
 
   return await Promise.all([
-    SupabaseService.dailyStats.post({
+    sb_PostDailyStats({
       ...dailyStats,
       user_id: user?.id,
     }),
-    supabase_setUnlimitedStats({
+    sb_PostUnlimitedStats({
       ...unlimitedStats,
       user_id: user?.id,
     }),
-    supabaseService.solutions.post(
+    sb_PostSolutions(
       solutions.map((sol) => ({
         ...sol,
         user_id: user?.id,

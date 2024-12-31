@@ -1,6 +1,6 @@
 import CSBackButton from '@/components/inputs/buttons/back-button';
 import CardTrack from '@/components/presentation/card-track';
-import supabaseService from '@/services/supabase';
+import { sb_GetSolutions } from '@/services/supabase';
 import '@/styles/pages/solution.scss';
 
 interface ISolutionProps {
@@ -10,9 +10,7 @@ interface ISolutionProps {
 export default async function Solution({ params }: ISolutionProps) {
   const uuid = (await params).uuid;
 
-  const { solution, hints } = (
-    await supabaseService.solutions.get({ uuid })
-  )[0];
+  const { solution, hints } = (await sb_GetSolutions({ uuid }))[0];
 
   return (
     <>
