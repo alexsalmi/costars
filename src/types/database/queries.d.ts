@@ -1,3 +1,7 @@
+interface DailyStatsParams {
+  user_id?: string;
+}
+
 interface SolutionParams {
   uuid?: string;
   user_id?: string;

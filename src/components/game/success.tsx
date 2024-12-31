@@ -32,7 +32,7 @@ export default function Success() {
     if (!todaysCostars) return;
 
     setShareLoading(true);
-    const uuid = await supabaseService.solutions.save({
+    const uuid = await supabaseService.solutions.post({
       daily_id: todaysCostars.id!,
       solution: history,
       hints,

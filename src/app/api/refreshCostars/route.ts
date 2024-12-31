@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { getYesterdaysCostars } from '@/services/cache.service';
 
 export async function GET(req: NextRequest) {
   if (
@@ -12,11 +13,16 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  console.log((await getYesterdaysCostars()).date);
+
   console.log(`----- REFRESHING DAILY COSTARS -----`);
 
+  revalidateTag('daily_costars');
   revalidatePath('/');
   revalidatePath('/daily');
   revalidatePath('/admin');
+
+  console.log((await getYesterdaysCostars()).date);
 
   console.log('----- FINISHED REFRESHING COSTARS -----');
 

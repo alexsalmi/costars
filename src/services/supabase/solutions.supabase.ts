@@ -26,7 +26,7 @@ export const sbGetSolutions = async (
   return data;
 };
 
-export const sbSaveSolutions = async (
+export const sbPostSolutions = async (
   solutions: Solution | Array<Solution>,
 ): Promise<string> => {
   const supabase = await createClient();

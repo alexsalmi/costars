@@ -2,62 +2,6 @@
 import { createClient, createClientForCache } from '@/utils/supabase';
 import { unstable_cache } from 'next/cache';
 
-export const supabase_getDailyStats = async (
-  user_id: string,
-): Promise<DailyStats> => {
-  const supabase = await createClient();
-
-  const { data } = await supabase
-    .from('DailyStats')
-    .select()
-    .eq('user_id', user_id);
-
-  if (!data || data.length === 0) {
-    const { data } = await supabase
-      .from('DailyStats')
-      .insert({
-        user_id,
-        days_played: 0,
-        current_streak: 0,
-        highest_streak: 0,
-        optimal_solutions: 0,
-      })
-      .select();
-
-    return data![0];
-  }
-
-  return data[0];
-};
-
-export const supabase_hasDailyStats = async (
-  user_id: string,
-): Promise<boolean> => {
-  const supabase = await createClient();
-
-  const { data } = await supabase
-    .from('DailyStats')
-    .select()
-    .eq('user_id', user_id);
-
-  return (data && data.length > 0) || false;
-};
-
-export const supabase_setDailyStats = async (dailyStats: DailyStats) => {
-  const supabase = await createClient();
-
-  return await supabase.from('DailyStats').insert(dailyStats);
-};
-
-export const supabase_updateDailyStats = async (dailyStats: DailyStats) => {
-  const supabase = await createClient();
-
-  return await supabase
-    .from('DailyStats')
-    .update(dailyStats)
-    .eq('id', dailyStats.id);
-};
-
 export const supabase_getUnlimitedStats = async (
   user_id: string,
 ): Promise<UnlimitedStats> => {

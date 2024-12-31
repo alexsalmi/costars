@@ -1,13 +1,26 @@
 import {
+  sbGetDailyStats,
+  sbPostDailyStats,
+  sbUpdateDailyStats,
+} from './dailyStats.supabase';
+
+import {
   sbGetSolutions,
-  sbSaveSolutions,
+  sbPostSolutions,
   sbDeleteSolutions,
 } from './solutions.supabase';
 
-export default {
+const SupabaseService = {
+  dailyStats: {
+    get: sbGetDailyStats,
+    post: sbPostDailyStats,
+    update: sbUpdateDailyStats,
+  },
   solutions: {
     get: sbGetSolutions,
-    save: sbSaveSolutions,
+    post: sbPostSolutions,
     delete: sbDeleteSolutions,
   },
 };
+
+export default SupabaseService;
