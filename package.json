@@ -1,6 +1,6 @@
 {
   "name": "costars",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "private": true,
   "scripts": {
     "dev": "prettier --check . && stylelint --allow-empty-input \"**/*.{css,scss}\" && next dev --turbopack",
