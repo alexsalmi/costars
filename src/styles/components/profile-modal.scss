@@ -6,6 +6,16 @@
     gap: 10px;
   }
 
+  > button:nth-of-type(2) {
+    background-color: #1877f2;
+    color: white;
+    border: 1px solid #1877f2;
+
+    svg {
+      color: white;
+    }
+  }
+
   > button:first-of-type:not(:only-of-type) {
     background-color: white;
     color: #1f1f1f;
@@ -16,23 +26,11 @@
     }
   }
 
-  > button:nth-of-type(2) {
-    background-color: #1877F2;
-    color: white;
-    border: 1px solid #1877F2;
-
-    svg {
-      color: white;
-    }
-  }
-  
   hr {
     width: 100%;
-		border-color: var(--highlight-primary);
-		margin: 12px;
+    border-color: var(--highlight-primary);
+    margin: 12px;
   }
-
-
 }
 
 .profile-modal-why-section {
@@ -49,7 +47,6 @@
 .profile-modal-disclosure {
   font-size: 14px;
 }
-
 
 .profile-modal-disclosure.first {
   margin-top: 24px;

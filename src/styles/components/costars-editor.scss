@@ -1,42 +1,44 @@
 .costars-editor-container {
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-	border: 3px solid var(--highlight-primary);
-	border-radius: 10px;
-	padding: 12px;
-	width: 100%;
-	text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 3px solid var(--highlight-primary);
+  border-radius: 10px;
+  padding: 12px;
+  width: 100%;
+  text-align: center;
 }
 
 .costars-editor-header {
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 
-	h3 {
-		text-decoration: underline;
-		text-decoration-thickness: 2px;
-	}
+  h3 {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
 
-	button {
-		padding: 0 12px;
-		width: min-content;
-	}
+  button {
+    padding: 0 12px;
+    width: min-content;
+  }
 }
 
 .costars-editor-date-picker {
-	*, ::before, ::after {
-		color: var(--highlight-primary) !important;
-		border-color: var(--highlight-primary) !important;
-	}
+  *,
+  ::before,
+  ::after {
+    color: var(--highlight-primary) !important;
+    border-color: var(--highlight-primary) !important;
+  }
 }
 
 .costars-editor-buttons-container {
-	display: flex;
-	justify-content: center;
-	gap: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 
-	button {
-		width: 50%;
-	}
+  button {
+    width: 50%;
+  }
 }

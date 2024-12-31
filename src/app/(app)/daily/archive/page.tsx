@@ -1,7 +1,5 @@
-import CSArchive from "@/components/presentation/archive";
+import CSArchive from '@/components/game/archive';
 
 export default function Archive() {
-  return (
-    <CSArchive />
-  );
+  return <CSArchive />;
 }

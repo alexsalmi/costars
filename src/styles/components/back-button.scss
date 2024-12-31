@@ -1,16 +1,15 @@
-
 .back-button-container {
-	text-decoration: none;
-	align-self: flex-start;
-	margin-bottom: 12px;
-	color: var(--highlight-faded);
+  text-decoration: none;
+  align-self: flex-start;
+  margin-bottom: 12px;
+  color: var(--highlight-faded);
 
-	button {
+  button {
     display: flex;
     justify-content: center;
     gap: 6px;
-		padding: 2px;
-		padding-right: 12px;
-		border: none;
-	}
+    padding: 2px;
+    padding-right: 12px;
+    border: none;
+  }
 }

@@ -1,0 +1,7 @@
+node_modules
+.next
+.prettierignore
+.stylelintignore
+.eslintignore
+*.log
+package-lock.json

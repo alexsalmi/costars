@@ -1,6 +1,12 @@
-'use client'
-import { AccountCircleOutlined, CalendarMonthOutlined, DarkModeOutlined, HelpOutlineOutlined, LightModeOutlined } from '@mui/icons-material';
-import CSButton from '@/components/inputs/button';
+'use client';
+import {
+  AccountCircleOutlined,
+  CalendarMonthOutlined,
+  DarkModeOutlined,
+  HelpOutlineOutlined,
+  LightModeOutlined,
+} from '@mui/icons-material';
+import CSButton from '@/components/inputs/buttons/button';
 import { useEffect, useState } from 'react';
 import CSProfileModal from '../modals/profile-modal';
 import { useTheme } from 'next-themes';
@@ -11,26 +17,32 @@ export default function CSNavMenu() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [howToOpen, setHowToOpen] = useState(false);
   const [mount, setMount] = useState(false);
-  const {systemTheme, theme, setTheme} = useTheme();
-  const currentTheme = theme === "system" ? systemTheme : theme;
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === 'system' ? systemTheme : theme;
 
   useEffect(() => {
     setMount(true);
   }, []);
-  
+
   return (
     <>
       <div className='header-nav'>
-        {mount ?
-          <CSButton secondary onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}>
-            {currentTheme === "light" ?
+        {mount ? (
+          <CSButton
+            secondary
+            onClick={() => setTheme(currentTheme === 'dark' ? 'light' : 'dark')}
+          >
+            {currentTheme === 'light' ? (
               <DarkModeOutlined />
-              :
+            ) : (
               <LightModeOutlined />
-            }
+            )}
           </CSButton>
-          : <CSButton secondary><LightModeOutlined /></CSButton>
-        }
+        ) : (
+          <CSButton secondary>
+            <LightModeOutlined />
+          </CSButton>
+        )}
         <Link href='/daily/archive'>
           <CSButton secondary>
             <CalendarMonthOutlined />
@@ -43,8 +55,11 @@ export default function CSNavMenu() {
           <AccountCircleOutlined />
         </CSButton>
       </div>
-      <CSProfileModal isOpen={profileOpen} close={() => setProfileOpen(false) } />
-      <CSHowToModal isOpen={howToOpen} close={() => setHowToOpen(false) } />
+      <CSProfileModal
+        isOpen={profileOpen}
+        close={() => setProfileOpen(false)}
+      />
+      <CSHowToModal isOpen={howToOpen} close={() => setHowToOpen(false)} />
     </>
   );
 }

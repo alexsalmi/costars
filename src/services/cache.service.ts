@@ -1,119 +1,167 @@
-'use server'
+'use server';
 import { unstable_cache } from 'next/cache';
-import { getCredits, getTrending } from "./tmdb.service";
-import { supabase_getDailyCostarsByDate, supabase_getDailyCostarsByDayNumber, supabase_getDailyCostarsByMonth, supabase_getDailySolutions } from './supabase.service';
+import { getCredits, getTrending } from './tmdb.service';
+import {
+  supabase_getDailyCostarsByDate,
+  supabase_getDailyCostarsByDayNumber,
+  supabase_getDailyCostarsByMonth,
+} from './supabase/supabase.service';
+import supabaseService from '@/services/supabase';
 
 export const getRandomPerson = async () => {
   const pool = await getRandomPool();
 
   return pool[Math.floor(Math.random() * pool.length)];
-}
+};
 
-export const getRandomPool = unstable_cache(async () => {
-  console.log("----- Refreshing Random Pool -----");
-  const POOL_SIZE = 200;
-  const pool = [] as Array<GameEntity>;
+export const getRandomPool = unstable_cache(
+  async () => {
+    console.log('----- Refreshing Random Pool -----');
+    const POOL_SIZE = 200;
+    const pool = [] as Array<GameEntity>;
 
-  let page = 1;
-  let iteration = 0;
+    let page = 1;
+    let iteration = 0;
 
-  while (pool.length < POOL_SIZE && iteration < 100) {
-    const trending = (await getTrending(page))
-      .filter(person => 
-        person.popularity > 30 &&
-        person.known_for_department === 'Acting'
+    while (pool.length < POOL_SIZE && iteration < 100) {
+      const trending = (await getTrending(page)).filter(
+        (person) =>
+          person.popularity > 30 && person.known_for_department === 'Acting',
       );
 
-    const promises = [] as Array<Promise<Array<MovieCredit>>>;
+      const promises = [] as Array<Promise<Array<MovieCredit>>>;
 
-    for(const person of trending)
-      promises.push(getCredits(person.id, 'person') as Promise<Array<MovieCredit>>);
+      for (const person of trending)
+        promises.push(
+          getCredits(person.id, 'person') as Promise<Array<MovieCredit>>,
+        );
 
-    const creditsArr = await Promise.all(promises);
+      const creditsArr = await Promise.all(promises);
 
-    const entities = [] as Array<GameEntity>;
+      const entities = [] as Array<GameEntity>;
 
-    for(let i=0; i<trending.length; i++){
-      const isMostlyEnglish = creditsArr[i].reduce(
-        (acc, credit) => acc + (credit.original_language === 'en' ? 1 : 0),
-        0
-      ) >= Math.floor(creditsArr[i].length / 2);
+      for (let i = 0; i < trending.length; i++) {
+        const isMostlyEnglish =
+          creditsArr[i].reduce(
+            (acc, credit) => acc + (credit.original_language === 'en' ? 1 : 0),
+            0,
+          ) >= Math.floor(creditsArr[i].length / 2);
 
-      if(!isMostlyEnglish || creditsArr[i].length < 10)
-        continue;
+        if (!isMostlyEnglish || creditsArr[i].length < 10) continue;
 
-      entities.push({
-        type: 'person',
-        id: trending[i].id,
-        label: trending[i].name,
-        image: trending[i].profile_path,
-        credits: creditsArr[i].map(credit => credit.id),
-        popularity: trending[i].popularity
-      });
+        entities.push({
+          type: 'person',
+          id: trending[i].id,
+          label: trending[i].name,
+          image: trending[i].profile_path,
+          credits: creditsArr[i].map((credit) => credit.id),
+          popularity: trending[i].popularity,
+        });
+      }
+
+      pool.push(...entities);
+      console.log('Pool size: ' + pool.length);
+      page++;
+      iteration++;
     }
 
-    pool.push(...entities);
-    console.log("Pool size: " + pool.length);
-    page++;
-    iteration++;
-  }
+    console.log(`------- Random Pool has ${pool.length} people --------`);
+    console.log('----- Finished Refreshing Random Pool -----\n');
+    return pool;
+  },
+  [],
+  { tags: ['random_pool'] },
+);
 
-  console.log(`------- Random Pool has ${pool.length} people --------`);
-  console.log("----- Finished Refreshing Random Pool -----\n");
-  return pool;
-}, [], { tags: ['random_pool'] });
+export const getTodaysCostars = unstable_cache(
+  async () => {
+    return await supabase_getDailyCostarsByDate(new Date());
+  },
+  [],
+  { tags: ['daily_costars'] },
+);
 
-export const getTodaysCostars = unstable_cache(async () => {
-  return await supabase_getDailyCostarsByDate(new Date());
-}, [], { tags: ['daily_costars'] }); 
+export const getTodaysSolutions = unstable_cache(
+  async () => {
+    const clientSide = true;
+    return await supabaseService.solutions.get(
+      {
+        is_daily_optimal: true,
+        daily_id: (await supabase_getDailyCostarsByDate(new Date())).id || 0,
+      },
+      clientSide,
+    );
+  },
+  [],
+  { tags: ['daily_costars'] },
+);
 
-export const getTodaysSolutions = unstable_cache(async () => {
-  return await supabase_getDailySolutions((await supabase_getDailyCostarsByDate(new Date())).id || 0);
-}, [], { tags: ['daily_costars'] }); 
+export const getYesterdaysCostars = unstable_cache(
+  async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return await supabase_getDailyCostarsByDate(yesterday);
+  },
+  [],
+  { tags: ['daily_costars'] },
+);
 
-export const getYesterdaysCostars = unstable_cache(async () => {
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  return await supabase_getDailyCostarsByDate(yesterday);
-}, [], { tags: ['daily_costars'] }); 
+export const getCostarsByDayNumber = unstable_cache(
+  async (day_number: number) => {
+    return await supabase_getDailyCostarsByDayNumber(day_number);
+  },
+  [],
+  { tags: ['daily_costars'] },
+);
 
-export const getCostarsByDayNumber = unstable_cache(async (day_number: number) => {
-  return await supabase_getDailyCostarsByDayNumber(day_number);
-}, [], { tags: ['daily_costars'] }); 
+export const getDailySolutions = unstable_cache(
+  async (daily_id: number) => {
+    const clientSide = true;
+    return await supabaseService.solutions.get(
+      {
+        is_daily_optimal: true,
+        daily_id,
+      },
+      clientSide,
+    );
+  },
+  [],
+  { tags: ['daily_costars'] },
+);
 
-export const getDailySolutions= unstable_cache(async (daily_id: number) => {
-  return await supabase_getDailySolutions(daily_id);
-}, [], { tags: ['daily_costars'] }); 
-
-export const getDailyCostarsByMonth = unstable_cache(async (month: number, year: number) => {
-  return await supabase_getDailyCostarsByMonth(month, year);
-}, [], { tags: ['daily_costars'] }); 
+export const getDailyCostarsByMonth = unstable_cache(
+  async (month: number, year: number) => {
+    return await supabase_getDailyCostarsByMonth(month, year);
+  },
+  [],
+  { tags: ['daily_costars'] },
+);
 
 interface OptimalQueueValue {
-  entity: GameEntity,
-  path: Array<GameEntity>
+  entity: GameEntity;
+  path: Array<GameEntity>;
 }
 
 interface OptimalMapKey {
-  id: number,
-  type: TmdbType
+  id: number;
+  type: TmdbType;
 }
 
 interface OptimalMapValue {
-  path: Array<GameEntity>,
-  level: number
+  path: Array<GameEntity>;
+  level: number;
 }
 
 const OptimalMap = Map<string, OptimalMapValue>;
 
 export const getCostars = async (actorSet: Set<number>) => {
-  console.log("----- Generating New Costars -----");
+  console.log('----- Generating New Costars -----');
 
   let target = {} as GameEntity;
 
   do {
     target = await getRandomPerson();
-  } while(actorSet.has(target.id))
+  } while (actorSet.has(target.id));
 
   let starter = {} as GameEntity;
   let solutions = null as OptimalSolutions | null;
@@ -121,107 +169,129 @@ export const getCostars = async (actorSet: Set<number>) => {
   do {
     do {
       starter = await getRandomPerson();
-    } while(actorSet.has(starter.id))
+    } while (actorSet.has(starter.id));
 
-    solutions = await(getOptimalSolutions(starter, target));
-  } while (solutions === null)
+    solutions = await getOptimalSolutions(starter, target);
+  } while (solutions === null);
 
-  console.log(`----- Newly generated costars are ${target.label} and ${starter.label} -----`);
-  console.log("----- Finished Generating New Costars -----\n");
+  console.log(
+    `----- Newly generated costars are ${target.label} and ${starter.label} -----`,
+  );
+  console.log('----- Finished Generating New Costars -----\n');
 
   return {
     target,
     starter,
-    solutions
+    solutions,
   };
 };
 
 interface OptimalSolutions {
-  solutions: Array<Array<GameEntity>>,
-  total_count: number
+  solutions: Array<Array<GameEntity>>;
+  total_count: number;
 }
 
-export const getOptimalSolutions = async (person1: GameEntity, person2: GameEntity)
-    : Promise<OptimalSolutions | null> => {
-  console.log("----- Getting Optimal Solutions -----");
+export const getOptimalSolutions = async (
+  person1: GameEntity,
+  person2: GameEntity,
+): Promise<OptimalSolutions | null> => {
+  console.log('----- Getting Optimal Solutions -----');
   let solutions = [] as Array<Array<GameEntity>>;
   let level = 0;
 
-  const leftQueue: Array<OptimalQueueValue> = [{ entity: { ...person1, credits: undefined }, path: []}];
-  const rightQueue: Array<OptimalQueueValue> = [{ entity: { ...person2, credits: undefined }, path: []}];
-  const leftMap = new OptimalMap(), rightMap = new OptimalMap();
+  const leftQueue: Array<OptimalQueueValue> = [
+    { entity: { ...person1, credits: undefined }, path: [] },
+  ];
+  const rightQueue: Array<OptimalQueueValue> = [
+    { entity: { ...person2, credits: undefined }, path: [] },
+  ];
+  const leftMap = new OptimalMap(),
+    rightMap = new OptimalMap();
 
-  while(solutions.length === 0) {
+  while (solutions.length === 0) {
     let promises: Array<Promise<void>> = [];
 
     // Check for solution on left side
-    for(const { entity, path } of leftQueue) {
-      const key = JSON.stringify({id: entity.id, type: entity.type} as OptimalMapKey);
+    for (const { entity, path } of leftQueue) {
+      const key = JSON.stringify({
+        id: entity.id,
+        type: entity.type,
+      } as OptimalMapKey);
 
-      if(rightMap.has(key)){
+      if (rightMap.has(key)) {
         solutions.push([...path, entity, ...rightMap.get(key)!.path]);
         continue;
       }
-      
-      if(leftMap.has(key))
-        continue;
+
+      if (leftMap.has(key)) continue;
 
       leftMap.set(key, {
         path,
-        level
+        level,
       });
     }
 
     // Check for solution on left side
-    for(const { entity, path } of rightQueue) {
-      const key = JSON.stringify({id: entity.id, type: entity.type} as OptimalMapKey);
+    for (const { entity, path } of rightQueue) {
+      const key = JSON.stringify({
+        id: entity.id,
+        type: entity.type,
+      } as OptimalMapKey);
 
-      if(leftMap.has(key)){
+      if (leftMap.has(key)) {
         solutions.push([...leftMap.get(key)!.path, entity, ...path]);
         continue;
       }
-      
-      if(rightMap.has(key))
-        continue;
+
+      if (rightMap.has(key)) continue;
 
       rightMap.set(key, {
         path,
-        level
+        level,
       });
     }
 
     // If we've found a solution, exit the loop
-    if(solutions.length > 0)
-      break;
-    
+    if (solutions.length > 0) break;
+
     // Get the next level of credits for the left side
     const leftLen = leftQueue.length;
-    for(let i=0; i<leftLen; i++) {
+    for (let i = 0; i < leftLen; i++) {
       const { entity, path } = leftQueue.pop() as OptimalQueueValue;
-      
-      const promise: Promise<void> = getCreditEntities(entity.id, entity.type, [...path, entity], leftQueue);
-      
+
+      const promise: Promise<void> = getCreditEntities(
+        entity.id,
+        entity.type,
+        [...path, entity],
+        leftQueue,
+      );
+
       promises.push(promise);
 
-      if(promises.length > 50){
+      if (promises.length > 50) {
         await Promise.all(promises);
         promises = [];
       }
     }
-    
+
     await Promise.all(promises);
     promises = [];
 
     // Get the next level of credits for the right side
     const rightLen = rightQueue.length;
-    for(let i=0; i<rightLen; i++) {
+    for (let i = 0; i < rightLen; i++) {
       const { entity, path } = rightQueue.pop() as OptimalQueueValue;
-      
-      const promise: Promise<void> = getCreditEntities(entity.id, entity.type, [entity, ...path], rightQueue);
-      
+
+      const promise: Promise<void> = getCreditEntities(
+        entity.id,
+        entity.type,
+        [entity, ...path],
+        rightQueue,
+      );
+
       promises.push(promise);
 
-      if(promises.length > 50){
+      if (promises.length > 50) {
         await Promise.all(promises);
         promises = [];
       }
@@ -231,67 +301,72 @@ export const getOptimalSolutions = async (person1: GameEntity, person2: GameEnti
 
     level++;
 
-    if(level > 2 && solutions.length === 0)
-      break;
+    if (level > 2 && solutions.length === 0) break;
   }
 
-  if (level !== 2)
-    return null;
+  if (level !== 2) return null;
 
   // Filter out any solutions longer than optimal, and sort by total popularity
-  solutions = solutions.filter(solution => solution.length === ((level*2)+1))
-    .sort((a, b) => 
-      b.reduce((acc, curr) => acc + (curr?.popularity || 0), 0) - a.reduce((acc, curr) => acc + (curr?.popularity || 0), 0)
+  solutions = solutions
+    .filter((solution) => solution.length === level * 2 + 1)
+    .sort(
+      (a, b) =>
+        b.reduce((acc, curr) => acc + (curr?.popularity || 0), 0) -
+        a.reduce((acc, curr) => acc + (curr?.popularity || 0), 0),
     );
 
   // Get 10 solutions with all unique movies, to avoid repitition
   const MAX = 10;
   const best_solutions: GameEntity[][] = [];
   const movies = new Set();
-  for(const solution of solutions) {
-    const movie_ids = solution.filter(s => s.type === 'movie').map(s => s.id);
+  for (const solution of solutions) {
+    const movie_ids = solution
+      .filter((s) => s.type === 'movie')
+      .map((s) => s.id);
 
-    if(movie_ids.some(m => movies.has(m)))
-      continue;
+    if (movie_ids.some((m) => movies.has(m))) continue;
 
     best_solutions.push(solution);
 
-    for(const id of movie_ids)
-      movies.add(id);
+    for (const id of movie_ids) movies.add(id);
 
-    if(best_solutions.length === MAX)
-      break;
+    if (best_solutions.length === MAX) break;
   }
 
-  console.log(`----- There are ${solutions.length} optimal solutions, at ${level} movies -----`);
-  console.log("----- Finished Getting Optimal Solutions -----\n");
-  
+  console.log(
+    `----- There are ${solutions.length} optimal solutions, at ${level} movies -----`,
+  );
+  console.log('----- Finished Getting Optimal Solutions -----\n');
+
   return {
     total_count: solutions.length,
-    solutions: best_solutions
-  }
-}
+    solutions: best_solutions,
+  };
+};
 
-const getCreditEntities = async (id: number, type: TmdbType, path: Array<GameEntity>, queue: Array<OptimalQueueValue>) => {
-  await getCredits(id, type)
-    .then(credits => {
-      if(!credits){
-        return [];
-      }
-      const entities = credits
-        .map(credit => 
-          ({
-            entity: {
-              type: type === 'person' ? 'movie': 'person' as TmdbType,
-              id: credit.id,
-              label: (<MovieCredit> credit).title || (<PersonCredit> credit).name,
-              image: (<MovieCredit> credit).poster_path || (<PersonCredit> credit).profile_path,
-              popularity: credit.popularity
-            },
-            path
-          })
-        );
+const getCreditEntities = async (
+  id: number,
+  type: TmdbType,
+  path: Array<GameEntity>,
+  queue: Array<OptimalQueueValue>,
+) => {
+  await getCredits(id, type).then((credits) => {
+    if (!credits) {
+      return [];
+    }
+    const entities = credits.map((credit) => ({
+      entity: {
+        type: type === 'person' ? 'movie' : ('person' as TmdbType),
+        id: credit.id,
+        label: (<MovieCredit>credit).title || (<PersonCredit>credit).name,
+        image:
+          (<MovieCredit>credit).poster_path ||
+          (<PersonCredit>credit).profile_path,
+        popularity: credit.popularity,
+      },
+      path,
+    }));
 
-        queue.push(...entities);
-    });
-}
+    queue.push(...entities);
+  });
+};

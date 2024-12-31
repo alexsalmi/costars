@@ -1,11 +1,38 @@
-import { useAtom } from "jotai";
-import { scoreAtom, historyAtom, gameTypeAtom, highScoreAtom, currentAtom, undoCacheAtom, condensedAtom, targetAtom, dailyStatsAtom, completedAtom, hintsAtom, isSolutionAtom, userAtom, unlimitedStatsAtom, lastSolveAtom, todaysCostarsAtom, todaysSolutionsAtom, userDailySolutionsAtom } from "./atoms/game";
+import { useAtom } from 'jotai';
+import {
+  scoreAtom,
+  historyAtom,
+  gameTypeAtom,
+  highScoreAtom,
+  currentAtom,
+  undoCacheAtom,
+  condensedAtom,
+  targetAtom,
+  dailyStatsAtom,
+  completedAtom,
+  hintsAtom,
+  isSolutionAtom,
+  userAtom,
+  unlimitedStatsAtom,
+  lastSolveAtom,
+  todaysCostarsAtom,
+  todaysSolutionsAtom,
+  userDailySolutionsAtom,
+} from './atoms/game';
 
-import { warnForConflict } from "@/utils/utils";
-import { getDailyStats, updateDailyStats as updateDailyStatsStorage, getUnlimitedStats, getUserDailySolutions, updateUnlimitedStats, migrateSaveDate, saveSolution as saveSolutionStorage } from "@/services/userdata.service";
-import { getUser } from "@/services/auth.service";
-import localStorageService from "@/services/localstorage.service";
-import { supabase_hasDailyStats } from "@/services/supabase.service";
+import { warnForConflict } from '@/utils/utils';
+import {
+  getDailyStats,
+  updateDailyStats as updateDailyStatsStorage,
+  getUnlimitedStats,
+  getUserDailySolutions,
+  updateUnlimitedStats,
+  migrateSaveDate,
+  saveSolution as saveSolutionStorage,
+} from '@/services/userdata.service';
+import { getUser } from '@/services/supabase/auth.service';
+import localStorageService from '@/services/localstorage.service';
+import SupabaseService from '@/services/supabase';
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
@@ -21,7 +48,9 @@ const useGameState = () => {
   const [isSolution] = useAtom(isSolutionAtom);
   const [dailyStats, setDailyStats] = useAtom(dailyStatsAtom);
   const [unlimitedStats, setUnlimitedStats] = useAtom(unlimitedStatsAtom);
-  const [userDailySolutions, setUserDailySolutions] = useAtom(userDailySolutionsAtom);
+  const [userDailySolutions, setUserDailySolutions] = useAtom(
+    userDailySolutionsAtom,
+  );
   const [lastSolve, setLastSolve] = useAtom(lastSolveAtom);
   const [todaysCostars, setTodaysCostars] = useAtom(todaysCostarsAtom);
   const [todaysSolutions, setTodaysSolutions] = useAtom(todaysSolutionsAtom);
@@ -35,18 +64,21 @@ const useGameState = () => {
       setUser(localUser);
     }
 
-    const authPending = localUser && localStorageService.getAuthStatus() === 'pending';
+    const authPending =
+      localUser && localStorageService.getAuthStatus() === 'pending';
     let migrationNeeded = false;
     let authConflict = false;
 
     if (authPending && !localStorageService.isFresh()) {
-      const hasDailyStats = await supabase_hasDailyStats(localUser!.id);
+      const hasDailyStats =
+        (await SupabaseService.dailyStats.get({ user_id: localUser!.id })) !==
+        null;
+
       migrationNeeded = !localStorageService.isFresh() && !hasDailyStats;
       authConflict = !localStorageService.isFresh() && hasDailyStats;
     }
 
-    if(authConflict)
-      await warnForConflict();
+    if (authConflict) await warnForConflict();
 
     if (migrationNeeded) {
       await migrateSaveDate(localUser);
@@ -56,24 +88,32 @@ const useGameState = () => {
     const promises = [];
 
     if (dailyStats === null) {
-      promises.push(getDailyStats(localUser).then(async res => {
-        setDailyStats(res);
+      promises.push(
+        getDailyStats(localUser).then(async (res) => {
+          setDailyStats(res);
 
-        if (lastSolve === null) {
-          const solutions = await getUserDailySolutions(localUser);
-          const solve = solutions.find(sol => sol.daily_id === res.last_played_id) || null;
-          setUserDailySolutions(solutions);
-          setLastSolve(solve);
-        }
-      }))
+          if (lastSolve === null) {
+            const solutions = await getUserDailySolutions(localUser);
+            const solve =
+              solutions.find((sol) => sol.daily_id === res.last_played_id) ||
+              null;
+            setUserDailySolutions(solutions);
+            setLastSolve(solve);
+          }
+        }),
+      );
     }
 
     if (unlimitedStats === null)
-      promises.push(getUnlimitedStats(localUser).then(res => setUnlimitedStats(res)))
+      promises.push(
+        getUnlimitedStats(localUser).then((res) => setUnlimitedStats(res)),
+      );
 
-    if (localUser !== null) 
-      Promise.all(promises).then(() => localStorageService.setAuthStatus('true'));      
-  }
+    if (localUser !== null)
+      Promise.all(promises).then(() =>
+        localStorageService.setAuthStatus('true'),
+      );
+  };
 
   const initUnlimitedGame = async () => {
     setGameType('unlimited');
@@ -82,7 +122,7 @@ const useGameState = () => {
 
     if (stats === null) {
       stats = await getUnlimitedStats(user);
-      setUnlimitedStats(stats);      
+      setUnlimitedStats(stats);
     }
 
     setHistory(stats.history!);
@@ -91,7 +131,7 @@ const useGameState = () => {
     setTarget({} as GameEntity);
     setUndoCache([]);
     setCompleted(false);
-  }
+  };
 
   const initCustomGame = () => {
     setGameType('custom');
@@ -100,20 +140,23 @@ const useGameState = () => {
     setHints([]);
     setUndoCache([]);
     setCompleted(false);
-  }
+  };
 
-  const initGame = async ([target, starter]: [GameEntity, GameEntity], daily?: DailyCostars, solutions?: Array<Solution>, archive?: boolean) => {
+  const initGame = async (
+    [target, starter]: [GameEntity, GameEntity],
+    daily?: DailyCostars,
+    solutions?: Array<Solution>,
+    archive?: boolean,
+  ) => {
     setGameType(archive ? 'archive' : daily ? 'daily' : 'custom');
     setCompleted(false);
 
     let stats = dailyStats;
     let solve = lastSolve;
 
-    if (daily)
-      setTodaysCostars(daily);
+    if (daily) setTodaysCostars(daily);
 
-    if (solutions)
-      setTodaysSolutions(solutions);
+    if (solutions) setTodaysSolutions(solutions);
 
     if (daily && !archive && stats === null) {
       stats = await getDailyStats(user);
@@ -122,85 +165,85 @@ const useGameState = () => {
 
     if (daily) {
       const solutions = await getUserDailySolutions(user);
-      solve = solutions.find(sol => sol.daily_id === daily.id) || null;
-      setLastSolve(solve);      
+      solve = solutions.find((sol) => sol.daily_id === daily.id) || null;
+      setLastSolve(solve);
     }
 
-    if (daily && solve){
+    if (daily && solve) {
       setTarget(daily.target);
       setHistory(solve.solution);
       setHints(solve.hints || []);
       setCompleted(true);
-    }
-    else {
+    } else {
       setTarget(target);
       setHistory([starter]);
       setHints([]);
     }
-  }
+  };
 
   const addEntity = async (entity: GameEntity) => {
     let newHistory = [entity, ...history];
 
-		if (gameType !== 'unlimited') {
-			const isTargetMatch = target.id === entity.id && target.type == entity.type;
+    if (gameType !== 'unlimited') {
+      const isTargetMatch =
+        target.id === entity.id && target.type == entity.type;
 
-			if (isTargetMatch && gameType === 'daily')
-        updateDailyStats(entity);
-      
+      if (isTargetMatch && gameType === 'daily') updateDailyStats(entity);
+
       if (isTargetMatch && (gameType === 'daily' || gameType === 'archive'))
         saveSolution(entity);
 
-      if(isTargetMatch){
+      if (isTargetMatch) {
         setCompleted(true);
         newHistory = newHistory.reverse();
       }
-		}
+    }
 
     setHistory(newHistory);
     setUndoCache([]);
-    
+
     if (gameType === 'unlimited') {
-      if (history.length >= highScore)
-        incrementHighscore();
+      if (history.length >= highScore) incrementHighscore();
 
       await updateUnlimitedStats(user, newHistory, hints);
 
       setUnlimitedStats(await getUnlimitedStats(user));
-		}
-  }
+    }
+  };
 
   const addHint = async (entity: GameEntity) => {
     const hintData: Hint = {
       id: entity.id,
-      type: entity.type
+      type: entity.type,
     };
 
-    setHints([
-      ...hints,
-      hintData
-    ])
+    setHints([...hints, hintData]);
 
-    if (gameType === 'unlimited') {      
+    if (gameType === 'unlimited') {
       await updateUnlimitedStats(user, history, [...hints, hintData]);
 
       setUnlimitedStats(await getUnlimitedStats(user));
-		}
-  }
+    }
+  };
 
-  const updateDailyStats = async(value: GameEntity) => {
+  const updateDailyStats = async (value: GameEntity) => {
     await updateDailyStatsStorage(user, [value, ...history].reverse(), hints);
     setDailyStats(await getDailyStats(user));
-  }
+  };
 
-  const saveSolution = async(value: GameEntity) => {
-    await saveSolutionStorage(user, [value, ...history].reverse(), hints, todaysCostars?.id);
+  const saveSolution = async (value: GameEntity) => {
+    await saveSolutionStorage(
+      user,
+      [value, ...history].reverse(),
+      hints,
+      todaysCostars?.id,
+    );
     setUserDailySolutions(await getUserDailySolutions(user));
-  }
+  };
 
   const incrementHighscore = () => {
     setHighScore(highScore + 1);
-  }
+  };
 
   const reset = async () => {
     if (gameType === 'unlimited') {
@@ -208,29 +251,28 @@ const useGameState = () => {
       await updateUnlimitedStats(user, [], []);
 
       setUnlimitedStats(await getUnlimitedStats(user));
-    }
-    else {
+    } else {
       setHistory(history.slice(-1));
     }
-  }
-  
+  };
+
   const undo = () => {
     setUndoCache([history[0], ...undoCache]);
-    setHistory(history.slice(1))
-  }
+    setHistory(history.slice(1));
+  };
 
   const redo = () => {
     setHistory([undoCache[0], ...history]);
     setUndoCache(undoCache.slice(1));
-  }
+  };
 
   const expandAll = () => {
     setCondensed(false);
-  }
+  };
 
   const collapseAll = () => {
     setCondensed(true);
-  }
+  };
 
   return {
     hints,
@@ -263,7 +305,7 @@ const useGameState = () => {
     redo,
     expandAll,
     collapseAll,
-  }
-}
+  };
+};
 
 export default useGameState;
