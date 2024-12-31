@@ -6,7 +6,6 @@ import {
   highScoreAtom,
   currentAtom,
   undoCacheAtom,
-  condensedAtom,
   targetAtom,
   dailyStatsAtom,
   completedAtom,
@@ -40,7 +39,6 @@ const useGameState = () => {
   const [history, setHistory] = useAtom(historyAtom);
   const [hints, setHints] = useAtom(hintsAtom);
   const [undoCache, setUndoCache] = useAtom(undoCacheAtom);
-  const [condensed, setCondensed] = useAtom(condensedAtom);
   const [highScore, setHighScore] = useAtom(highScoreAtom);
   const [completed, setCompleted] = useAtom(completedAtom);
   const [current] = useAtom(currentAtom);
@@ -265,14 +263,6 @@ const useGameState = () => {
     setUndoCache(undoCache.slice(1));
   };
 
-  const expandAll = () => {
-    setCondensed(false);
-  };
-
-  const collapseAll = () => {
-    setCondensed(true);
-  };
-
   return {
     hints,
     score,
@@ -282,7 +272,6 @@ const useGameState = () => {
     gameType,
     highScore,
     undoCache,
-    condensed,
     completed,
     dailyStats,
     unlimitedStats,
@@ -302,8 +291,6 @@ const useGameState = () => {
     reset,
     undo,
     redo,
-    expandAll,
-    collapseAll,
   };
 };
 

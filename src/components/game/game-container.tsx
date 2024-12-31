@@ -5,7 +5,7 @@ import CSCardTrack from '@/components/presentation/card-track';
 import CSTextDisplay from '@/components/presentation/display';
 import useGameState from '@/store/game.state';
 import CSCard from '../presentation/card';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getCredits } from '@/services/tmdb.service';
 import Success from './success';
 import CSBackButton from '../inputs/buttons/back-button';
@@ -35,9 +35,12 @@ export default function CSGameContainer({
     addEntity,
   } = useGameState();
 
+  const [condenseAllCards, setCondenseAllCards] = useState(false);
+
+  const isUnlimited = !initPeople;
+
   useEffect(() => {
-    if (gameType !== 'unlimited' && initPeople)
-      initGame(initPeople, daily, solutions, archive);
+    if (!isUnlimited) initGame(initPeople, daily, solutions, archive);
   }, []);
 
   const onSubmit = async (value: GameEntity) => {
@@ -75,8 +78,11 @@ export default function CSGameContainer({
         </div>
       )}
       <div className='game-card-section'>
-        <CSGameToolbar />
-        <CSCardTrack showPrompt />
+        <CSGameToolbar
+          condensed={condenseAllCards}
+          setCondensed={setCondenseAllCards}
+        />
+        <CSCardTrack showPrompt condenseAll={condenseAllCards} />
       </div>
     </div>
   );

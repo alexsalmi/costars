@@ -5,7 +5,6 @@ export const targetAtom = atom({} as GameEntity);
 export const historyAtom = atom([] as Array<GameEntity>);
 export const hintsAtom = atom([] as Array<Hint>);
 export const undoCacheAtom = atom([] as Array<GameEntity>);
-export const condensedAtom = atom(false);
 
 export const currentAtom = atom((get) => get(historyAtom)[0] || null);
 export const scoreAtom = atom((get) => get(historyAtom).length);

@@ -9,6 +9,7 @@ interface ICSCardTrackProps {
   hints?: Array<Hint>;
   hideHints?: boolean;
   fullHeight?: boolean;
+  condenseAll?: boolean;
 }
 
 export default function CSCardTrack({
@@ -17,8 +18,9 @@ export default function CSCardTrack({
   hints: propHints,
   hideHints,
   fullHeight,
+  condenseAll,
 }: ICSCardTrackProps) {
-  const { history, hints, current, condensed } = useGameState();
+  const { history, hints, current } = useGameState();
 
   const cardsToDisplay = cards || history;
   const hintsToDisplay = propHints || hints;
@@ -45,7 +47,7 @@ export default function CSCardTrack({
           <CSCard
             entity={entity}
             reverse={entity.type === 'movie'}
-            condensed={condensed}
+            condensed={condenseAll}
             hintUsed={hintsToDisplay.some(
               (hint) => hint.id === entity.id && hint.type === entity.type,
             )}

@@ -11,13 +11,14 @@ export const sbGetSolutions = async (
   if (forCache) supabase = await createClientForCache();
   else supabase = await createClient();
 
-  const { uuid, user_id, daily_id, all_daily } = params;
+  const { uuid, user_id, daily_id, all_daily, is_daily_optimal } = params;
 
   let query = supabase.from('Solutions').select();
   if (uuid) query = query.eq('id', uuid);
   if (user_id) query = query.eq('user_id', user_id);
   if (daily_id) query = query.eq('daily_id', daily_id);
   if (all_daily) query = query.not('daily_id', 'is', null);
+  if (is_daily_optimal) query = query.eq('is_daily_optimal', is_daily_optimal);
 
   const { data } = await query;
 

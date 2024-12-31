@@ -36,7 +36,8 @@ export default function CSArchive() {
     if (!userDailySolutions) return;
 
     setLoading(true);
-    const costars = await getDailyCostarsByMonth(date.month() + 1, date.year());
+    const costars =
+      (await getDailyCostarsByMonth(date.month() + 1, date.year())) || [];
 
     const results =
       userDailySolutions

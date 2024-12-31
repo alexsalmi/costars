@@ -3,6 +3,8 @@ import { getTodaysCostars, getTodaysSolutions } from '@/services/cache.service';
 
 export default async function DailyGame() {
   const daily = await getTodaysCostars();
+  if (!daily) throw Error("Couldn't get Costars");
+
   const solutions = await getTodaysSolutions();
 
   return (
