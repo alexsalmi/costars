@@ -2,7 +2,6 @@
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import '@/styles/pages/archive.scss';
 import dayjs, { Dayjs } from 'dayjs';
 import { getDayNumber } from '@/utils/utils';
 import { redirect, RedirectType } from 'next/navigation';
@@ -17,6 +16,7 @@ import { DateView } from '@mui/x-date-pickers/models';
 import useGameState from '@/store/game.state';
 import { StarBorderOutlined, Star } from '@mui/icons-material';
 import { getDailyCostarsByMonth } from '@/services/cache.service';
+import '@/styles/pages/archive.scss';
 
 interface IPrevResults {
   score: number;

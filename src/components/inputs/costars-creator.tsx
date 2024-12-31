@@ -1,13 +1,13 @@
 'use client';
-import CSButton from '../inputs/button';
-import CSSearchBar from '../inputs/search';
+import CSButton from './buttons/button';
+import CSSearchBar from './search-bar';
 import { useState } from 'react';
 import CSTextDisplay from '../presentation/display';
 import { AutorenewOutlined, CloseOutlined } from '@mui/icons-material';
 import '@/styles/components/costars-generator.scss';
 import { getRandomPerson } from '@/services/cache.service';
 
-interface ICSCostarsGeneratorProps {
+interface ICSCostarsCreatorProps {
   target: GameEntity | null;
   setTarget?: (entity: GameEntity | null) => void;
   starter: GameEntity | null;
@@ -15,13 +15,13 @@ interface ICSCostarsGeneratorProps {
   editing?: boolean;
 }
 
-export default function CSCostarsGenerator({
+export default function CSCostarsCreator({
   target,
   setTarget = () => {},
   starter,
   setStarter = () => {},
   editing = true,
-}: ICSCostarsGeneratorProps) {
+}: ICSCostarsCreatorProps) {
   const [targetLoading, setTargetLoading] = useState(false);
   const [starterLoading, setStarterLoading] = useState(false);
 

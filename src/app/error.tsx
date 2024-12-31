@@ -1,7 +1,7 @@
 'use client';
 import Footer from '@/components/layouts/footer';
 import Header from '@/components/layouts/header';
-import CSButton from '@/components/inputs/button';
+import CSButton from '@/components/inputs/buttons/button';
 import Link from 'next/link';
 import '@/styles/pages/errors.scss';
 

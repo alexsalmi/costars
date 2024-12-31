@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import CSBackButton from '@/components/inputs/back-button';
+import CSBackButton from '@/components/inputs/buttons/back-button';
 import '@/styles/pages/info-pages.scss';
 
 export default function Credits() {
@@ -13,7 +13,13 @@ export default function Credits() {
         </span>
         <h4>The Movie Database</h4>
         <span className='info-page-image-section'>
-          <Image src='/tmdb_logo.svg' alt='TMDB Logo' width={120} height={60} />
+          <Image
+            priority
+            src='/tmdb_logo.svg'
+            alt='TMDB Logo'
+            width={120}
+            height={60}
+          />
           <span>
             All images and data related to movies and actors used in Costars are
             supplied by TMDB (The Movie Database). This product uses the TMDB

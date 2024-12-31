@@ -1,5 +1,5 @@
 import { getCostars } from '@/services/cache.service';
-import { supabase_saveCostars } from '@/services/supabase.service';
+import { supabase_saveCostars } from '@/services/supabase/supabase.service';
 import { getDayNumber } from '@/utils/utils';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';

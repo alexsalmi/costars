@@ -2,14 +2,13 @@ import localStorageService from './localstorage.service';
 import {
   supabase_getDailyStats,
   supabase_getUnlimitedStats,
-  supabase_getUserDailySolutions,
-  supabase_saveSolution,
   supabase_setDailyStats,
   supabase_setUnlimitedStats,
   supabase_updateDailyStats,
   supabase_updateUnlimitedStats,
-} from './supabase.service';
+} from './supabase/supabase.service';
 import { getTodaysCostars, getYesterdaysCostars } from './cache.service';
+import supabaseService from '@/services/supabase';
 
 export const getDailyStats = async (user: UserInfo) => {
   if (user && localStorageService.getAuthStatus() === 'pending') {
@@ -64,7 +63,7 @@ export const saveSolution = async (
   dailyId?: number,
 ) => {
   if (user) {
-    supabase_saveSolution({
+    supabaseService.solutions.save({
       daily_id: dailyId,
       solution,
       hints,
@@ -108,7 +107,10 @@ export const updateUnlimitedStats = async (
 
 export const getUserDailySolutions = async (user: UserInfo) => {
   if (user && localStorageService.getAuthStatus() === 'pending') {
-    const solutions = await supabase_getUserDailySolutions(user.id);
+    const solutions = await supabaseService.solutions.get({
+      user_id: user.id,
+      all_daily: true,
+    });
     localStorageService.setSolutions(solutions);
   }
 
@@ -129,7 +131,7 @@ export const migrateSaveDate = async (user: UserInfo) => {
       ...unlimitedStats,
       user_id: user?.id,
     }),
-    supabase_saveSolution(
+    supabaseService.solutions.save(
       solutions.map((sol) => ({
         ...sol,
         user_id: user?.id,

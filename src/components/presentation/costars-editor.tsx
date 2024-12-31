@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
-import CSCostarsGenerator from '../inputs/costars-generator';
+import CSCostarsCreator from '../inputs/costars-creator';
 import '@/styles/components/costars-editor.scss';
-import CSButton from '../inputs/button';
+import CSButton from '../inputs/buttons/button';
 import { getOptimalSolutions } from '@/services/cache.service';
 import { Input } from '@mui/material';
 import { revalidatePath } from 'next/cache';
@@ -10,7 +10,7 @@ import { getDayNumber } from '@/utils/utils';
 import {
   supabase_saveCostars,
   supabase_updateCostars,
-} from '@/services/supabase.service';
+} from '@/services/supabase/supabase.service';
 
 interface ICSCostarsEditorProps {
   costars?: DailyCostars;
@@ -85,7 +85,7 @@ export default function CSCostarsEditor({ costars }: ICSCostarsEditorProps) {
         )}
       </div>
       {costars || editing ? (
-        <CSCostarsGenerator
+        <CSCostarsCreator
           target={target}
           setTarget={setTarget}
           starter={starter}

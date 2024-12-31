@@ -1,29 +1,29 @@
 'use client';
-import CSSearchBar from '@/components/inputs/search';
-import CSGameToolbar from '@/components/inputs/game-toolbar';
+import CSSearchBar from '@/components/inputs/search-bar';
+import CSGameToolbar from '@/components/inputs/toolbars/game-toolbar';
 import CSCardTrack from '@/components/presentation/card-track';
 import CSTextDisplay from '@/components/presentation/display';
 import useGameState from '@/store/game.state';
-import '@/styles/game/game-container.scss';
 import CSCard from '../presentation/card';
 import { useEffect } from 'react';
 import { getCredits } from '@/services/tmdb.service';
 import Success from './success';
-import CSBackButton from '../inputs/back-button';
+import CSBackButton from '../inputs/buttons/back-button';
+import '@/styles/game/game-container.scss';
 
-interface IGameProps {
+interface ICSGameContainerProps {
   initPeople?: [GameEntity, GameEntity];
   daily?: DailyCostars;
   solutions?: Array<Solution>;
   archive?: boolean;
 }
 
-export default function GameContainer({
+export default function CSGameContainer({
   initPeople,
   daily,
   solutions,
   archive,
-}: IGameProps) {
+}: ICSGameContainerProps) {
   const {
     gameType,
     target,

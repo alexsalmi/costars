@@ -4,9 +4,9 @@ import useGameState from '@/store/game.state';
 import '@/styles/game/stats-modal.scss';
 import CSTextDisplay from '../presentation/display';
 import CSCardTrack from '../presentation/card-track';
-import CSSolutionsToolbar from '../inputs/solutions-toolbar';
+import CSSolutionsToolbar from '../inputs/toolbars/solutions-toolbar';
 import { useState } from 'react';
-import CSButton from '../inputs/button';
+import CSButton from '../inputs/buttons/button';
 import Link from 'next/link';
 import { CalendarMonthOutlined } from '@mui/icons-material';
 

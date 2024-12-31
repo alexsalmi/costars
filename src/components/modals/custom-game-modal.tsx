@@ -1,15 +1,15 @@
 'use client';
 import CSModal from '../presentation/modal';
-import CSButton from '../inputs/button';
+import CSButton from '../inputs/buttons/button';
 import { useEffect, useState } from 'react';
 import { ShareOutlined, SkipNextOutlined } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import Slide from '@mui/material/Slide';
 import Link from 'next/link';
-import '@/styles/game/custom-game-modal.scss';
 import { useRouter } from 'next/navigation';
 import useGameState from '@/store/game.state';
-import CSCostarsGenerator from '../inputs/costars-generator';
+import CSCostarsCreator from '../inputs/costars-creator';
+import '@/styles/game/custom-game-modal.scss';
 
 export default function CSCustomGameModal() {
   const { initCustomGame } = useGameState();
@@ -55,7 +55,7 @@ export default function CSCustomGameModal() {
         <h3>Custom Game</h3>
         <span>Choose two actors to connect!</span>
       </div>
-      <CSCostarsGenerator
+      <CSCostarsCreator
         target={target}
         starter={starter}
         setTarget={setTarget}

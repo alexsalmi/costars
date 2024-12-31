@@ -1,5 +1,5 @@
 import CSModal from '../presentation/modal';
-import CSButton from '../inputs/button';
+import CSButton from '../inputs/buttons/button';
 import useGameState from '@/store/game.state';
 import '@/styles/game/reset-modal.scss';
 

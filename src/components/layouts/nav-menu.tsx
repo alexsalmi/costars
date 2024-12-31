@@ -6,7 +6,7 @@ import {
   HelpOutlineOutlined,
   LightModeOutlined,
 } from '@mui/icons-material';
-import CSButton from '@/components/inputs/button';
+import CSButton from '@/components/inputs/buttons/button';
 import { useEffect, useState } from 'react';
 import CSProfileModal from '../modals/profile-modal';
 import { useTheme } from 'next-themes';

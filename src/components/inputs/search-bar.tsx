@@ -1,12 +1,12 @@
 'use client';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import '@/styles/components/search.scss';
 import { SearchOutlined } from '@mui/icons-material';
 import { SyntheticEvent, useRef, useState } from 'react';
 import { search } from '@/services/tmdb.service';
 import useGameState from '@/store/game.state';
 import debounce from 'debounce';
+import '@/styles/components/search.scss';
 
 interface ICSSearchBar {
   onSubmit: (value: GameEntity) => void;

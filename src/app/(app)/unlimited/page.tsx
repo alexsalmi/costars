@@ -1,5 +1,5 @@
 'use client';
-import GameContainer from '@/components/game/game-container';
+import CSGameContainer from '@/components/game/game-container';
 import useGameState from '@/store/game.state';
 import { useEffect } from 'react';
 
@@ -10,5 +10,5 @@ export default function UnlimitedGame() {
     initUnlimitedGame();
   }, [initUnlimitedGame]);
 
-  return <GameContainer />;
+  return <CSGameContainer />;
 }

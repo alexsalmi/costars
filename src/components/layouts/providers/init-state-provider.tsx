@@ -3,7 +3,7 @@
 import useGameState from '@/store/game.state';
 import { useEffect } from 'react';
 
-export default function BootstrapData({
+export default function InitStateProvider({
   children,
 }: Readonly<{
   children: React.ReactNode;

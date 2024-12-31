@@ -8,7 +8,7 @@ import {
 } from '@mui/icons-material';
 import { useState } from 'react';
 import CSDetailsModal from '../modals/details-modal';
-import CSButton from '../inputs/button';
+import CSButton from '../inputs/buttons/button';
 import { Tooltip } from '@mui/material';
 
 interface ICSCardProps {
@@ -54,6 +54,7 @@ export default function CSCard({
             height={120}
             placeholder='blur'
             blurDataURL='/placeholder.webp'
+            unoptimized
           />
         ) : (
           <></>

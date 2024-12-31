@@ -2,14 +2,14 @@
 import CSCardTrack from '@/components/presentation/card-track';
 import useGameState from '@/store/game.state';
 import Link from 'next/link';
-import CSButton from '../inputs/button';
-import '@/styles/game/success.scss';
+import CSButton from '../inputs/buttons/button';
 import { useState } from 'react';
 import CSStatsModal from '../modals/stats-modal';
-import CSBackButton from '../inputs/back-button';
+import CSBackButton from '../inputs/buttons/back-button';
 import { ShareOutlined } from '@mui/icons-material';
-import { supabase_saveSolution } from '@/services/supabase.service';
 import { getScoreString } from '@/utils/utils';
+import '@/styles/game/success.scss';
+import supabaseService from '@/services/supabase';
 
 export default function Success() {
   const { history, target, score, hints, gameType, todaysCostars } =
@@ -32,7 +32,7 @@ export default function Success() {
     if (!todaysCostars) return;
 
     setShareLoading(true);
-    const uuid = await supabase_saveSolution({
+    const uuid = await supabaseService.solutions.save({
       daily_id: todaysCostars.id!,
       solution: history,
       hints,
@@ -60,7 +60,7 @@ export default function Success() {
 
   return (
     <>
-      <CSBackButton link={gameType === 'archive' ? '/daily/archive' : ''} />
+      <CSBackButton link={gameType === 'archive' ? '/daily/archive' : '/'} />
       <div className='success-container'>
         <div className='success-message-container'>
           <h3>Congratulations!</h3>

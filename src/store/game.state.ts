@@ -30,9 +30,9 @@ import {
   migrateSaveDate,
   saveSolution as saveSolutionStorage,
 } from '@/services/userdata.service';
-import { getUser } from '@/services/auth.service';
+import { getUser } from '@/services/supabase/auth.service';
 import localStorageService from '@/services/localstorage.service';
-import { supabase_hasDailyStats } from '@/services/supabase.service';
+import { supabase_hasDailyStats } from '@/services/supabase/supabase.service';
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);

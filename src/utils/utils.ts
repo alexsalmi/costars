@@ -1,4 +1,4 @@
-import { signOut } from '@/services/auth.service';
+import { signOut } from '@/services/supabase/auth.service';
 import localStorageService from '@/services/localstorage.service';
 
 export function getDayNumber(date: string) {

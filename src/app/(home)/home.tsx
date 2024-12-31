@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import CSButton from '@/components/inputs/button';
+import CSButton from '@/components/inputs/buttons/button';
 import logo from '@/../public/costars_primary_logo.png';
 import '@/styles/pages/home.scss';
 import Link from 'next/link';

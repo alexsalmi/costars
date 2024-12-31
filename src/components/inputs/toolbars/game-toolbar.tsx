@@ -1,5 +1,5 @@
 import '@/styles/components/toolbar.scss';
-import CSButton from './button';
+import CSButton from '../buttons/button';
 import {
   QuestionMarkOutlined,
   ReplayOutlined,
@@ -9,9 +9,9 @@ import {
   RedoOutlined,
 } from '@mui/icons-material';
 import useGameState from '@/store/game.state';
-import CSResetModal from '../modals/reset-modal';
+import CSResetModal from '../../modals/reset-modal';
 import { useState } from 'react';
-import CSTooltip from '../presentation/tooltip';
+import CSTooltip from '../../presentation/tooltip';
 
 export default function CSGameToolbar() {
   const {

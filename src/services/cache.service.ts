@@ -5,8 +5,8 @@ import {
   supabase_getDailyCostarsByDate,
   supabase_getDailyCostarsByDayNumber,
   supabase_getDailyCostarsByMonth,
-  supabase_getDailySolutions,
-} from './supabase.service';
+} from './supabase/supabase.service';
+import supabaseService from '@/services/supabase';
 
 export const getRandomPerson = async () => {
   const pool = await getRandomPool();
@@ -83,8 +83,13 @@ export const getTodaysCostars = unstable_cache(
 
 export const getTodaysSolutions = unstable_cache(
   async () => {
-    return await supabase_getDailySolutions(
-      (await supabase_getDailyCostarsByDate(new Date())).id || 0,
+    const clientSide = true;
+    return await supabaseService.solutions.get(
+      {
+        is_daily_optimal: true,
+        daily_id: (await supabase_getDailyCostarsByDate(new Date())).id || 0,
+      },
+      clientSide,
     );
   },
   [],
@@ -111,7 +116,14 @@ export const getCostarsByDayNumber = unstable_cache(
 
 export const getDailySolutions = unstable_cache(
   async (daily_id: number) => {
-    return await supabase_getDailySolutions(daily_id);
+    const clientSide = true;
+    return await supabaseService.solutions.get(
+      {
+        is_daily_optimal: true,
+        daily_id,
+      },
+      clientSide,
+    );
   },
   [],
   { tags: ['daily_costars'] },

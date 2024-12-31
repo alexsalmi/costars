@@ -1,4 +1,4 @@
-import GameContainer from '@/components/game/game-container';
+import CSGameContainer from '@/components/game/game-container';
 import { getTodaysCostars, getTodaysSolutions } from '@/services/cache.service';
 
 export default async function DailyGame() {
@@ -6,7 +6,7 @@ export default async function DailyGame() {
   const solutions = await getTodaysSolutions();
 
   return (
-    <GameContainer
+    <CSGameContainer
       initPeople={[daily.target, daily.starter]}
       daily={daily}
       solutions={solutions}

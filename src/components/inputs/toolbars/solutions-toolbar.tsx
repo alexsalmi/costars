@@ -1,5 +1,5 @@
 import '@/styles/components/toolbar.scss';
-import CSButton from './button';
+import CSButton from '../buttons/button';
 import {
   KeyboardArrowLeftOutlined,
   KeyboardArrowRightOutlined,

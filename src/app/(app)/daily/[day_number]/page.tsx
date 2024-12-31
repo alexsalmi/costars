@@ -1,4 +1,4 @@
-import GameContainer from '@/components/game/game-container';
+import CSGameContainer from '@/components/game/game-container';
 import {
   getCostarsByDayNumber,
   getDailySolutions,
@@ -30,11 +30,11 @@ export default async function DailyArchiveGame({
   const solutions = await getDailySolutions(daily.id!);
 
   return (
-    <GameContainer
+    <CSGameContainer
       initPeople={[daily.target, daily.starter]}
       daily={daily}
       solutions={solutions}
-      archive={true}
+      archive
     />
   );
 }

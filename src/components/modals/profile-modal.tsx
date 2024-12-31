@@ -1,12 +1,12 @@
-import { signIn, signOut } from '@/services/auth.service';
-import CSButton from '../inputs/button';
+import { signIn, signOut } from '@/services/supabase/auth.service';
+import CSButton from '../inputs/buttons/button';
 import CSModal from '../presentation/modal';
 import useGameState from '@/store/game.state';
 import { FacebookOutlined } from '@mui/icons-material';
-import '@/styles/components/profile-modal.scss';
 import Image from 'next/image';
 import localStorageService from '@/services/localstorage.service';
 import Link from 'next/link';
+import '@/styles/components/profile-modal.scss';
 
 interface ICSProfileModalProps {
   isOpen: boolean;

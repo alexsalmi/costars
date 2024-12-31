@@ -7,8 +7,8 @@ import { Quicksand } from 'next/font/google';
 import '@/styles/resets.scss';
 import '@/styles/variables.scss';
 import '@/styles/global.scss';
-import ThemeProvider from '@/components/layouts/theme-provider';
-import BootstrapData from '@/components/layouts/bootstrap-data';
+import ThemeProvider from '@/components/layouts/providers/theme-provider';
+import InitStateProvider from '@/components/layouts/providers/init-state-provider';
 
 const quicksand = Quicksand({
   subsets: ['latin'],
@@ -38,7 +38,7 @@ export default function RootLayout({
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <AppRouterCacheProvider>
             <StoreProvider>
-              <BootstrapData>{children}</BootstrapData>
+              <InitStateProvider>{children}</InitStateProvider>
             </StoreProvider>
           </AppRouterCacheProvider>
         </ThemeProvider>

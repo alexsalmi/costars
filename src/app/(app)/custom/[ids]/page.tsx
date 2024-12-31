@@ -1,5 +1,5 @@
 import { getCredits, getDetails } from '@/services/tmdb.service';
-import GameContainer from '@/components/game/game-container';
+import CSGameContainer from '@/components/game/game-container';
 
 interface ICustomGameProps {
   params: Promise<{ ids: string }>;
@@ -46,5 +46,5 @@ export default async function CustomGame({ params }: ICustomGameProps) {
     (credit) => credit.id,
   );
 
-  return <GameContainer initPeople={[targetEntity, starterEntity]} />;
+  return <CSGameContainer initPeople={[targetEntity, starterEntity]} />;
 }

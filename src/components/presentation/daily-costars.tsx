@@ -1,16 +1,16 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import CSButton from '../inputs/button';
+import CSButton from '../inputs/buttons/button';
 import '@/styles/components/daily-costars.scss';
 import { getScoreString } from '@/utils/utils';
 import useGameState from '@/store/game.state';
 
-interface IDailyCostarsProps {
+interface ICSDailyCostarsProps {
   daily?: DailyCostars;
 }
 
-export default function CSDailyCostars({ daily }: IDailyCostarsProps) {
+export default function CSDailyCostars({ daily }: ICSDailyCostarsProps) {
   const { lastSolve } = useGameState();
 
   return (

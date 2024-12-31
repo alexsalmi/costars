@@ -1,4 +1,4 @@
-import CSBackButton from '@/components/inputs/back-button';
+import CSBackButton from '@/components/inputs/buttons/back-button';
 import '@/styles/pages/info-pages.scss';
 
 export default function Privacy() {

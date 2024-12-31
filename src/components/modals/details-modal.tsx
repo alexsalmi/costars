@@ -1,12 +1,12 @@
 'use client';
 import Image from 'next/image';
 import CSModal from '../presentation/modal';
-import '@/styles/components/details-modal.scss';
 import { useEffect, useState } from 'react';
 import { getCredits, getDetails } from '@/services/tmdb.service';
-import CSButton from '../inputs/button';
+import CSButton from '../inputs/buttons/button';
 import useGameState from '@/store/game.state';
 import { CircularProgress } from '@mui/material';
+import '@/styles/components/details-modal.scss';
 
 interface ICSDetailsModalProps {
   entity: GameEntity;
@@ -87,7 +87,7 @@ export default function CSDetailsModal({
   };
 
   return (
-    <CSModal isOpen={isOpen} close={close} className='details-modal-container'>
+    <CSModal isOpen={isOpen} close={close}>
       <div className='details-modal-hero'>
         <Image
           className='card-image'
@@ -97,6 +97,7 @@ export default function CSDetailsModal({
           height={180}
           placeholder='blur'
           blurDataURL='/placeholder.webp'
+          unoptimized
         />
         <div className='details-modal-hero-text'>
           <h3>{entity.label}</h3>
@@ -176,6 +177,7 @@ export default function CSDetailsModal({
                   height={150}
                   placeholder='blur'
                   blurDataURL='/placeholder.webp'
+                  unoptimized
                 />
                 <span>{credit.label}</span>
               </span>

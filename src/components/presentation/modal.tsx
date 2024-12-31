@@ -1,5 +1,5 @@
 import '@/styles/components/modal.scss';
-import CSButton from '../inputs/button';
+import CSButton from '../inputs/buttons/button';
 import { CloseOutlined } from '@mui/icons-material';
 import { Modal } from '@mui/material';
 
