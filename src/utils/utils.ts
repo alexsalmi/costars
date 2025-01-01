@@ -1,5 +1,6 @@
 import { signOut } from '@/services/supabase/auth.service';
 import localStorageService from '@/services/localstorage.service';
+import { ls_GetFreshStatus } from '@/services/localstorage';
 
 export function getDayNumber(date: string) {
   return Math.floor(
@@ -39,3 +40,10 @@ export async function warnForConflict() {
 
   return;
 }
+
+export function isFresh() {
+  return (
+    typeof window !== 'undefined' &&
+    ls_GetFreshStatus()
+  );
+};

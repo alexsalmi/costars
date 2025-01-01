@@ -1,6 +1,7 @@
 'use server';
 import { createClient, createClientForCache } from '@/utils/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { getUser } from './auth.service';
 
 export const sbGetDailyStats = async (
   params: DailyStatsParams,
@@ -11,7 +12,10 @@ export const sbGetDailyStats = async (
   if (forCache) supabase = await createClientForCache();
   else supabase = await createClient();
 
-  const { user_id } = params;
+  let { user_id } = params;
+
+  if(!user_id)
+    user_id = (await getUser())?.id;
 
   const { data } = await supabase
     .from('DailyStats')
