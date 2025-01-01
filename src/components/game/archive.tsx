@@ -15,8 +15,8 @@ import { PickerSelectionState } from '@mui/x-date-pickers/internals';
 import { DateView } from '@mui/x-date-pickers/models';
 import { StarBorderOutlined, Star } from '@mui/icons-material';
 import { getDailyCostarsByMonth } from '@/services/cache.service';
-import '@/styles/pages/archive.scss';
 import { getUserDailySolutions } from '@/services/userdata.service';
+import '@/styles/game/archive.scss';
 
 interface IPrevResults {
   score: number;

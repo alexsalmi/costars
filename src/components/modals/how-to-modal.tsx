@@ -1,5 +1,5 @@
-import CSModal from '../presentation/modal';
-import '@/styles/components/how-to-modal.scss';
+import CSModal from './modal';
+import '@/styles/modals/how-to-modal.scss';
 
 interface ICSHowToModalProps {
   isOpen: boolean;

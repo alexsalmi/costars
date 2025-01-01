@@ -1,7 +1,7 @@
-import '@/styles/components/modal.scss';
 import CSButton from '../inputs/buttons/button';
 import { CloseOutlined } from '@mui/icons-material';
 import { Modal } from '@mui/material';
+import '@/styles/modals/modal.scss';
 
 interface ICSModalProps {
   children: React.ReactNode;

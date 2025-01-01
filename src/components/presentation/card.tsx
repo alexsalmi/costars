@@ -1,5 +1,4 @@
 'use client';
-import '@/styles/components/card.scss';
 import Image from 'next/image';
 import {
   ExpandMoreOutlined,
@@ -10,6 +9,7 @@ import { useState } from 'react';
 import CSDetailsModal from '../modals/details-modal';
 import CSButton from '../inputs/buttons/button';
 import { Tooltip } from '@mui/material';
+import '@/styles/presentation/card.scss';
 
 interface ICSCardProps {
   entity: GameEntity;

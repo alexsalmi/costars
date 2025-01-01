@@ -1,13 +1,13 @@
 import { signIn, signOut } from '@/services/supabase/auth.service';
 import CSButton from '../inputs/buttons/button';
-import CSModal from '../presentation/modal';
+import CSModal from './modal';
 import useCostarsState from '@/store/costars.state';
 import { FacebookOutlined } from '@mui/icons-material';
 import Image from 'next/image';
 import Link from 'next/link';
-import '@/styles/components/profile-modal.scss';
 import { ls_PostAuthStatus } from '@/services/localstorage';
 import { clearStorage } from '@/utils/localstorage';
+import '@/styles/modals/profile-modal.scss';
 
 interface ICSProfileModalProps {
   isOpen: boolean;

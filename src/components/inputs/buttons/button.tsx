@@ -1,5 +1,5 @@
 import { MouseEventHandler } from 'react';
-import '@/styles/components/button.scss';
+import '@/styles/inputs/button.scss';
 import { CircularProgress } from '@mui/material';
 
 interface ICSButtonProps {

@@ -6,7 +6,7 @@ import { SyntheticEvent, useRef, useState } from 'react';
 import { search } from '@/services/tmdb.service';
 import useCostarsState from '@/store/costars.state';
 import debounce from 'debounce';
-import '@/styles/components/search.scss';
+import '@/styles/inputs/search-bar.scss';
 
 interface ICSSearchBar {
   onSubmit: (value: GameEntity) => void;

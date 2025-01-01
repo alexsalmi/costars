@@ -1,5 +1,5 @@
 'use client';
-import CSModal from '../presentation/modal';
+import CSModal from './modal';
 import CSButton from '../inputs/buttons/button';
 import { useState } from 'react';
 import { ShareOutlined, SkipNextOutlined } from '@mui/icons-material';
@@ -8,7 +8,7 @@ import Slide from '@mui/material/Slide';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import CSCostarsCreator from '../inputs/costars-creator';
-import '@/styles/game/custom-game-modal.scss';
+import '@/styles/modals/custom-game-modal.scss';
 
 export default function CSCustomGameModal() {
   const [target, setTarget] = useState(null as GameEntity | null);

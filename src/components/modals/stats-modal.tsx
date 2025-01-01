@@ -1,7 +1,6 @@
 'use client';
-import CSModal from '../presentation/modal';
+import CSModal from './modal';
 import useCostarsState from '@/store/costars.state';
-import '@/styles/game/stats-modal.scss';
 import CSTextDisplay from '../presentation/display';
 import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/toolbars/solutions-toolbar';
@@ -9,6 +8,7 @@ import { useState } from 'react';
 import CSButton from '../inputs/buttons/button';
 import Link from 'next/link';
 import { CalendarMonthOutlined } from '@mui/icons-material';
+import '@/styles/modals/stats-modal.scss';
 
 interface ICSStatsModalProps {
   isOpen: boolean;

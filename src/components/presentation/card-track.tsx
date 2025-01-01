@@ -1,7 +1,7 @@
 'use client';
 import useCostarsState from '@/store/costars.state';
 import CSCard from './card';
-import '@/styles/components/card-track.scss';
+import '@/styles/presentation/card-track.scss';
 
 interface ICSCardTrackProps {
   showPrompt?: boolean;

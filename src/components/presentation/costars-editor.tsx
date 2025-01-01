@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import CSCostarsCreator from '../inputs/costars-creator';
-import '@/styles/components/costars-editor.scss';
 import CSButton from '../inputs/buttons/button';
 import { getOptimalSolutions } from '@/services/cache.service';
 import { Input } from '@mui/material';
@@ -13,6 +12,7 @@ import {
   sb_PostSolutions,
   sb_UpdateDailyCostars,
 } from '@/services/supabase';
+import '@/styles/presentation/costars-editor.scss';
 
 interface ICSCostarsEditorProps {
   costars?: DailyCostars;

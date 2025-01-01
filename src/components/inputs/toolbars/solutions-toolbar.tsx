@@ -1,9 +1,9 @@
-import '@/styles/components/toolbar.scss';
 import CSButton from '../buttons/button';
 import {
   KeyboardArrowLeftOutlined,
   KeyboardArrowRightOutlined,
 } from '@mui/icons-material';
+import '@/styles/inputs/toolbar.scss';
 
 interface ICSSolutionsToolbarProps {
   leftClick: () => void;

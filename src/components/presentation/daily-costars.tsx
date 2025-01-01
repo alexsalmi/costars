@@ -2,10 +2,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import CSButton from '../inputs/buttons/button';
-import '@/styles/components/daily-costars.scss';
 import { getScoreString } from '@/utils/utils';
 import { useEffect, useState } from 'react';
 import { getUserDailySolutions } from '@/services/userdata.service';
+import '@/styles/presentation/daily-costars.scss';
 
 interface ICSDailyCostarsProps {
   daily?: DailyCostars;

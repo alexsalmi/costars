@@ -1,7 +1,7 @@
-import CSModal from '../presentation/modal';
+import CSModal from './modal';
 import CSButton from '../inputs/buttons/button';
 import useCostarsState from '@/store/costars.state';
-import '@/styles/game/reset-modal.scss';
+import '@/styles/modals/reset-modal.scss';
 
 interface ICSResetModalProps {
   isOpen: boolean;

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import CSButton from './button';
 import { KeyboardArrowLeftOutlined } from '@mui/icons-material';
-import '@/styles/components/back-button.scss';
+import '@/styles/inputs/back-button.scss';
 
 interface ICSBackButtonProps {
   link?: string;

@@ -1,4 +1,3 @@
-import '@/styles/components/toolbar.scss';
 import CSButton from '../buttons/button';
 import {
   QuestionMarkOutlined,
@@ -12,6 +11,7 @@ import useCostarsState from '@/store/costars.state';
 import CSResetModal from '../../modals/reset-modal';
 import { useState } from 'react';
 import CSTooltip from '../../presentation/tooltip';
+import '@/styles/inputs/toolbar.scss';
 
 interface ICSGameToolbarProps {
   condensed: boolean;
