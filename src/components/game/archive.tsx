@@ -79,10 +79,16 @@ export default function CSArchive() {
 
         <DateCalendar
           className='archive-calendar'
-          views={dayjs().year() > 2024 ? ['day', 'year'] : ['day', 'month']}
+          views={
+            dayjs().year() > 2025
+              ? ['day', 'year', 'month']
+              : dayjs().month() > 0
+                ? ['day', 'month']
+                : ['day']
+          }
           onChange={selectDate}
           onMonthChange={getPrevResults}
-          minDate={dayjs('12/15/2024')}
+          minDate={dayjs('01/01/2025')}
           maxDate={dayjs()}
           loading={loading}
           disableHighlightToday

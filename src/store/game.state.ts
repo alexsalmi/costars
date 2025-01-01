@@ -28,6 +28,7 @@ import {
   postSolution,
 } from '@/services/userdata.service';
 import { getUser } from '@/services/supabase/auth.service';
+import { isMigrationPending } from '@/utils/localstorage';
 
 const useGameState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
@@ -52,34 +53,24 @@ const useGameState = () => {
 
   // Actions
   const bootstrapState = async () => {
-    let localUser = user;
-    if (localUser === null) {
-      localUser = await getUser();
-      setUser(localUser);
-    }
+    if (isMigrationPending()) return;
 
-    let localDailyStats = dailyStats;
-    if (localDailyStats === null) {
-      localDailyStats = getDailyStats();
-      setDailyStats(localDailyStats);
-    }
+    getUser().then((res) => setUser(res));
 
-    let localSolve = lastSolve;
-    if (lastSolve === null) {
-      const solutions = getUserDailySolutions();
-      localSolve =
-        solutions.find(
-          (sol) => sol.daily_id === localDailyStats.last_played_id,
-        ) || null;
-      setUserDailySolutions(solutions);
-      setLastSolve(localSolve);
-    }
+    const localDailyStats = getDailyStats();
+    setDailyStats(localDailyStats);
 
-    let localUnlimitedStats = unlimitedStats;
-    if (localUnlimitedStats === null) {
-      localUnlimitedStats = getUnlimitedStats();
-      setUnlimitedStats(localUnlimitedStats);
-    }
+    const localUnlimitedStats = getUnlimitedStats();
+    setUnlimitedStats(localUnlimitedStats);
+
+    const solutions = getUserDailySolutions();
+    setUserDailySolutions(solutions);
+
+    const localSolve =
+      solutions.find(
+        (sol) => sol.daily_id === localDailyStats.last_played_id,
+      ) || null;
+    setLastSolve(localSolve);
   };
 
   const initUnlimitedGame = async () => {

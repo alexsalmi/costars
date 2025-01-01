@@ -17,6 +17,10 @@ export const lsPostUnlimitedStats = (unlimitedStats: UnlimitedStats) => {
   );
 };
 
+export const lsDeleteUnlimitedStats = () => {
+  window.localStorage.removeItem(KEY_UNLIMITED_STATS);
+};
+
 export const lsHasUnlimitedStats = (): boolean => {
   return (
     typeof window !== 'undefined' &&

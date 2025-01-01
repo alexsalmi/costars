@@ -4,9 +4,10 @@ import CSModal from '../presentation/modal';
 import useGameState from '@/store/game.state';
 import { FacebookOutlined } from '@mui/icons-material';
 import Image from 'next/image';
-import localStorageService from '@/services/localstorage.service';
 import Link from 'next/link';
 import '@/styles/components/profile-modal.scss';
+import { ls_PostAuthStatus } from '@/services/localstorage';
+import { clearStorage } from '@/utils/localstorage';
 
 interface ICSProfileModalProps {
   isOpen: boolean;
@@ -20,12 +21,12 @@ export default function CSProfileModal({
   const { user } = useGameState();
 
   const signInHandler = async (type: 'google' | 'facebook') => {
-    localStorageService.setAuthStatus('pending');
+    ls_PostAuthStatus('pending');
 
     const error = await signIn(type);
 
     if (error) {
-      localStorageService.setAuthStatus('false');
+      ls_PostAuthStatus('false');
     }
   };
 
@@ -33,8 +34,8 @@ export default function CSProfileModal({
     const error = await signOut();
 
     if (!error) {
-      localStorageService.setAuthStatus('false');
-      localStorageService.clearStorage();
+      ls_PostAuthStatus('false');
+      clearStorage();
       window.location.reload();
     }
   };

@@ -33,6 +33,10 @@ export const lsPostSolutions = (solutions: Solution | Array<Solution>) => {
   );
 };
 
+export const lsDeleteSolutions = () => {
+  window.localStorage.removeItem(KEY_SOLUTIONS);
+};
+
 export const lsHasSolutions = (): boolean => {
   return (
     typeof window !== 'undefined' &&

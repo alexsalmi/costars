@@ -17,6 +17,10 @@ export const lsPostDailyStats = (dailyStats: DailyStats) => {
   );
 };
 
+export const lsDeleteDailyStats = () => {
+  window.localStorage.removeItem(KEY_DAILY_STATS);
+};
+
 export const lsHasDailyStats = (): boolean => {
   return (
     typeof window !== 'undefined' &&

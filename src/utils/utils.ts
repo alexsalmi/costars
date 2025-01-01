@@ -1,7 +1,3 @@
-import { signOut } from '@/services/supabase/auth.service';
-import localStorageService from '@/services/localstorage.service';
-import { ls_GetFreshStatus } from '@/services/localstorage';
-
 export function getDayNumber(date: string) {
   return Math.floor(
     (new Date(date).getTime() - new Date('12/31/2024').getTime()) /
@@ -22,25 +18,4 @@ export function getScoreString(history: Array<GameEntity>, hints: Array<Hint>) {
   }
 
   return str;
-}
-
-export async function warnForConflict() {
-  const res = confirm(
-    'WARNING:\nYour local save data will be overwritten if you sign into this existing account. Continue anyway?',
-  );
-
-  if (!res) {
-    const error = await signOut();
-
-    if (!error) {
-      localStorageService.setAuthStatus('false');
-      window.location.reload();
-    }
-  }
-
-  return;
-}
-
-export function isFresh() {
-  return typeof window !== 'undefined' && ls_GetFreshStatus();
 }

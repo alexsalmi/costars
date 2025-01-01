@@ -1,7 +1,7 @@
 'use client';
 import '@/styles/pages/migration.scss';
 import { useEffect } from 'react';
-import { ls_GetAuthStatus, ls_PostAuthStatus } from '@/services/localstorage';
+import { ls_PostAuthStatus } from '@/services/localstorage';
 import { redirect } from 'next/navigation';
 import {
   migrateFromLStoSB,
@@ -9,15 +9,18 @@ import {
 } from '@/services/userdata.service';
 import useGameState from '@/store/game.state';
 import { CircularProgress } from '@mui/material';
-import { isFresh, warnForConflict } from '@/utils/utils';
+import {
+  isFresh,
+  isMigrationPending,
+  warnForConflict,
+} from '@/utils/localstorage';
 import { sb_GetDailyStats } from '@/services/supabase';
 
 export default function Migration() {
   const { bootstrapState } = useGameState();
 
   useEffect(() => {
-    const migrationPending = ls_GetAuthStatus() === 'pending';
-    if (!migrationPending) redirect('/');
+    if (!isMigrationPending()) redirect('/');
 
     let keepLocal = false;
     let authConflict = false;

@@ -47,7 +47,7 @@ export const updateDailyStats = async (
 
   if (!yesterdaysCostars) return;
 
-  const dailyStats: DailyStats = await getDailyStats();
+  const dailyStats: DailyStats = getDailyStats();
 
   // Update days played
   dailyStats.days_played!++;
@@ -206,10 +206,14 @@ export const migrateFromSBToLS = async () => {
     ls_PostSolutions(solutions);
   });
 
-  return await Promise.all([
+  await Promise.all([
     dailyStatsPromise,
     unlimitedStatsPromise,
     solutionsPromise,
   ]);
+
+  ls_DeleteFreshStatus();
+
+  return;
 };
 /* ----- END OF DATA MIGRATION ----- */
