@@ -3,7 +3,7 @@ import CSSearchBar from '@/components/inputs/search-bar';
 import CSGameToolbar from '@/components/inputs/toolbars/game-toolbar';
 import CSCardTrack from '@/components/presentation/card-track';
 import CSTextDisplay from '@/components/presentation/display';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import CSCard from '../presentation/card';
 import { useEffect, useState } from 'react';
 import { getCredits } from '@/services/tmdb.service';
@@ -12,17 +12,17 @@ import CSBackButton from '../inputs/buttons/back-button';
 import '@/styles/game/game-container.scss';
 
 interface ICSGameContainerProps {
+  type: GameType;
   initPeople?: [GameEntity, GameEntity];
   daily?: DailyCostars;
   solutions?: Array<Solution>;
-  archive?: boolean;
 }
 
 export default function CSGameContainer({
+  type,
   initPeople,
   daily,
   solutions,
-  archive,
 }: ICSGameContainerProps) {
   const {
     gameType,
@@ -33,14 +33,12 @@ export default function CSGameContainer({
     completed,
     initGame,
     addEntity,
-  } = useGameState();
+  } = useCostarsState();
 
   const [condenseAllCards, setCondenseAllCards] = useState(false);
 
-  const isUnlimited = !initPeople;
-
   useEffect(() => {
-    if (!isUnlimited) initGame(initPeople, daily, solutions, archive);
+    initGame(type, initPeople, daily);
   }, []);
 
   const onSubmit = async (value: GameEntity) => {
@@ -53,7 +51,7 @@ export default function CSGameContainer({
   };
 
   if (gameType !== 'unlimited' && completed) {
-    return <Success />;
+    return <Success daily={daily} solutions={solutions} />;
   }
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import { useEffect } from 'react';
 
 export default function InitStateProvider({
@@ -8,10 +8,10 @@ export default function InitStateProvider({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { bootstrapState } = useGameState();
+  const { bootstrapUserState } = useCostarsState();
 
   useEffect(() => {
-    bootstrapState();
+    bootstrapUserState();
   }, []);
 
   return <>{children}</>;

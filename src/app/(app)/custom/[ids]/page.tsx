@@ -46,5 +46,7 @@ export default async function CustomGame({ params }: ICustomGameProps) {
     (credit) => credit.id,
   );
 
-  return <CSGameContainer initPeople={[targetEntity, starterEntity]} />;
+  return (
+    <CSGameContainer type='custom' initPeople={[targetEntity, starterEntity]} />
+  );
 }

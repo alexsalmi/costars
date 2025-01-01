@@ -1,6 +1,6 @@
 import CSModal from '../presentation/modal';
 import CSButton from '../inputs/buttons/button';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import '@/styles/game/reset-modal.scss';
 
 interface ICSResetModalProps {
@@ -9,7 +9,7 @@ interface ICSResetModalProps {
 }
 
 export default function CSResetModal({ isOpen, close }: ICSResetModalProps) {
-  const { reset } = useGameState();
+  const { reset } = useCostarsState();
 
   const confirm = () => {
     reset();

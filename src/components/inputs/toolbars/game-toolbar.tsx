@@ -8,7 +8,7 @@ import {
   UndoOutlined,
   RedoOutlined,
 } from '@mui/icons-material';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import CSResetModal from '../../modals/reset-modal';
 import { useState } from 'react';
 import CSTooltip from '../../presentation/tooltip';
@@ -22,7 +22,7 @@ export default function CSGameToolbar({
   condensed,
   setCondensed,
 }: ICSGameToolbarProps) {
-  const { history, gameType, undoCache, undo, redo } = useGameState();
+  const { history, gameType, undoCache, undo, redo } = useCostarsState();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {

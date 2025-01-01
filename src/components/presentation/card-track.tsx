@@ -1,5 +1,5 @@
 'use client';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import CSCard from './card';
 import '@/styles/components/card-track.scss';
 
@@ -20,7 +20,7 @@ export default function CSCardTrack({
   fullHeight,
   condenseAll,
 }: ICSCardTrackProps) {
-  const { history, hints, current } = useGameState();
+  const { history, hints, current } = useCostarsState();
 
   const cardsToDisplay = cards || history;
   const hintsToDisplay = propHints || hints;

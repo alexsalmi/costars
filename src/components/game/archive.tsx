@@ -13,10 +13,10 @@ import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 import { useEffect, useState } from 'react';
 import { PickerSelectionState } from '@mui/x-date-pickers/internals';
 import { DateView } from '@mui/x-date-pickers/models';
-import useGameState from '@/store/game.state';
 import { StarBorderOutlined, Star } from '@mui/icons-material';
 import { getDailyCostarsByMonth } from '@/services/cache.service';
 import '@/styles/pages/archive.scss';
+import { getUserDailySolutions } from '@/services/userdata.service';
 
 interface IPrevResults {
   score: number;
@@ -24,16 +24,15 @@ interface IPrevResults {
 }
 
 export default function CSArchive() {
-  const { userDailySolutions } = useGameState();
   const [prevResults, setPrevResults] = useState<Array<IPrevResults>>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getPrevResults(dayjs());
-  }, [userDailySolutions]);
+  }, []);
 
   const getPrevResults = async (date: Dayjs) => {
-    if (!userDailySolutions) return;
+    const userDailySolutions = getUserDailySolutions();
 
     setLoading(true);
     const costars =
@@ -88,7 +87,7 @@ export default function CSArchive() {
           }
           onChange={selectDate}
           onMonthChange={getPrevResults}
-          minDate={dayjs('01/01/2025')}
+          minDate={dayjs('01/01/2024')}
           maxDate={dayjs()}
           loading={loading}
           disableHighlightToday

@@ -9,6 +9,7 @@ export default async function DailyGame() {
 
   return (
     <CSGameContainer
+      type='daily'
       initPeople={[daily.target, daily.starter]}
       daily={daily}
       solutions={solutions}

@@ -1,7 +1,7 @@
 import { signIn, signOut } from '@/services/supabase/auth.service';
 import CSButton from '../inputs/buttons/button';
 import CSModal from '../presentation/modal';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import { FacebookOutlined } from '@mui/icons-material';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,7 +18,7 @@ export default function CSProfileModal({
   isOpen,
   close,
 }: ICSProfileModalProps) {
-  const { user } = useGameState();
+  const { user } = useCostarsState();
 
   const signInHandler = async (type: 'google' | 'facebook') => {
     ls_PostAuthStatus('pending');

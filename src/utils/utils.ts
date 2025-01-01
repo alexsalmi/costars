@@ -1,3 +1,5 @@
+import { getUserDailySolutions } from '@/services/userdata.service';
+
 export function getDayNumber(date: string) {
   return Math.floor(
     (new Date(date).getTime() - new Date('12/31/2024').getTime()) /
@@ -18,4 +20,12 @@ export function getScoreString(history: Array<GameEntity>, hints: Array<Hint>) {
   }
 
   return str;
+}
+
+export function getUserSolution(daily_id: number): Solution | null {
+  const userDailySolutions = getUserDailySolutions();
+
+  const solution = userDailySolutions.find((sol) => sol.daily_id === daily_id);
+
+  return solution || null;
 }

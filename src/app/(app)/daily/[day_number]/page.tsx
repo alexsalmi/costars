@@ -31,10 +31,10 @@ export default async function DailyArchiveGame({
 
   return (
     <CSGameContainer
+      type='archive'
       initPeople={[daily.target, daily.starter]}
       daily={daily}
       solutions={solutions}
-      archive
     />
   );
 }

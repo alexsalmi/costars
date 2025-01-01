@@ -1,6 +1,6 @@
 'use client';
 import CSModal from '../presentation/modal';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import '@/styles/game/stats-modal.scss';
 import CSTextDisplay from '../presentation/display';
 import CSCardTrack from '../presentation/card-track';
@@ -13,11 +13,17 @@ import { CalendarMonthOutlined } from '@mui/icons-material';
 interface ICSStatsModalProps {
   isOpen: boolean;
   close: () => void;
+  daily: DailyCostars;
+  solutions: Array<Solution>;
 }
 
-export default function CSStatsModal({ isOpen, close }: ICSStatsModalProps) {
-  const { score, history, hints, dailyStats, todaysCostars, todaysSolutions } =
-    useGameState();
+export default function CSStatsModal({
+  isOpen,
+  close,
+  daily,
+  solutions,
+}: ICSStatsModalProps) {
+  const { score, history, hints, dailyStats } = useCostarsState();
   const [solutionInd, setSolutionInd] = useState(0);
 
   const numMovies = (score - 1) / 2;
@@ -95,21 +101,19 @@ export default function CSStatsModal({ isOpen, close }: ICSStatsModalProps) {
         <hr />
         <div className='stats-modal-optimal'>
           Here are a few of the{' '}
-          <strong>{todaysCostars?.num_solutions} different ways</strong> to
-          connect <strong>{todaysCostars?.starter.label}</strong> and{' '}
-          <strong>{todaysCostars?.target.label}</strong> in 2 movies:
+          <strong>{daily.num_solutions} different ways</strong> to connect{' '}
+          <strong>{daily.starter.label}</strong> and{' '}
+          <strong>{daily.target.label}</strong> in 2 movies:
         </div>
         <div className='stats-modal-solutions'>
           <CSSolutionsToolbar
             leftClick={() => setSolutionInd(solutionInd - 1)}
             rightClick={() => setSolutionInd(solutionInd + 1)}
             leftDisabled={solutionInd === 0}
-            rightDisabled={solutionInd === (todaysSolutions?.length || 1) - 1}
+            rightDisabled={solutionInd === (solutions.length || 1) - 1}
           />
           <CSCardTrack
-            cards={
-              todaysSolutions ? todaysSolutions[solutionInd]?.solution : []
-            }
+            cards={solutions[solutionInd].solution}
             hideHints={true}
             fullHeight={true}
           />

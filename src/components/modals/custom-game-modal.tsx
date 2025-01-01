@@ -1,26 +1,20 @@
 'use client';
 import CSModal from '../presentation/modal';
 import CSButton from '../inputs/buttons/button';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ShareOutlined, SkipNextOutlined } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import Slide from '@mui/material/Slide';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import useGameState from '@/store/game.state';
 import CSCostarsCreator from '../inputs/costars-creator';
 import '@/styles/game/custom-game-modal.scss';
 
 export default function CSCustomGameModal() {
-  const { initCustomGame } = useGameState();
   const [target, setTarget] = useState(null as GameEntity | null);
   const [starter, setStarter] = useState(null as GameEntity | null);
   const [openToast, setOpenToast] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    initCustomGame();
-  }, []);
 
   const shareLink = () => {
     if (!target || !starter) return;

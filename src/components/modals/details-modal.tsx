@@ -4,7 +4,7 @@ import CSModal from '../presentation/modal';
 import { useEffect, useState } from 'react';
 import { getCredits, getDetails } from '@/services/tmdb.service';
 import CSButton from '../inputs/buttons/button';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import { CircularProgress } from '@mui/material';
 import '@/styles/components/details-modal.scss';
 
@@ -22,7 +22,7 @@ export default function CSDetailsModal({
   entity,
 }: ICSDetailsModalProps) {
   const { completed, history, hints, isSolution, addEntity, addHint } =
-    useGameState();
+    useCostarsState();
   const [details, setDetails] = useState({} as PersonDetails | MovieDetails);
   const [credits, setCredits] = useState([] as Array<GameEntity>);
   const [loading, setLoading] = useState(false);

@@ -7,7 +7,7 @@ import {
   migrateFromLStoSB,
   migrateFromSBToLS,
 } from '@/services/userdata.service';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import { CircularProgress } from '@mui/material';
 import {
   isFresh,
@@ -17,7 +17,7 @@ import {
 import { sb_GetDailyStats } from '@/services/supabase';
 
 export default function Migration() {
-  const { bootstrapState } = useGameState();
+  const { bootstrapUserState } = useCostarsState();
 
   useEffect(() => {
     if (!isMigrationPending()) redirect('/');
@@ -44,7 +44,7 @@ export default function Migration() {
 
   const finalize = async () => {
     ls_PostAuthStatus('true');
-    await bootstrapState();
+    await bootstrapUserState();
     redirect('/');
   };
 
