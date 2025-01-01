@@ -63,20 +63,21 @@ const useGameState = () => {
       localDailyStats = getDailyStats();
       setDailyStats(localDailyStats);
     }
-    
+
     let localSolve = lastSolve;
     if (lastSolve === null) {
       const solutions = getUserDailySolutions();
       localSolve =
-        solutions.find((sol) => sol.daily_id === localDailyStats.last_played_id) ||
-        null;
+        solutions.find(
+          (sol) => sol.daily_id === localDailyStats.last_played_id,
+        ) || null;
       setUserDailySolutions(solutions);
       setLastSolve(localSolve);
     }
 
     let localUnlimitedStats = unlimitedStats;
-    if (localUnlimitedStats === null){
-      localUnlimitedStats = getUnlimitedStats()
+    if (localUnlimitedStats === null) {
+      localUnlimitedStats = getUnlimitedStats();
       setUnlimitedStats(localUnlimitedStats);
     }
   };

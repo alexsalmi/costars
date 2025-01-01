@@ -14,8 +14,7 @@ export const sbGetDailyStats = async (
 
   let { user_id } = params;
 
-  if(!user_id)
-    user_id = (await getUser())?.id;
+  if (!user_id) user_id = (await getUser())?.id;
 
   const { data } = await supabase
     .from('DailyStats')

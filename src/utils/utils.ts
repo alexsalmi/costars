@@ -42,8 +42,5 @@ export async function warnForConflict() {
 }
 
 export function isFresh() {
-  return (
-    typeof window !== 'undefined' &&
-    ls_GetFreshStatus()
-  );
-};
+  return typeof window !== 'undefined' && ls_GetFreshStatus();
+}

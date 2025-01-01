@@ -152,7 +152,7 @@ export const postSolution = (
 export const migrateFromLStoSB = async () => {
   const user = await getUser();
 
-  if (!user) throw Error("No active user session");
+  if (!user) throw Error('No active user session');
 
   const dailyStats = ls_GetDailyStats();
   const unlimitedStats = ls_GetUnlimitedStats();
@@ -179,7 +179,7 @@ export const migrateFromLStoSB = async () => {
 export const migrateFromSBToLS = async () => {
   const user = await getUser();
 
-  if (!user) throw Error("No active user session");
+  if (!user) throw Error('No active user session');
 
   const dailyStatsPromise = sb_GetDailyStats({ user_id: user.id })
     .then(async (stats) => {
