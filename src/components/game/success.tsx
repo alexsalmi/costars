@@ -21,7 +21,9 @@ export default function Success({ daily, solutions }: ISuccessProps) {
   const { history, target, score, hints, gameType } = useCostarsState();
 
   const [shareLoading, setShareLoading] = useState(false);
-  const [statsOpen, setStatsOpen] = useState(gameType === 'daily' || gameType === 'archive');
+  const [statsOpen, setStatsOpen] = useState(
+    gameType === 'daily' || gameType === 'archive',
+  );
 
   const numMovies = (score - 1) / 2;
   const numHints = history.reduce(
@@ -110,7 +112,9 @@ export default function Success({ daily, solutions }: ISuccessProps) {
             {gameType === 'daily' ? (
               <CSButton onClick={() => setStatsOpen(true)}>See Stats</CSButton>
             ) : gameType === 'archive' ? (
-              <CSButton onClick={() => setStatsOpen(true)}>See Solutions</CSButton>
+              <CSButton onClick={() => setStatsOpen(true)}>
+                See Solutions
+              </CSButton>
             ) : (
               <Link href='/custom'>
                 <CSButton>New Game</CSButton>

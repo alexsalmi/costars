@@ -23,7 +23,7 @@ export default function CSStatsModal({
   close,
   daily,
   solutions,
-  showStats
+  showStats,
 }: ICSStatsModalProps) {
   const { score, history, hints, dailyStats, gameType } = useCostarsState();
   const [solutionInd, setSolutionInd] = useState(0);
@@ -41,20 +41,21 @@ export default function CSStatsModal({
   const getFormattedDateString = (dateStr: string) => {
     const date = new Date(dateStr);
 
-    return `${date.getMonth()}/${date.getDate()}/${date.getFullYear() !== new Date().getFullYear() ? date.getFullYear() : ''}`
-
-  }
+    return `${date.getMonth()}/${date.getDate()}/${date.getFullYear() !== new Date().getFullYear() ? date.getFullYear() : ''}`;
+  };
 
   return (
     <CSModal isOpen={isOpen} close={close}>
       <div className='stats-modal-container'>
         <div className='stats-modal-recap'>
           <h3>Daily Costars #{daily.day_number}</h3>
-          { gameType === 'daily' ? 
+          {gameType === 'daily' ? (
             <span>You connected today&apos;s costars in</span>
-          :
-            <span>You connected the {getFormattedDateString(daily.date)} costars in</span>
-          }
+          ) : (
+            <span>
+              You connected the {getFormattedDateString(daily.date)} costars in
+            </span>
+          )}
           <span>
             <strong>{numMovies} movies</strong>
             {numHints > 0 ? (
@@ -74,7 +75,7 @@ export default function CSStatsModal({
             <></>
           )}
         </div>
-        {showStats ? 
+        {showStats ? (
           <div className='stats-modal-stats'>
             <CSTextDisplay>
               <span>{dailyStats?.days_played}</span>
@@ -106,7 +107,9 @@ export default function CSStatsModal({
               <span>Highest Streak</span>
             </CSTextDisplay>
           </div>
-        : <></> }
+        ) : (
+          <></>
+        )}
         <Link href='/daily/archive' className='stats-modal-archive-button'>
           <CSButton>
             <CalendarMonthOutlined />
