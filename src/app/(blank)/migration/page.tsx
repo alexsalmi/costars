@@ -42,9 +42,9 @@ export default function Migration() {
     }
   }, []);
 
-  const finalize = async () => {
+  const finalize = () => {
     ls_PostAuthStatus('true');
-    await bootstrapUserState();
+    bootstrapUserState();
     redirect('/');
   };
 

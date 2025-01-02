@@ -15,6 +15,7 @@ interface ICSStatsModalProps {
   close: () => void;
   daily: DailyCostars;
   solutions: Array<Solution>;
+  showStats: boolean;
 }
 
 export default function CSStatsModal({
@@ -22,8 +23,9 @@ export default function CSStatsModal({
   close,
   daily,
   solutions,
+  showStats
 }: ICSStatsModalProps) {
-  const { score, history, hints, dailyStats } = useCostarsState();
+  const { score, history, hints, dailyStats, gameType } = useCostarsState();
   const [solutionInd, setSolutionInd] = useState(0);
 
   const numMovies = (score - 1) / 2;
@@ -36,12 +38,23 @@ export default function CSStatsModal({
     0,
   );
 
+  const getFormattedDateString = (dateStr: string) => {
+    const date = new Date(dateStr);
+
+    return `${date.getMonth()}/${date.getDate()}/${date.getFullYear() !== new Date().getFullYear() ? date.getFullYear() : ''}`
+
+  }
+
   return (
     <CSModal isOpen={isOpen} close={close}>
       <div className='stats-modal-container'>
         <div className='stats-modal-recap'>
-          <h3>Daily Stats</h3>
-          <span>You connected {"today's"} costars in</span>
+          <h3>Daily Costars #{daily.day_number}</h3>
+          { gameType === 'daily' ? 
+            <span>You connected today&apos;s costars in</span>
+          :
+            <span>You connected the {getFormattedDateString(daily.date)} costars in</span>
+          }
           <span>
             <strong>{numMovies} movies</strong>
             {numHints > 0 ? (
@@ -61,37 +74,39 @@ export default function CSStatsModal({
             <></>
           )}
         </div>
-        <div className='stats-modal-stats'>
-          <CSTextDisplay>
-            <span>{dailyStats?.days_played}</span>
-            <span>Days Played</span>
-          </CSTextDisplay>
-          <CSTextDisplay>
-            <span>
-              {dailyStats
-                ? Math.round(
-                    (dailyStats!.optimal_solutions! /
-                      dailyStats!.days_played!) *
-                      100,
-                  )
-                : 0}
-              %
-            </span>
-            <span>Percent Optimal</span>
-          </CSTextDisplay>
-          <CSTextDisplay>
-            <span>{dailyStats?.optimal_solutions}</span>
-            <span>Perfect Games</span>
-          </CSTextDisplay>
-          <CSTextDisplay>
-            <span>{dailyStats?.current_streak}</span>
-            <span>Current Streak</span>
-          </CSTextDisplay>
-          <CSTextDisplay>
-            <span>{dailyStats?.highest_streak}</span>
-            <span>Highest Streak</span>
-          </CSTextDisplay>
-        </div>
+        {showStats ? 
+          <div className='stats-modal-stats'>
+            <CSTextDisplay>
+              <span>{dailyStats?.days_played}</span>
+              <span>Days Played</span>
+            </CSTextDisplay>
+            <CSTextDisplay>
+              <span>
+                {dailyStats
+                  ? Math.round(
+                      (dailyStats!.optimal_solutions! /
+                        dailyStats!.days_played!) *
+                        100,
+                    )
+                  : 0}
+                %
+              </span>
+              <span>Percent Optimal</span>
+            </CSTextDisplay>
+            <CSTextDisplay>
+              <span>{dailyStats?.optimal_solutions}</span>
+              <span>Perfect Games</span>
+            </CSTextDisplay>
+            <CSTextDisplay>
+              <span>{dailyStats?.current_streak}</span>
+              <span>Current Streak</span>
+            </CSTextDisplay>
+            <CSTextDisplay>
+              <span>{dailyStats?.highest_streak}</span>
+              <span>Highest Streak</span>
+            </CSTextDisplay>
+          </div>
+        : <></> }
         <Link href='/daily/archive' className='stats-modal-archive-button'>
           <CSButton>
             <CalendarMonthOutlined />
