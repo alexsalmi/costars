@@ -24,7 +24,7 @@ export default async function DailyArchiveGame({
     getTodaysCostars(),
     getCostarsByDayNumber(day_number),
   ]);
-  if (!daily || !todays || todays.day_number <= daily.day_number)
+  if (!daily || !todays || todays.day_number < daily.day_number)
     throw Error('Invalid URL');
 
   const solutions = await getDailySolutions(daily.id!);
