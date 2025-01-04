@@ -94,7 +94,7 @@ const useCostarsState = () => {
     setCompleted(solution !== null);
   };
 
-  const addEntity = (entity: GameEntity) => {
+  const addEntity = (entity: GameEntity, captureEvent?: (eventName: string) => void) => {
     let newHistory = [entity, ...history];
 
     if (gameType !== 'unlimited') {
@@ -102,6 +102,9 @@ const useCostarsState = () => {
         target.id === entity.id && target.type == entity.type;
 
       if (isTargetMatch && gameType === 'daily') updateDailyStats(entity);
+
+      if (isTargetMatch && gameType === 'daily' && captureEvent)
+        captureEvent('dailyCostarsCompleted');
 
       if (isTargetMatch && (gameType === 'daily' || gameType === 'archive'))
         saveSolution(entity);

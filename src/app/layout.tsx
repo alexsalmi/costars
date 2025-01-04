@@ -37,7 +37,6 @@ export default function RootLayout({
           trackOutboundLinks
           taggedEvents
         />
-        met
       </head>
       <body className='app'>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>

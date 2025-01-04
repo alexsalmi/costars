@@ -3,7 +3,6 @@ import { withPlausibleProxy } from 'next-plausible';
 
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: true,
     localPatterns: [
       {
         pathname: '/**',

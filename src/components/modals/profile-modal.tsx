@@ -128,6 +128,7 @@ export default function CSProfileModal({
           <div className='google-button'>
             <CSButton secondary onClick={() => signInHandler('google')}>
               <Image
+                priority
                 src='/g-logo.png'
                 alt='Google Logo'
                 width={24}

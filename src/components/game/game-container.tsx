@@ -10,6 +10,7 @@ import { getCredits } from '@/services/tmdb.service';
 import Success from './success';
 import CSBackButton from '../inputs/buttons/back-button';
 import '@/styles/game/game-container.scss';
+import { usePlausible } from 'next-plausible';
 
 interface ICSGameContainerProps {
   type: GameType;
@@ -34,6 +35,7 @@ export default function CSGameContainer({
     initGame,
     addEntity,
   } = useCostarsState();
+  const plausible = usePlausible();
 
   const [condenseAllCards, setCondenseAllCards] = useState(false);
 
@@ -47,7 +49,7 @@ export default function CSGameContainer({
       credits: (await getCredits(value.id, value.type)).map(
         (credit) => credit.id,
       ),
-    });
+    }, plausible);
   };
 
   if (gameType !== 'unlimited' && completed) {
