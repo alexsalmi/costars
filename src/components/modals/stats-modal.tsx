@@ -40,8 +40,9 @@ export default function CSStatsModal({
 
   const getFormattedDateString = (dateStr: string) => {
     const date = new Date(dateStr);
+    date.setDate(date.getDate() + 1);
 
-    return `${date.getMonth() + 1}/${date.getDate() + 1}/${date.getFullYear() !== new Date().getFullYear() ? date.getFullYear() : ''}`;
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   };
 
   return (

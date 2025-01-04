@@ -14,6 +14,9 @@ export default function Credits() {
         <span>
           <strong>Executive Producer:</strong> Erin Kaswan
         </span>
+        <span>
+          <strong>Producer:</strong> Arthur Kaswan-Salmi
+        </span>
         <br />
         <h4>The Movie Database</h4>
         <span className='info-page-image-section'>
