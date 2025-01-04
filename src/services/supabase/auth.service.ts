@@ -34,6 +34,18 @@ export const signOut = async () => {
   return error;
 };
 
+export const deleteAccount = async () => {
+  const admin = true;
+  const supabase = await createClient(admin);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { error } = await supabase.auth.admin.deleteUser(user!.id, false);
+
+  return error;
+};
+
 const getRedirectURL = () => {
   let url = process?.env?.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000/';
   // Make sure to include `https://` when not localhost.
