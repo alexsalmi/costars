@@ -56,6 +56,15 @@ const useCostarsState = () => {
     setUnlimitedStats(localUnlimitedStats);
   };
 
+  const resetGameState = () => {
+    setHistory([]);
+    setHints([]);
+    setHighScore(0);
+    setTarget({} as GameEntity);
+    setUndoCache([]);
+    setCompleted(false);
+  }
+
   const initGame = async (
     type: GameType,
     costars?: [GameEntity, GameEntity],
@@ -191,6 +200,7 @@ const useCostarsState = () => {
     dailyStats,
     unlimitedStats,
     bootstrapUserState,
+    resetGameState,
     initGame,
     updateDailyStats,
     addEntity,

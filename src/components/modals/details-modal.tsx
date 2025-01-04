@@ -86,6 +86,19 @@ export default function CSDetailsModal({
     close();
   };
 
+  const censorDescription = (description: string): string => {
+    if(!description)
+      return '';
+    const regex1 = /\([0-9]{4}\)/;
+    const regex2 = /\([0-9]{4}–[0-9]{4}\)/;
+    // return description;
+    return description
+      .split(".")
+      .filter(str => !regex1.test(str))
+      .filter(str => !regex2.test(str))
+      .join(".");
+  }
+
   return (
     <CSModal isOpen={isOpen} close={close}>
       <div className='details-modal-hero'>
@@ -127,10 +140,7 @@ export default function CSDetailsModal({
         {loading ? (
           <CircularProgress className='details-modal-spinner' />
         ) : entity.type === 'person' ? (
-          (details as PersonDetails).biography
-            ?.split('.')
-            .slice(0, 2)
-            .join('.') + '.'
+          censorDescription((details as PersonDetails).biography)
         ) : (
           (details as MovieDetails).overview
         )}

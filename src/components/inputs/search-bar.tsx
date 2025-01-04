@@ -51,7 +51,7 @@ export default function CSSearchBar({ onSubmit }: ICSSearchBar) {
 
     setValue('');
 
-    onSubmit(value);
+    await onSubmit(value);
 
     inputRef.current?.querySelector('input')?.focus();
   };

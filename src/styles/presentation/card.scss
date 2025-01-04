@@ -130,3 +130,15 @@
     max-width: 250px;
   }
 }
+
+.card-container.highlight {
+  border: 3px solid var(--highlight-primary);
+  background-color: var(--background-primary);
+  color: var(--highlight-text);
+  justify-content: center;
+  font-weight: 900;
+
+  .card-hint-icon {
+    margin-top: 1px;
+  }
+}

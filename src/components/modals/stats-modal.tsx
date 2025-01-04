@@ -92,7 +92,7 @@ export default function CSStatsModal({
                   : 0}
                 %
               </span>
-              <span>Percent Optimal</span>
+              <span>Perfect Games</span>
             </CSTextDisplay>
             <CSTextDisplay>
               <span>{dailyStats?.optimal_solutions}</span>
@@ -132,8 +132,9 @@ export default function CSStatsModal({
           />
           <CSCardTrack
             cards={solutions[solutionInd].solution}
-            hideHints={true}
-            fullHeight={true}
+            hideHints
+            fullHeight
+            condenseEnds
           />
         </div>
       </div>

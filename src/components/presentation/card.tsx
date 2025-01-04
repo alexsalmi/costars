@@ -18,6 +18,7 @@ interface ICSCardProps {
   condensed?: boolean;
   hintUsed?: boolean;
   hideHints?: boolean;
+  highlight?: boolean;
 }
 
 export default function CSCard({
@@ -27,6 +28,7 @@ export default function CSCard({
   condensed,
   hintUsed,
   hideHints,
+  highlight
 }: ICSCardProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [targetCondensed, setTargetCondensed] = useState(target);
@@ -39,6 +41,7 @@ export default function CSCard({
 					${reverse ? 'reverse ' : ''}
 					${target ? 'target ' : ''}
 					${condensed || targetCondensed ? 'condensed ' : ''}
+					${highlight ? 'highlight ' : ''}
 				`}
         onClick={(e) => {
           e.stopPropagation();

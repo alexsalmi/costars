@@ -122,7 +122,7 @@ export default function Success({ daily, solutions }: ISuccessProps) {
             )}
           </div>
         </div>
-        <CSCardTrack />
+        <CSCardTrack condenseEnds />
         {daily && statsOpen ? (
           <CSStatsModal
             isOpen={statsOpen}
