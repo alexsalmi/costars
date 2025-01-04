@@ -17,7 +17,9 @@ const quicksand = Quicksand({
 
 export const metadata: Metadata = {
   title: 'Costars',
-  description: 'Your favorite movie trivia game!',
+  description: 'Your favorite movie trivia game! Connect pairs of actors by the movies they\'ve starred in and the costars they\'ve worked with. Come back every day for the new pair of Daily Costars!',
+  keywords: 'costars, game, costarsgame, trivia, movie, movies, actor, actors, costar, co star, co stars, co-star, co-stars, daily, challenge',
+  authors: { name: 'Alex Salmi', url: 'https://asalmi.com'}
 };
 
 export default function RootLayout({
@@ -33,6 +35,7 @@ export default function RootLayout({
           trackOutboundLinks
           taggedEvents
         />
+        met
       </head>
       <body className='app'>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
