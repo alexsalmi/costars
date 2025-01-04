@@ -1,12 +1,7 @@
 'use server';
 import { unstable_cache } from 'next/cache';
 import { getCredits, getTrending } from './tmdb.service';
-import {
-  supabase_getDailyCostarsByDate,
-  supabase_getDailyCostarsByDayNumber,
-  supabase_getDailyCostarsByMonth,
-} from './supabase/supabase.service';
-import supabaseService from '@/services/supabase';
+import { sb_GetDailyCostars, sb_GetSolutions } from './supabase';
 
 export const getRandomPerson = async () => {
   const pool = await getRandomPool();
@@ -75,7 +70,16 @@ export const getRandomPool = unstable_cache(
 
 export const getTodaysCostars = unstable_cache(
   async () => {
-    return await supabase_getDailyCostarsByDate(new Date());
+    const forCache = true;
+    const costars = await sb_GetDailyCostars(
+      {
+        date: new Date().toLocaleString(),
+      },
+      forCache,
+    );
+
+    if (!costars) return null;
+    return costars[0];
   },
   [],
   { tags: ['daily_costars'] },
@@ -83,13 +87,22 @@ export const getTodaysCostars = unstable_cache(
 
 export const getTodaysSolutions = unstable_cache(
   async () => {
-    const clientSide = true;
-    return await supabaseService.solutions.get(
+    const forCache = true;
+    const costars = await sb_GetDailyCostars(
+      {
+        date: new Date().toLocaleString(),
+      },
+      forCache,
+    );
+
+    if (!costars) return [];
+
+    return await sb_GetSolutions(
       {
         is_daily_optimal: true,
-        daily_id: (await supabase_getDailyCostarsByDate(new Date())).id || 0,
+        daily_id: costars[0].id,
       },
-      clientSide,
+      forCache,
     );
   },
   [],
@@ -100,7 +113,17 @@ export const getYesterdaysCostars = unstable_cache(
   async () => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    return await supabase_getDailyCostarsByDate(yesterday);
+
+    const forCache = true;
+    const costars = await sb_GetDailyCostars(
+      {
+        date: yesterday.toLocaleString(),
+      },
+      forCache,
+    );
+
+    if (!costars) return null;
+    return costars[0];
   },
   [],
   { tags: ['daily_costars'] },
@@ -108,7 +131,11 @@ export const getYesterdaysCostars = unstable_cache(
 
 export const getCostarsByDayNumber = unstable_cache(
   async (day_number: number) => {
-    return await supabase_getDailyCostarsByDayNumber(day_number);
+    const forCache = true;
+    const costars = await sb_GetDailyCostars({ day_number }, forCache);
+
+    if (!costars) return null;
+    return costars[0];
   },
   [],
   { tags: ['daily_costars'] },
@@ -116,13 +143,13 @@ export const getCostarsByDayNumber = unstable_cache(
 
 export const getDailySolutions = unstable_cache(
   async (daily_id: number) => {
-    const clientSide = true;
-    return await supabaseService.solutions.get(
+    const forCache = true;
+    return await sb_GetSolutions(
       {
         is_daily_optimal: true,
         daily_id,
       },
-      clientSide,
+      forCache,
     );
   },
   [],
@@ -131,7 +158,25 @@ export const getDailySolutions = unstable_cache(
 
 export const getDailyCostarsByMonth = unstable_cache(
   async (month: number, year: number) => {
-    return await supabase_getDailyCostarsByMonth(month, year);
+    const date = new Date(`${year}/${month}/01`);
+
+    const start = new Date(date);
+    start.setDate(1);
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date(date);
+    end.setDate(1);
+    end.setMonth(end.getMonth() + 1);
+    end.setHours(0, 0, 0, 0);
+
+    const forCache = true;
+    return await sb_GetDailyCostars(
+      {
+        after_date: start.toISOString(),
+        before_date: end.toISOString(),
+      },
+      forCache,
+    );
   },
   [],
   { tags: ['daily_costars'] },

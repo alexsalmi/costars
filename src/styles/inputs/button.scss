@@ -39,6 +39,11 @@
   }
 }
 
+.cs-button.selected {
+  border-bottom: 3px solid var(--highlight-primary);
+  transition: border-bottom 0ms;
+}
+
 @media (hover: hover) {
   .cs-button:hover {
     background-color: var(--highlight-secondary);

@@ -1,6 +1,6 @@
 'use client';
 import CSCardTrack from '@/components/presentation/card-track';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import Link from 'next/link';
 import CSButton from '../inputs/buttons/button';
 import { useState } from 'react';
@@ -8,15 +8,22 @@ import CSStatsModal from '../modals/stats-modal';
 import CSBackButton from '../inputs/buttons/back-button';
 import { ShareOutlined } from '@mui/icons-material';
 import { getScoreString } from '@/utils/utils';
+import { sb_GetSolutions, sb_PostSolutions } from '@/services/supabase';
 import '@/styles/game/success.scss';
-import supabaseService from '@/services/supabase';
+import { getUser } from '@/services/supabase/auth.service';
 
-export default function Success() {
-  const { history, target, score, hints, gameType, todaysCostars } =
-    useGameState();
+interface ISuccessProps {
+  daily?: DailyCostars;
+  solutions?: Array<Solution>;
+}
+
+export default function Success({ daily, solutions }: ISuccessProps) {
+  const { history, target, score, hints, gameType } = useCostarsState();
 
   const [shareLoading, setShareLoading] = useState(false);
-  const [statsOpen, setStatsOpen] = useState(gameType === 'daily');
+  const [statsOpen, setStatsOpen] = useState(
+    gameType === 'daily' || gameType === 'archive',
+  );
 
   const numMovies = (score - 1) / 2;
   const numHints = history.reduce(
@@ -29,21 +36,32 @@ export default function Success() {
   );
 
   const shareScore = async () => {
-    if (!todaysCostars) return;
-
     setShareLoading(true);
-    const uuid = await supabaseService.solutions.post({
-      daily_id: todaysCostars.id!,
-      solution: history,
-      hints,
-      is_temporary: true,
-    });
+    let uuid = '';
+
+    if (gameType === 'daily' && daily) {
+      const user = await getUser();
+      if (user) {
+        const [solution] = await sb_GetSolutions({
+          user_id: user.id,
+          daily_id: daily.id,
+        });
+
+        uuid = solution.id || '';
+      }
+    } else {
+      uuid = await sb_PostSolutions({
+        solution: history,
+        hints,
+        is_temporary: true,
+      });
+    }
+
     setShareLoading(false);
 
-    let label = `${history[0].label} ➡️ ${target.label}\n${getScoreString(history, hints)}\nCheck out my solution!`;
+    let label = `${history[0].label} ➡️ ${target.label}\n${getScoreString(history, hints)}\n\nCheck out my solution!`;
 
-    if (gameType === 'daily' || gameType === 'archive')
-      label = `Daily Costars #${todaysCostars.day_number}\n${label}`;
+    if (daily) label = `Daily Costars #${daily.day_number}\n${label}`;
 
     try {
       window.navigator.share({
@@ -94,9 +112,9 @@ export default function Success() {
             {gameType === 'daily' ? (
               <CSButton onClick={() => setStatsOpen(true)}>See Stats</CSButton>
             ) : gameType === 'archive' ? (
-              <Link href='/daily/archive'>
-                <CSButton>Archive</CSButton>
-              </Link>
+              <CSButton onClick={() => setStatsOpen(true)}>
+                See Solutions
+              </CSButton>
             ) : (
               <Link href='/custom'>
                 <CSButton>New Game</CSButton>
@@ -104,9 +122,15 @@ export default function Success() {
             )}
           </div>
         </div>
-        <CSCardTrack />
-        {gameType === 'daily' ? (
-          <CSStatsModal isOpen={statsOpen} close={() => setStatsOpen(false)} />
+        <CSCardTrack condenseEnds />
+        {daily && statsOpen ? (
+          <CSStatsModal
+            isOpen={statsOpen}
+            close={() => setStatsOpen(false)}
+            daily={daily}
+            solutions={solutions!}
+            showStats={gameType === 'daily'}
+          />
         ) : (
           <></>
         )}

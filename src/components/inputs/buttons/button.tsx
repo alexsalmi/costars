@@ -1,5 +1,5 @@
 import { MouseEventHandler } from 'react';
-import '@/styles/components/button.scss';
+import '@/styles/inputs/button.scss';
 import { CircularProgress } from '@mui/material';
 
 interface ICSButtonProps {
@@ -10,6 +10,7 @@ interface ICSButtonProps {
   children?: React.ReactNode;
   disabled?: boolean;
   loading?: boolean;
+  selected?: boolean;
 }
 
 export default function CSButton({
@@ -19,12 +20,14 @@ export default function CSButton({
   children,
   disabled,
   loading,
+  selected,
 }: ICSButtonProps) {
   return (
     <button
-      className={`cs-button primary 
-				${primary || !secondary ? 'primary' : 'secondary'} 
-				${disabled ? 'disabled' : ''}`}
+      className={`cs-button 
+				${primary || !secondary ? 'primary ' : 'secondary '} 
+				${disabled ? 'disabled ' : ''}
+        ${selected ? 'selected' : ''}`}
       onClick={onClick}
       disabled={disabled}
     >

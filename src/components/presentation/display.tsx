@@ -1,4 +1,4 @@
-import '@/styles/components/display.scss';
+import '@/styles/presentation/display.scss';
 
 interface ICSTextDisplayProps {
   children: React.ReactNode;

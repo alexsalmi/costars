@@ -1,24 +1,41 @@
-import localStorageService from './localstorage.service';
-import {
-  supabase_getUnlimitedStats,
-  supabase_setUnlimitedStats,
-  supabase_updateUnlimitedStats,
-} from './supabase/supabase.service';
 import { getTodaysCostars, getYesterdaysCostars } from './cache.service';
-import supabaseService from '@/services/supabase';
-import SupabaseService from '@/services/supabase';
+import {
+  sb_GetDailyStats,
+  sb_GetSolutions,
+  sb_GetUnlimitedStats,
+  sb_PostDailyStats,
+  sb_PostSolutions,
+  sb_PostUnlimitedStats,
+  sb_UpdateDailyStats,
+  sb_UpdateUnlimitedStats,
+} from './supabase';
+import {
+  ls_DeleteFreshStatus,
+  ls_GetDailyStats,
+  ls_GetSolutions,
+  ls_GetUnlimitedStats,
+  ls_HasDailyStats,
+  ls_HasUnlimitedStats,
+  ls_PostDailyStats,
+  ls_PostFreshStatus,
+  ls_PostSolutions,
+  ls_PostUnlimitedStats,
+} from './localstorage';
+import { getUser } from './supabase/auth.service';
 
-export const getDailyStats = async (user: UserInfo) => {
-  if (user && localStorageService.getAuthStatus() === 'pending') {
-    let dbStats = await SupabaseService.dailyStats.get({ user_id: user.id });
-
-    if (!dbStats)
-      dbStats = await SupabaseService.dailyStats.post({ user_id: user.id });
-
-    localStorageService.setDailyStats(dbStats);
+/* ----- DAILY STATS ----- */
+export const getDailyStats = (): DailyStats => {
+  if (!ls_HasDailyStats()) {
+    ls_PostFreshStatus();
+    ls_PostDailyStats({
+      days_played: 0,
+      current_streak: 0,
+      highest_streak: 0,
+      optimal_solutions: 0,
+    });
   }
 
-  return localStorageService.getDailyStats();
+  return ls_GetDailyStats()!;
 };
 
 export const updateDailyStats = async (
@@ -28,10 +45,14 @@ export const updateDailyStats = async (
 ) => {
   const yesterdaysCostars = await getYesterdaysCostars();
 
-  const dailyStats: DailyStats = await getDailyStats(user);
+  if (!yesterdaysCostars) return;
 
+  const dailyStats: DailyStats = getDailyStats();
+
+  // Update days played
   dailyStats.days_played!++;
 
+  // Update optimal solutions
   const score = solution.reduce(
     (acc, curr) => acc + (curr.type === 'movie' ? 1 : 0),
     0,
@@ -41,60 +62,49 @@ export const updateDailyStats = async (
       (entity) => entity.id === hint.id && entity.type === hint.type,
     ),
   );
+
   if (score === 2 && hints.length === 0) dailyStats.optimal_solutions!++;
 
-  if (dailyStats.last_played_id === yesterdaysCostars.id)
+  // Update current streak
+  if (dailyStats.last_played_id === yesterdaysCostars?.id)
     dailyStats.current_streak = (dailyStats.current_streak || 0) + 1;
   else dailyStats.current_streak = 1;
 
+  // Update highest streak
   if (dailyStats.current_streak! > dailyStats.highest_streak!)
     dailyStats.highest_streak = dailyStats.current_streak;
 
+  // Updated last played data
   dailyStats.last_played = new Date().toUTCString();
-  dailyStats.last_played_id = (await getTodaysCostars()).id;
+  dailyStats.last_played_id = (await getTodaysCostars())!.id;
 
-  if (user) SupabaseService.dailyStats.update(dailyStats);
+  if (user) sb_UpdateDailyStats(dailyStats);
 
-  localStorageService.setDailyStats(dailyStats);
+  ls_PostDailyStats(dailyStats);
+  ls_DeleteFreshStatus();
 };
+/* ----- END OF DAILY STATS ----- */
 
-export const saveSolution = async (
-  user: UserInfo,
-  solution: Array<GameEntity>,
-  hints: Array<Hint>,
-  dailyId?: number,
-) => {
-  if (user) {
-    supabaseService.solutions.post({
-      daily_id: dailyId,
-      solution,
-      hints,
-      user_id: user.id,
+/* ----- UNLIMITED STATS ----- */
+export const getUnlimitedStats = (): UnlimitedStats => {
+  if (!ls_HasUnlimitedStats()) {
+    ls_PostFreshStatus();
+    ls_PostUnlimitedStats({
+      history: [],
+      hints: [],
+      high_score: 0,
     });
   }
 
-  localStorageService.saveSolution({
-    daily_id: dailyId,
-    solution,
-    hints,
-  });
+  return ls_GetUnlimitedStats()!;
 };
 
-export const getUnlimitedStats = async (user: UserInfo) => {
-  if (user && localStorageService.getAuthStatus() === 'pending') {
-    const dbStats = await supabase_getUnlimitedStats(user.id);
-    localStorageService.setUnlimitedStats(dbStats);
-  }
-
-  return localStorageService.getUnlimitedStats();
-};
-
-export const updateUnlimitedStats = async (
+export const updateUnlimitedStats = (
   user: UserInfo,
   history: Array<GameEntity>,
   hints: Array<Hint>,
 ) => {
-  const unlimitedStats = await getUnlimitedStats(user);
+  const unlimitedStats = getUnlimitedStats();
 
   if (history.length > unlimitedStats.high_score!)
     unlimitedStats.high_score = history.length;
@@ -102,42 +112,108 @@ export const updateUnlimitedStats = async (
   unlimitedStats.history = history;
   unlimitedStats.hints = hints;
 
-  if (user) supabase_updateUnlimitedStats(unlimitedStats);
+  if (user) sb_UpdateUnlimitedStats(unlimitedStats);
 
-  localStorageService.setUnlimitedStats(unlimitedStats);
+  ls_PostUnlimitedStats(unlimitedStats);
+  ls_DeleteFreshStatus();
+};
+/* ----- END OF UNLIMITED STATS ----- */
+
+/* ----- SOLUTIONS ----- */
+export const getUserDailySolutions = () => {
+  return ls_GetSolutions();
 };
 
-export const getUserDailySolutions = async (user: UserInfo) => {
-  if (user && localStorageService.getAuthStatus() === 'pending') {
-    const solutions = await supabaseService.solutions.get({
+export const postSolution = (
+  user: UserInfo,
+  solution: Array<GameEntity>,
+  hints: Array<Hint>,
+  dailyId?: number,
+) => {
+  if (user) {
+    sb_PostSolutions({
+      daily_id: dailyId,
+      solution,
+      hints,
       user_id: user.id,
-      all_daily: true,
     });
-    localStorageService.setSolutions(solutions);
   }
 
-  return localStorageService.getSolutions();
+  ls_PostSolutions({
+    daily_id: dailyId,
+    solution,
+    hints,
+  });
+  ls_DeleteFreshStatus();
 };
+/* ----- END OF SOLUTIONS ----- */
 
-export const migrateSaveDate = async (user: UserInfo) => {
-  const dailyStats = localStorageService.getDailyStats();
-  const unlimitedStats = localStorageService.getUnlimitedStats();
-  const solutions = localStorageService.getSolutions();
+/* ----- DATA MIGRATION ----- */
+export const migrateFromLStoSB = async () => {
+  const user = await getUser();
+
+  if (!user) throw Error('No active user session');
+
+  const dailyStats = ls_GetDailyStats();
+  const unlimitedStats = ls_GetUnlimitedStats();
+  const solutions = ls_GetSolutions();
 
   return await Promise.all([
-    SupabaseService.dailyStats.post({
+    sb_PostDailyStats({
       ...dailyStats,
-      user_id: user?.id,
+      user_id: user.id,
     }),
-    supabase_setUnlimitedStats({
+    sb_PostUnlimitedStats({
       ...unlimitedStats,
-      user_id: user?.id,
+      user_id: user.id,
     }),
-    supabaseService.solutions.post(
+    sb_PostSolutions(
       solutions.map((sol) => ({
         ...sol,
-        user_id: user?.id,
+        user_id: user.id,
       })),
     ),
   ]);
 };
+
+export const migrateFromSBToLS = async () => {
+  const user = await getUser();
+
+  if (!user) throw Error('No active user session');
+
+  const dailyStatsPromise = sb_GetDailyStats({ user_id: user.id })
+    .then(async (stats) => {
+      if (!stats) stats = await sb_PostDailyStats({ user_id: user.id });
+      return stats;
+    })
+    .then((stats) => {
+      ls_PostDailyStats(stats);
+    });
+
+  const unlimitedStatsPromise = sb_GetUnlimitedStats({ user_id: user.id })
+    .then(async (stats) => {
+      if (!stats) stats = await sb_PostUnlimitedStats({ user_id: user.id });
+      return stats;
+    })
+    .then((stats) => {
+      ls_PostUnlimitedStats(stats);
+    });
+
+  const solutionsPromise = sb_GetSolutions({
+    user_id: user.id,
+    all_daily: true,
+  }).then((solutions) => {
+    ls_PostSolutions(solutions);
+  });
+
+  await Promise.all([
+    dailyStatsPromise,
+    unlimitedStatsPromise,
+    solutionsPromise,
+  ]);
+
+  ls_DeleteFreshStatus();
+
+  return;
+};
+/* ----- END OF DATA MIGRATION ----- */

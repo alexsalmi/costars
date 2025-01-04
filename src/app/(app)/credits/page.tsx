@@ -9,8 +9,15 @@ export default function Credits() {
       <section className='info-page-content'>
         <h3>Costars Credits</h3>
         <span>
-          <strong>Created by:</strong> Alex Salmi
+          <strong>Creator:</strong> Alex Salmi
         </span>
+        <span>
+          <strong>Executive Producer:</strong> Erin Kaswan
+        </span>
+        <span>
+          <strong>Producer:</strong> Arthur Kaswan-Salmi
+        </span>
+        <br />
         <h4>The Movie Database</h4>
         <span className='info-page-image-section'>
           <Image

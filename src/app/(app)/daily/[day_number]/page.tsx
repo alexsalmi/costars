@@ -24,17 +24,17 @@ export default async function DailyArchiveGame({
     getTodaysCostars(),
     getCostarsByDayNumber(day_number),
   ]);
-  if (!daily || todays.day_number <= daily.day_number)
+  if (!daily || !todays || todays.day_number < daily.day_number)
     throw Error('Invalid URL');
 
   const solutions = await getDailySolutions(daily.id!);
 
   return (
     <CSGameContainer
+      type='archive'
       initPeople={[daily.target, daily.starter]}
       daily={daily}
       solutions={solutions}
-      archive
     />
   );
 }

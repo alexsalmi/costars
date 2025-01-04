@@ -1,4 +1,4 @@
-import supabaseService from '@/services/supabase';
+import { sb_DeleteSolutions } from '@/services/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
@@ -17,9 +17,9 @@ export async function GET(req: NextRequest) {
   const date = new Date();
   date.setDate(date.getDate() - 7);
 
-  await supabaseService.solutions.delete({
+  await sb_DeleteSolutions({
     is_temporary: true,
-    after_date: date.toUTCString(),
+    before_date: date.toUTCString(),
   });
 
   console.log('----- FINISHED CLEANING OUT OLD SOLUTIONS -----');

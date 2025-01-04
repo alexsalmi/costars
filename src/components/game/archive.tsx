@@ -13,10 +13,10 @@ import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 import { useEffect, useState } from 'react';
 import { PickerSelectionState } from '@mui/x-date-pickers/internals';
 import { DateView } from '@mui/x-date-pickers/models';
-import useGameState from '@/store/game.state';
 import { StarBorderOutlined, Star } from '@mui/icons-material';
 import { getDailyCostarsByMonth } from '@/services/cache.service';
-import '@/styles/pages/archive.scss';
+import { getUserDailySolutions } from '@/services/userdata.service';
+import '@/styles/game/archive.scss';
 
 interface IPrevResults {
   score: number;
@@ -24,19 +24,19 @@ interface IPrevResults {
 }
 
 export default function CSArchive() {
-  const { userDailySolutions } = useGameState();
   const [prevResults, setPrevResults] = useState<Array<IPrevResults>>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getPrevResults(dayjs());
-  }, [userDailySolutions]);
+  }, []);
 
   const getPrevResults = async (date: Dayjs) => {
-    if (!userDailySolutions) return;
+    const userDailySolutions = getUserDailySolutions();
 
     setLoading(true);
-    const costars = await getDailyCostarsByMonth(date.month() + 1, date.year());
+    const costars =
+      (await getDailyCostarsByMonth(date.month() + 1, date.year())) || [];
 
     const results =
       userDailySolutions
@@ -60,9 +60,6 @@ export default function CSArchive() {
   ) => {
     if (!date || selectedView !== 'day') return;
 
-    if (date && date.isSame(dayjs(), 'date'))
-      redirect('/daily', RedirectType.push);
-
     const day_number = getDayNumber(date.toISOString());
 
     redirect(`/daily/${day_number}`, RedirectType.push);
@@ -78,10 +75,16 @@ export default function CSArchive() {
 
         <DateCalendar
           className='archive-calendar'
-          views={dayjs().year() > 2024 ? ['day', 'year'] : ['day', 'month']}
+          views={
+            dayjs().year() > 2025
+              ? ['day', 'year', 'month']
+              : dayjs().month() > 0
+                ? ['day', 'month']
+                : ['day']
+          }
           onChange={selectDate}
           onMonthChange={getPrevResults}
-          minDate={dayjs('12/15/2024')}
+          minDate={dayjs('01/01/2025')}
           maxDate={dayjs()}
           loading={loading}
           disableHighlightToday

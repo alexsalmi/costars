@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
-import { getYesterdaysCostars } from '@/services/cache.service';
 
 export async function GET(req: NextRequest) {
   if (

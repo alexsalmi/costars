@@ -1,7 +1,7 @@
 'use client';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import CSCard from './card';
-import '@/styles/components/card-track.scss';
+import '@/styles/presentation/card-track.scss';
 
 interface ICSCardTrackProps {
   showPrompt?: boolean;
@@ -9,6 +9,8 @@ interface ICSCardTrackProps {
   hints?: Array<Hint>;
   hideHints?: boolean;
   fullHeight?: boolean;
+  condenseAll?: boolean;
+  condenseEnds?: boolean;
 }
 
 export default function CSCardTrack({
@@ -17,8 +19,10 @@ export default function CSCardTrack({
   hints: propHints,
   hideHints,
   fullHeight,
+  condenseAll,
+  condenseEnds,
 }: ICSCardTrackProps) {
-  const { history, hints, current, condensed } = useGameState();
+  const { history, hints, current } = useCostarsState();
 
   const cardsToDisplay = cards || history;
   const hintsToDisplay = propHints || hints;
@@ -40,17 +44,23 @@ export default function CSCardTrack({
       ) : (
         <></>
       )}
-      {cardsToDisplay.map((entity) => {
+      {cardsToDisplay.map((entity, ind) => {
         return (
           <CSCard
             entity={entity}
             reverse={entity.type === 'movie'}
-            condensed={condensed}
+            condensed={
+              condenseAll ||
+              (condenseEnds && (ind === 0 || ind === cardsToDisplay.length - 1))
+            }
             hintUsed={hintsToDisplay.some(
               (hint) => hint.id === entity.id && hint.type === entity.type,
             )}
             key={entity.id}
             hideHints={hideHints}
+            highlight={
+              condenseEnds && (ind === 0 || ind === cardsToDisplay.length - 1)
+            }
           />
         );
       })}

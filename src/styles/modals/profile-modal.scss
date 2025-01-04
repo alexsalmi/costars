@@ -1,0 +1,71 @@
+.profile-modal-container {
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+  }
+
+  hr {
+    width: 100%;
+    border-color: var(--highlight-primary);
+    margin: 12px;
+  }
+}
+
+.google-button {
+  width: 100%;
+
+  > button {
+    background-color: white !important;
+    color: #1f1f1f !important;
+    border: 1px solid #747775;
+    width: 100%;
+
+    svg {
+      color: white;
+    }
+  }
+}
+
+.profile-modal-why-section {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  padding: 0 6px;
+
+  span {
+    text-align: left;
+  }
+}
+
+.profile-modal-disclosure {
+  font-size: 14px;
+}
+
+.profile-modal-disclosure.first {
+  margin-top: 24px;
+}
+
+.profile-modal-danger-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  input {
+    border: 2px solid var(--highlight-primary);
+    background-color: var(--background-faded);
+    border-radius: 5px;
+    padding: 3px 6px;
+  }
+
+  input:focus {
+    outline: none;
+  }
+}
+
+.profile-modal-danger-section.faded {
+  opacity: 0.8;
+}

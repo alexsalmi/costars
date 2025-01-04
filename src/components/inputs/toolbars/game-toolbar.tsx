@@ -1,4 +1,3 @@
-import '@/styles/components/toolbar.scss';
 import CSButton from '../buttons/button';
 import {
   QuestionMarkOutlined,
@@ -8,22 +7,22 @@ import {
   UndoOutlined,
   RedoOutlined,
 } from '@mui/icons-material';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import CSResetModal from '../../modals/reset-modal';
 import { useState } from 'react';
 import CSTooltip from '../../presentation/tooltip';
+import '@/styles/inputs/toolbar.scss';
 
-export default function CSGameToolbar() {
-  const {
-    history,
-    gameType,
-    undoCache,
-    condensed,
-    expandAll,
-    collapseAll,
-    undo,
-    redo,
-  } = useGameState();
+interface ICSGameToolbarProps {
+  condensed: boolean;
+  setCondensed: (val: boolean) => void;
+}
+
+export default function CSGameToolbar({
+  condensed,
+  setCondensed,
+}: ICSGameToolbarProps) {
+  const { history, gameType, undoCache, undo, redo } = useCostarsState();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -49,7 +48,7 @@ export default function CSGameToolbar() {
         <CSButton
           secondary
           disabled={history.length < 1}
-          onClick={condensed ? expandAll : collapseAll}
+          onClick={() => setCondensed(!condensed)}
         >
           {condensed ? <UnfoldMoreOutlined /> : <UnfoldLessOutlined />}
         </CSButton>

@@ -1,12 +1,12 @@
 'use client';
 import Image from 'next/image';
-import CSModal from '../presentation/modal';
+import CSModal from './modal';
 import { useEffect, useState } from 'react';
 import { getCredits, getDetails } from '@/services/tmdb.service';
 import CSButton from '../inputs/buttons/button';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import { CircularProgress } from '@mui/material';
-import '@/styles/components/details-modal.scss';
+import '@/styles/modals/details-modal.scss';
 
 interface ICSDetailsModalProps {
   entity: GameEntity;
@@ -22,7 +22,7 @@ export default function CSDetailsModal({
   entity,
 }: ICSDetailsModalProps) {
   const { completed, history, hints, isSolution, addEntity, addHint } =
-    useGameState();
+    useCostarsState();
   const [details, setDetails] = useState({} as PersonDetails | MovieDetails);
   const [credits, setCredits] = useState([] as Array<GameEntity>);
   const [loading, setLoading] = useState(false);
@@ -86,6 +86,18 @@ export default function CSDetailsModal({
     close();
   };
 
+  const censorDescription = (description: string): string => {
+    if (!description) return '';
+    const regex1 = /\([0-9]{4}\)/;
+    const regex2 = /\([0-9]{4}–[0-9]{4}\)/;
+    // return description;
+    return description
+      .split('.')
+      .filter((str) => !regex1.test(str))
+      .filter((str) => !regex2.test(str))
+      .join('.');
+  };
+
   return (
     <CSModal isOpen={isOpen} close={close}>
       <div className='details-modal-hero'>
@@ -127,10 +139,7 @@ export default function CSDetailsModal({
         {loading ? (
           <CircularProgress className='details-modal-spinner' />
         ) : entity.type === 'person' ? (
-          (details as PersonDetails).biography
-            ?.split('.')
-            .slice(0, 2)
-            .join('.') + '.'
+          censorDescription((details as PersonDetails).biography)
         ) : (
           (details as MovieDetails).overview
         )}

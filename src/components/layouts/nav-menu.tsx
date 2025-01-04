@@ -10,7 +10,7 @@ import CSButton from '@/components/inputs/buttons/button';
 import { useEffect, useState } from 'react';
 import CSProfileModal from '../modals/profile-modal';
 import { useTheme } from 'next-themes';
-import CSHowToModal from '../modals/how-to-modal';
+import CSInfoModal from '../modals/info-modal';
 import Link from 'next/link';
 
 export default function CSNavMenu() {
@@ -59,7 +59,7 @@ export default function CSNavMenu() {
         isOpen={profileOpen}
         close={() => setProfileOpen(false)}
       />
-      <CSHowToModal isOpen={howToOpen} close={() => setHowToOpen(false)} />
+      <CSInfoModal isOpen={howToOpen} close={() => setHowToOpen(false)} />
     </>
   );
 }

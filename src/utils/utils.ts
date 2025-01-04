@@ -1,5 +1,4 @@
-import { signOut } from '@/services/supabase/auth.service';
-import localStorageService from '@/services/localstorage.service';
+import { getUserDailySolutions } from '@/services/userdata.service';
 
 export function getDayNumber(date: string) {
   return Math.floor(
@@ -23,19 +22,10 @@ export function getScoreString(history: Array<GameEntity>, hints: Array<Hint>) {
   return str;
 }
 
-export async function warnForConflict() {
-  const res = confirm(
-    'WARNING:\nYour local save data will be overwritten if you sign into this existing account. Continue anyway?',
-  );
+export function getUserSolution(daily_id: number): Solution | null {
+  const userDailySolutions = getUserDailySolutions();
 
-  if (!res) {
-    const error = await signOut();
+  const solution = userDailySolutions.find((sol) => sol.daily_id === daily_id);
 
-    if (!error) {
-      localStorageService.setAuthStatus('false');
-      window.location.reload();
-    }
-  }
-
-  return;
+  return solution || null;
 }

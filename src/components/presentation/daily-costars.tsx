@@ -2,16 +2,27 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import CSButton from '../inputs/buttons/button';
-import '@/styles/components/daily-costars.scss';
 import { getScoreString } from '@/utils/utils';
-import useGameState from '@/store/game.state';
+import { useEffect, useState } from 'react';
+import { getUserDailySolutions } from '@/services/userdata.service';
+import '@/styles/presentation/daily-costars.scss';
 
 interface ICSDailyCostarsProps {
   daily?: DailyCostars;
 }
 
 export default function CSDailyCostars({ daily }: ICSDailyCostarsProps) {
-  const { lastSolve } = useGameState();
+  const [solution, setSolution] = useState<Solution | null>(null);
+
+  useEffect(() => {
+    const userDailySolutions = getUserDailySolutions();
+
+    const solution = userDailySolutions.find(
+      (sol) => sol.daily_id === daily?.id,
+    );
+
+    setSolution(solution || null);
+  }, [daily]);
 
   return (
     <div className='daily-costars-container'>
@@ -47,8 +58,8 @@ export default function CSDailyCostars({ daily }: ICSDailyCostarsProps) {
       </div>
       <Link href='/daily'>
         <CSButton>
-          {lastSolve && daily?.id === lastSolve.daily_id
-            ? getScoreString(lastSolve.solution, lastSolve.hints!)
+          {solution
+            ? getScoreString(solution.solution, solution.hints!)
             : 'Play!'}
         </CSButton>
       </Link>

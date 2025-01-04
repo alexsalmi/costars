@@ -4,16 +4,16 @@ import TextField from '@mui/material/TextField';
 import { SearchOutlined } from '@mui/icons-material';
 import { SyntheticEvent, useRef, useState } from 'react';
 import { search } from '@/services/tmdb.service';
-import useGameState from '@/store/game.state';
+import useCostarsState from '@/store/costars.state';
 import debounce from 'debounce';
-import '@/styles/components/search.scss';
+import '@/styles/inputs/search-bar.scss';
 
 interface ICSSearchBar {
   onSubmit: (value: GameEntity) => void;
 }
 
 export default function CSSearchBar({ onSubmit }: ICSSearchBar) {
-  const { history, current } = useGameState();
+  const { history, current } = useCostarsState();
   const [value, setValue] = useState('');
   const [options, setOptions] = useState([] as GameEntity[]);
   const [error, setError] = useState(false);
@@ -51,7 +51,7 @@ export default function CSSearchBar({ onSubmit }: ICSSearchBar) {
 
     setValue('');
 
-    onSubmit(value);
+    await onSubmit(value);
 
     inputRef.current?.querySelector('input')?.focus();
   };

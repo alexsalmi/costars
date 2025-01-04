@@ -44,6 +44,37 @@ export default function Privacy() {
           advertisements relevant for you on this platform only, but not
           including any personal details such as name or address.
         </span>
+        <h4>Deleting your data</h4>
+        <span>
+          If you have created an account with us and would like to delete it,
+          please follow the below instructions:
+          <ol>
+            <li>
+              If you haven&apos;t already, sign in to your Costars account using
+              the profile icon at the top of the page.
+            </li>
+            <li>
+              When you are signed in, click on the profile at the top of the
+              page again.
+            </li>
+            <li>
+              When displaying the account you are logged in with, you will see a
+              button to sign out of your account, and a button to delete your
+              account.
+            </li>
+            <li>
+              Click on the button to delete your account. Confirm the deletion
+              by typing the message displayed on the screen.
+            </li>
+            <li>
+              Once you have confirmed you want to delete your account, all of
+              your account information, stats, and data will be deleted from our
+              systems, and you will be signed out.
+            </li>
+          </ol>
+          Please note that this is irreversible, and you will lose all of your
+          Costars data and stats.
+        </span>
         <h4>California Consumer Privacy Act (CCPA)</h4>
         <span>Manage your consent by way of the CCPA.</span>
         <h4>Log Data</h4>

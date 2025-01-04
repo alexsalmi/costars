@@ -1,11 +1,17 @@
 import CSCostarsEditor from '@/components/presentation/costars-editor';
-import { supabase_getAllFutureCostars } from '@/services/supabase/supabase.service';
+import { sb_GetDailyCostars } from '@/services/supabase';
 import '@/styles/pages/admin.scss';
 
 export default async function Admin() {
   if (process.env.IS_PRODUCTION) return <></>;
 
-  const futureCostars = await supabase_getAllFutureCostars();
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const futureCostars =
+    (await sb_GetDailyCostars({
+      after_date: tomorrow.toISOString(),
+    })) || [];
 
   return (
     <div className='admin-page-container'>
