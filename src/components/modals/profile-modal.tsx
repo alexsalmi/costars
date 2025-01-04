@@ -127,7 +127,12 @@ export default function CSProfileModal({
           <span>Sign in with one of the below providers:</span>
           <div className='google-button'>
             <CSButton secondary onClick={() => signInHandler('google')}>
-              <Image src='/g-logo.png' alt='Google Logo' width={24} height={24} />{' '}
+              <Image
+                src='/g-logo.png'
+                alt='Google Logo'
+                width={24}
+                height={24}
+              />{' '}
               Sign in with Google
             </CSButton>
           </div>
