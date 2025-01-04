@@ -4,7 +4,6 @@
 
   h4 {
     align-self: flex-start;
-    text-align: left;
   }
 
   hr {
@@ -38,6 +37,7 @@
     display: flex;
     justify-content: space-between;
     padding: 6px 0;
+    text-align: left;
   }
 
   > button:hover {
