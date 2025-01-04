@@ -28,7 +28,7 @@ export default function CSCard({
   condensed,
   hintUsed,
   hideHints,
-  highlight
+  highlight,
 }: ICSCardProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [targetCondensed, setTargetCondensed] = useState(target);

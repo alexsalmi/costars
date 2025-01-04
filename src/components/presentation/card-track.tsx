@@ -49,15 +49,18 @@ export default function CSCardTrack({
           <CSCard
             entity={entity}
             reverse={entity.type === 'movie'}
-            condensed={condenseAll || (
-              condenseEnds && (ind === 0 || ind === cardsToDisplay.length-1)
-            )}
+            condensed={
+              condenseAll ||
+              (condenseEnds && (ind === 0 || ind === cardsToDisplay.length - 1))
+            }
             hintUsed={hintsToDisplay.some(
               (hint) => hint.id === entity.id && hint.type === entity.type,
             )}
             key={entity.id}
             hideHints={hideHints}
-            highlight={condenseEnds && (ind === 0 || ind === cardsToDisplay.length-1)}
+            highlight={
+              condenseEnds && (ind === 0 || ind === cardsToDisplay.length - 1)
+            }
           />
         );
       })}

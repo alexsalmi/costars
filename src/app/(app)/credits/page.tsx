@@ -14,7 +14,7 @@ export default function Credits() {
         <span>
           <strong>Executive Producer:</strong> Erin Kaswan
         </span>
-        <br/>
+        <br />
         <h4>The Movie Database</h4>
         <span className='info-page-image-section'>
           <Image

@@ -63,7 +63,7 @@ const useCostarsState = () => {
     setTarget({} as GameEntity);
     setUndoCache([]);
     setCompleted(false);
-  }
+  };
 
   const initGame = async (
     type: GameType,
@@ -103,7 +103,10 @@ const useCostarsState = () => {
     setCompleted(solution !== null);
   };
 
-  const addEntity = (entity: GameEntity, captureEvent?: (eventName: string) => void) => {
+  const addEntity = (
+    entity: GameEntity,
+    captureEvent?: (eventName: string) => void,
+  ) => {
     let newHistory = [entity, ...history];
 
     if (gameType !== 'unlimited') {

@@ -44,12 +44,15 @@ export default function CSGameContainer({
   }, []);
 
   const onSubmit = async (value: GameEntity) => {
-    addEntity({
-      ...value,
-      credits: (await getCredits(value.id, value.type)).map(
-        (credit) => credit.id,
-      ),
-    }, plausible);
+    addEntity(
+      {
+        ...value,
+        credits: (await getCredits(value.id, value.type)).map(
+          (credit) => credit.id,
+        ),
+      },
+      plausible,
+    );
   };
 
   if (gameType !== 'unlimited' && completed) {

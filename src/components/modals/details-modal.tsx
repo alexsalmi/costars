@@ -87,17 +87,16 @@ export default function CSDetailsModal({
   };
 
   const censorDescription = (description: string): string => {
-    if(!description)
-      return '';
+    if (!description) return '';
     const regex1 = /\([0-9]{4}\)/;
     const regex2 = /\([0-9]{4}–[0-9]{4}\)/;
     // return description;
     return description
-      .split(".")
-      .filter(str => !regex1.test(str))
-      .filter(str => !regex2.test(str))
-      .join(".");
-  }
+      .split('.')
+      .filter((str) => !regex1.test(str))
+      .filter((str) => !regex2.test(str))
+      .join('.');
+  };
 
   return (
     <CSModal isOpen={isOpen} close={close}>
