@@ -1,4 +1,8 @@
-import { signIn, signOut } from '@/services/supabase/auth.service';
+import {
+  deleteAccount,
+  signIn,
+  signOut,
+} from '@/services/supabase/auth.service';
 import CSButton from '../inputs/buttons/button';
 import CSModal from './modal';
 import useCostarsState from '@/store/costars.state';
@@ -8,6 +12,7 @@ import Link from 'next/link';
 import { ls_PostAuthStatus } from '@/services/localstorage';
 import { clearStorage } from '@/utils/localstorage';
 import '@/styles/modals/profile-modal.scss';
+import { useState } from 'react';
 
 interface ICSProfileModalProps {
   isOpen: boolean;
@@ -19,6 +24,15 @@ export default function CSProfileModal({
   close,
 }: ICSProfileModalProps) {
   const { user } = useCostarsState();
+  const [deleteState, setDeleteState] = useState<'not-started' | 'confirming'>(
+    'not-started',
+  );
+  const [confirmValue, setConfirmValue] = useState('');
+
+  const handleClose = () => {
+    setDeleteState('not-started');
+    close();
+  };
 
   const signInHandler = async (type: 'google' | 'facebook') => {
     ls_PostAuthStatus('pending');
@@ -40,15 +54,74 @@ export default function CSProfileModal({
     }
   };
 
+  const deleteHandler = async () => {
+    if (confirmValue !== 'delete') return;
+
+    const error = await deleteAccount();
+
+    console.log(error);
+
+    if (!error) {
+      ls_PostAuthStatus('false');
+      clearStorage();
+      window.location.reload();
+    }
+  };
+
   return (
-    <CSModal isOpen={isOpen} close={close} className='profile-modal-container'>
+    <CSModal
+      isOpen={isOpen}
+      close={handleClose}
+      className='profile-modal-container'
+    >
       <h3>Profile</h3>
       {user ? (
         <>
-          <span>Signed in as {user.email}</span>
+          <span>
+            Signed in as <strong>{user.email}</strong>
+          </span>
           <CSButton secondary onClick={signOutHandler}>
             Sign Out
           </CSButton>
+          <hr />
+          <div
+            className={`profile-modal-danger-section ${deleteState === 'not-started' ? 'faded' : ''}`}
+          >
+            <h4>Danger Section</h4>
+            {deleteState === 'not-started' ? (
+              <>
+                <span>
+                  Any actions performed here are <strong>irreversible.</strong>
+                </span>
+                <CSButton
+                  secondary
+                  onClick={() => setDeleteState('confirming')}
+                >
+                  Delete your account
+                </CSButton>
+              </>
+            ) : (
+              <>
+                <span>
+                  <strong>NOTE:</strong> deleting your account is{' '}
+                  <strong>PERMANENT.</strong> All of your Costars data and stats
+                  will be lost forever.
+                </span>
+                <span>
+                  To confirm your account deletion, please type{' '}
+                  <i>&apos;delete&apos;</i> into the textbox below.
+                </span>
+                <input
+                  type='text'
+                  value={confirmValue}
+                  onChange={(e) => setConfirmValue(e.target.value)}
+                />
+                <CSButton secondary onClick={deleteHandler}>
+                  Confirm Account Deletion
+                </CSButton>
+              </>
+            )}
+          </div>
         </>
       ) : (
         <>
