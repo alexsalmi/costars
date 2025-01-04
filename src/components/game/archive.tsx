@@ -84,7 +84,7 @@ export default function CSArchive() {
           }
           onChange={selectDate}
           onMonthChange={getPrevResults}
-          minDate={dayjs('01/01/2024')}
+          minDate={dayjs('01/01/2025')}
           maxDate={dayjs()}
           loading={loading}
           disableHighlightToday
