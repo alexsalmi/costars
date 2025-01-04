@@ -6,7 +6,6 @@ import {
 import CSButton from '../inputs/buttons/button';
 import CSModal from './modal';
 import useCostarsState from '@/store/costars.state';
-import { FacebookOutlined } from '@mui/icons-material';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ls_PostAuthStatus } from '@/services/localstorage';
@@ -34,7 +33,7 @@ export default function CSProfileModal({
     close();
   };
 
-  const signInHandler = async (type: 'google' | 'facebook') => {
+  const signInHandler = async (type: 'google') => {
     ls_PostAuthStatus('pending');
 
     const error = await signIn(type);
@@ -126,13 +125,12 @@ export default function CSProfileModal({
       ) : (
         <>
           <span>Sign in with one of the below providers:</span>
-          <CSButton secondary onClick={() => signInHandler('google')}>
-            <Image src='/g-logo.png' alt='Google Logo' width={24} height={24} />{' '}
-            Sign in with Google
-          </CSButton>
-          <CSButton secondary onClick={() => signInHandler('facebook')}>
-            <FacebookOutlined /> Login with Facebook
-          </CSButton>
+          <div className='google-button'>
+            <CSButton secondary onClick={() => signInHandler('google')}>
+              <Image src='/g-logo.png' alt='Google Logo' width={24} height={24} />{' '}
+              Sign in with Google
+            </CSButton>
+          </div>
           <hr />
           <div className='profile-modal-why-section'>
             <h4>Why sign in?</h4>
