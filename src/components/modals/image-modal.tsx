@@ -25,10 +25,10 @@ export default function CSImageModal({
         </CSButton>
         <Image
           className='card-image'
-          src={`https://image.tmdb.org/t/p/w300${entity.image}`}
+          src={`https://image.tmdb.org/t/p/original${entity.image}`}
           alt={`Picture of ${entity.label}`}
-          width={300}
-          height={450}
+          width={350}
+          height={525}
           placeholder='blur'
           blurDataURL='/placeholder.webp'
           unoptimized
