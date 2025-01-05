@@ -10,6 +10,7 @@ import CSDetailsModal from '../modals/details-modal';
 import CSButton from '../inputs/buttons/button';
 import { Tooltip } from '@mui/material';
 import '@/styles/presentation/card.scss';
+import CSImageModal from '../modals/image-modal';
 
 interface ICSCardProps {
   entity: GameEntity;
@@ -30,6 +31,7 @@ export default function CSCard({
   hideHints,
   highlight,
 }: ICSCardProps) {
+  const [isImageOpen, setIsImageOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [targetCondensed, setTargetCondensed] = useState(target);
 
@@ -49,16 +51,24 @@ export default function CSCard({
         }}
       >
         {!condensed && !targetCondensed ? (
-          <Image
-            className='card-image'
-            src={`https://image.tmdb.org/t/p/w185${entity.image}`}
-            alt={`Picture of ${entity.label}`}
-            width={80}
-            height={120}
-            placeholder='blur'
-            blurDataURL='/placeholder.webp'
-            unoptimized
-          />
+          <div
+            className='card-image-container'
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsImageOpen(true);
+            }}
+          >
+            <Image
+              className='card-image'
+              src={`https://image.tmdb.org/t/p/w185${entity.image}`}
+              alt={`Picture of ${entity.label}`}
+              width={80}
+              height={120}
+              placeholder='blur'
+              blurDataURL='/placeholder.webp'
+              unoptimized
+            />
+          </div>
         ) : (
           <></>
         )}
@@ -99,6 +109,15 @@ export default function CSCard({
         <CSDetailsModal
           isOpen={isDetailsOpen}
           close={() => setIsDetailsOpen(false)}
+          entity={entity}
+        />
+      ) : (
+        <></>
+      )}
+      {isImageOpen ? (
+        <CSImageModal
+          isOpen={isImageOpen}
+          close={() => setIsImageOpen(false)}
           entity={entity}
         />
       ) : (
