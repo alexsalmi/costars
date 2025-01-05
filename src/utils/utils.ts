@@ -29,3 +29,9 @@ export function getUserSolution(daily_id: number): Solution | null {
 
   return solution || null;
 }
+export function getFormattedDateString(dateStr: string) {
+  const date = new Date(dateStr);
+  date.setDate(date.getDate() + 1);
+
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+}

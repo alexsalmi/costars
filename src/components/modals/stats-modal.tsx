@@ -9,6 +9,7 @@ import CSButton from '../inputs/buttons/button';
 import Link from 'next/link';
 import { CalendarMonthOutlined } from '@mui/icons-material';
 import '@/styles/modals/stats-modal.scss';
+import { getFormattedDateString } from '@/utils/utils';
 
 interface ICSStatsModalProps {
   isOpen: boolean;
@@ -37,13 +38,6 @@ export default function CSStatsModal({
         : 0),
     0,
   );
-
-  const getFormattedDateString = (dateStr: string) => {
-    const date = new Date(dateStr);
-    date.setDate(date.getDate() + 1);
-
-    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-  };
 
   return (
     <CSModal isOpen={isOpen} close={close}>

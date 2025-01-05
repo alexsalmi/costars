@@ -4,6 +4,7 @@ import {
   getDailySolutions,
   getTodaysCostars,
 } from '@/services/cache.service';
+import { redirect } from 'next/navigation';
 
 interface IDailyArchiveGameProps {
   params: Promise<{ day_number: string }>;
@@ -26,6 +27,8 @@ export default async function DailyArchiveGame({
   ]);
   if (!daily || !todays || todays.day_number < daily.day_number)
     throw Error('Invalid URL');
+
+  if (todays.id === daily.id) redirect('/daily');
 
   const solutions = await getDailySolutions(daily.id!);
 
