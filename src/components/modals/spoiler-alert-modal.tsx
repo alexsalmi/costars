@@ -16,7 +16,7 @@ export default function CSSpoilerAlertModal({
   daily,
 }: ICSSpoilerAlertModal) {
   return (
-    <CSModal isOpen={isOpen} close={close} className='spoiler-alert-modal'>
+    <CSModal isOpen={isOpen} className='spoiler-alert-modal'>
       <h3>Spoiler Alert!</h3>
       <span>
         This solution is for{' '}

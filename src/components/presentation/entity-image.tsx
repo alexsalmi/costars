@@ -27,9 +27,10 @@ export default function CSEntityImage({
           setIsImageOpen(true);
         }}
         className='entity-image'
+        style={{ height: height || 120 }}
       >
         <Image
-          className='entity-image'
+          className='card-image'
           src={`https://image.tmdb.org/t/p/w185${entity.image}`}
           alt={`Picture of ${entity.label}`}
           width={width || 80}
