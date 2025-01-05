@@ -7,7 +7,7 @@ import CSButton from '../inputs/buttons/button';
 import useCostarsState from '@/store/costars.state';
 import { CircularProgress } from '@mui/material';
 import '@/styles/modals/details-modal.scss';
-import CSImageModal from './image-modal';
+import CSEntityImage from '../presentation/entity-image';
 
 interface ICSDetailsModalProps {
   entity: GameEntity;
@@ -28,7 +28,6 @@ export default function CSDetailsModal({
   const [credits, setCredits] = useState([] as Array<GameEntity>);
   const [loading, setLoading] = useState(false);
   const [hintState, setHintState] = useState<HintState>('hidden');
-  const [isImageOpen, setIsImageOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -104,23 +103,7 @@ export default function CSDetailsModal({
     <>
       <CSModal isOpen={isOpen} close={close}>
         <div className='details-modal-hero'>
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsImageOpen(true);
-            }}
-          >
-            <Image
-              className='card-image'
-              src={`https://image.tmdb.org/t/p/w185${entity.image}`}
-              alt={`Picture of ${entity.label}`}
-              width={120}
-              height={180}
-              placeholder='blur'
-              blurDataURL='/placeholder.webp'
-              unoptimized
-            />
-          </div>
+          <CSEntityImage entity={entity} unoptimized width={120} height={180} />
           <div className='details-modal-hero-text'>
             <h3>{entity.label}</h3>
             {loading ? (
@@ -205,11 +188,6 @@ export default function CSDetailsModal({
           )}
         </div>
       </CSModal>
-      <CSImageModal
-        isOpen={isImageOpen}
-        close={() => setIsImageOpen(false)}
-        entity={entity}
-      />
     </>
   );
 }

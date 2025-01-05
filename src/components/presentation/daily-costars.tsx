@@ -1,11 +1,11 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import CSButton from '../inputs/buttons/button';
 import { getScoreString } from '@/utils/utils';
 import { useEffect, useState } from 'react';
 import { getUserDailySolutions } from '@/services/userdata.service';
 import '@/styles/presentation/daily-costars.scss';
+import CSEntityImage from './entity-image';
 
 interface ICSDailyCostarsProps {
   daily?: DailyCostars;
@@ -28,33 +28,13 @@ export default function CSDailyCostars({ daily }: ICSDailyCostarsProps) {
     <div className='daily-costars-container'>
       <h3 className='daily-costars-header'>Daily Costars</h3>
       <div className='daily-costars-previews'>
-        <Image
-          priority
-          src={
-            daily?.starter.image
-              ? `https://image.tmdb.org/t/p/w185${daily?.starter.image}`
-              : '/placeholder.webp'
-          }
-          width={80}
-          height={120}
-          alt={`Image of ${daily?.starter.label}`}
-        />
+        <CSEntityImage entity={daily!.starter} />
         <div className='daily-costars-names'>
           <span>{daily?.starter.label}</span>
           <span>and</span>
           <span>{daily?.target.label}</span>
         </div>
-        <Image
-          priority
-          src={
-            daily?.starter.image
-              ? `https://image.tmdb.org/t/p/w185${daily?.target.image}`
-              : '/placeholder.webp'
-          }
-          width={80}
-          height={120}
-          alt={`Image of ${daily?.target.label}`}
-        />
+        <CSEntityImage entity={daily!.target} />
       </div>
       <Link href='/daily'>
         <CSButton>

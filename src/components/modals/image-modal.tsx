@@ -29,8 +29,6 @@ export default function CSImageModal({
           alt={`Picture of ${entity.label}`}
           width={350}
           height={525}
-          placeholder='blur'
-          blurDataURL='/placeholder.webp'
           unoptimized
         />
       </div>

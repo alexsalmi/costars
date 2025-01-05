@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 import {
   ExpandMoreOutlined,
   ExpandLessOutlined,
@@ -11,6 +10,7 @@ import CSButton from '../inputs/buttons/button';
 import { Tooltip } from '@mui/material';
 import '@/styles/presentation/card.scss';
 import CSImageModal from '../modals/image-modal';
+import CSEntityImage from './entity-image';
 
 interface ICSCardProps {
   entity: GameEntity;
@@ -51,24 +51,7 @@ export default function CSCard({
         }}
       >
         {!condensed && !targetCondensed ? (
-          <div
-            className='card-image-container'
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsImageOpen(true);
-            }}
-          >
-            <Image
-              className='card-image'
-              src={`https://image.tmdb.org/t/p/w185${entity.image}`}
-              alt={`Picture of ${entity.label}`}
-              width={80}
-              height={120}
-              placeholder='blur'
-              blurDataURL='/placeholder.webp'
-              unoptimized
-            />
-          </div>
+          <CSEntityImage entity={entity} unoptimized />
         ) : (
           <></>
         )}
