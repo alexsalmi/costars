@@ -28,13 +28,13 @@ export default function CSDailyCostars({ daily }: ICSDailyCostarsProps) {
     <div className='daily-costars-container'>
       <h3 className='daily-costars-header'>Daily Costars</h3>
       <div className='daily-costars-previews'>
-        <CSEntityImage entity={daily!.starter} />
+        <CSEntityImage entity={daily?.starter} />
         <div className='daily-costars-names'>
           <span>{daily?.starter.label}</span>
           <span>and</span>
           <span>{daily?.target.label}</span>
         </div>
-        <CSEntityImage entity={daily!.target} />
+        <CSEntityImage entity={daily?.target} />
       </div>
       <Link href='/daily'>
         <CSButton>
