@@ -75,20 +75,13 @@ export const getTodaysCostars = unstable_cache(
 
     const todaysCostars = costars[0];
 
-    const [
-      starterCredits,
-      targetCredits
-    ] = await Promise.all([
+    const [starterCredits, targetCredits] = await Promise.all([
       getCredits(todaysCostars.starter.id, 'person'),
-      getCredits(todaysCostars.target.id, 'person')
-    ])
+      getCredits(todaysCostars.target.id, 'person'),
+    ]);
 
-    todaysCostars.starter.credits = starterCredits.map(
-      (credit) => credit.id,
-    );
-    todaysCostars.target.credits = targetCredits.map(
-      (credit) => credit.id,
-    );
+    todaysCostars.starter.credits = starterCredits.map((credit) => credit.id);
+    todaysCostars.target.credits = targetCredits.map((credit) => credit.id);
 
     return todaysCostars;
   },
@@ -146,24 +139,17 @@ export const getCostarsByDayNumber = unstable_cache(
     const costars = await sb_GetDailyCostars({ day_number }, forCache);
 
     if (!costars) return null;
-    
+
     const daysCostars = costars[0];
 
-    const [
-      starterCredits,
-      targetCredits
-    ] = await Promise.all([
+    const [starterCredits, targetCredits] = await Promise.all([
       getCredits(daysCostars.starter.id, 'person'),
-      getCredits(daysCostars.target.id, 'person')
-    ])
+      getCredits(daysCostars.target.id, 'person'),
+    ]);
 
-    daysCostars.starter.credits = starterCredits.map(
-      (credit) => credit.id,
-    );
-    daysCostars.target.credits = targetCredits.map(
-      (credit) => credit.id,
-    );
-    
+    daysCostars.starter.credits = starterCredits.map((credit) => credit.id);
+    daysCostars.target.credits = targetCredits.map((credit) => credit.id);
+
     return daysCostars;
   },
   [],

@@ -79,9 +79,9 @@ export async function GET(req: Request) {
 
   console.log('----- Saving costars to DB -----');
 
-  for (let ind=0; ind<costars.length; ind++) {
+  for (let ind = 0; ind < costars.length; ind++) {
     const dailyCostars = costars[ind];
-    
+
     const date = new Date();
     date.setDate(date.getDate() + 7 + ind);
     date.setHours(0, 0, 0, 0);

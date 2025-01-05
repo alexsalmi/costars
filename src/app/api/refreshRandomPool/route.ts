@@ -17,7 +17,6 @@ export async function GET(req: NextRequest) {
   revalidateTag('random_pool');
   revalidateTag('trending_people');
 
-
   console.log('----- FINISHED REFRESHING RANDOM POOL -----');
 
   return NextResponse.json({ ok: true });
