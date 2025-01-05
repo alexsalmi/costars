@@ -5,7 +5,7 @@ import CSImageModal from '../modals/image-modal';
 import '@/styles/presentation/entity-image.scss';
 
 interface ICSEntityImageProps {
-  entity: GameEntity;
+  entity?: GameEntity;
   unoptimized?: boolean;
   width?: number;
   height?: number;
@@ -31,8 +31,12 @@ export default function CSEntityImage({
       >
         <Image
           className='card-image'
-          src={`https://image.tmdb.org/t/p/w185${entity.image}`}
-          alt={`Picture of ${entity.label}`}
+          src={
+            entity
+              ? `https://image.tmdb.org/t/p/w185${entity.image}`
+              : '/placeholder.webp'
+          }
+          alt={entity ? `Picture of ${entity.label}` : 'Placeholder image'}
           width={width || 80}
           height={height || 120}
           placeholder='blur'

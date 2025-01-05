@@ -7,7 +7,7 @@ import { CloseOutlined } from '@mui/icons-material';
 interface ICSImageModalProps {
   isOpen: boolean;
   close?: () => void;
-  entity: GameEntity;
+  entity?: GameEntity;
 }
 
 export default function CSImageModal({
@@ -15,7 +15,7 @@ export default function CSImageModal({
   close,
   entity,
 }: ICSImageModalProps) {
-  if (!isOpen) return <></>;
+  if (!isOpen || !entity) return <></>;
 
   return (
     <Modal open={isOpen} onClose={close} className='image-modal'>
