@@ -102,6 +102,14 @@ export default function Success({ daily, solutions }: ISuccessProps) {
             )}
           </span>
           <div className='success-buttons-container'>
+            <CSButton
+              secondary
+              onClick={() => shareScore()}
+              loading={shareLoading}
+            >
+              <ShareOutlined />
+              Share
+            </CSButton>
             {gameType === 'daily' ? (
               <CSButton onClick={() => setStatsOpen(true)}>See Stats</CSButton>
             ) : gameType === 'archive' ? (
@@ -113,14 +121,6 @@ export default function Success({ daily, solutions }: ISuccessProps) {
                 <CSButton>New Game</CSButton>
               </Link>
             )}
-            <CSButton
-              secondary
-              onClick={() => shareScore()}
-              loading={shareLoading}
-            >
-              <ShareOutlined />
-              Share
-            </CSButton>
           </div>
         </div>
         <CSCardTrack condenseEnds />

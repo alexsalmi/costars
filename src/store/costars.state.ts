@@ -105,6 +105,7 @@ const useCostarsState = () => {
 
     if (type === 'daily' && !solution) {
       dailySave = ls_GetDailySave();
+      if (dailySave?.daily_id !== daily?.id) dailySave = null;
     }
 
     setTarget(target);
@@ -190,10 +191,11 @@ const useCostarsState = () => {
   const reset = async () => {
     if (gameType === 'unlimited') {
       setHistory([]);
-      await updateUnlimitedStats(user, [], []);
+      updateUnlimitedStats(user, [], []);
 
-      setUnlimitedStats(await getUnlimitedStats());
+      setUnlimitedStats(getUnlimitedStats());
     } else {
+      ls_DeleteDailySave();
       setHistory(history.slice(-1));
     }
   };
