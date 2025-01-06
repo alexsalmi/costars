@@ -77,7 +77,7 @@ export default function Success({ daily, solutions }: ISuccessProps) {
 
   return (
     <>
-      <CSBackButton link={gameType === 'archive' ? '/daily/archive' : '/'} />
+      <CSBackButton />
       <div className='success-container'>
         <div className='success-message-container'>
           <h3>Congratulations!</h3>

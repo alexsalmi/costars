@@ -61,7 +61,7 @@ export default function CSGameContainer({
 
   return (
     <div className='game-container'>
-      <CSBackButton link={gameType === 'archive' ? '/daily/archive' : '/'} />
+      <CSBackButton />
       <CSSearchBar onSubmit={onSubmit} />
       {gameType === 'unlimited' ? (
         <div className='game-scores'>

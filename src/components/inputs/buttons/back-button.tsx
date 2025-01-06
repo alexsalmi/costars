@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import CSButton from './button';
 import { KeyboardArrowLeftOutlined } from '@mui/icons-material';
 import '@/styles/inputs/back-button.scss';
