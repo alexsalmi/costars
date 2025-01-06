@@ -4,10 +4,10 @@ import useCostarsState from '@/store/costars.state';
 import CSTextDisplay from '../presentation/display';
 import CSCardTrack from '../presentation/card-track';
 import CSSolutionsToolbar from '../inputs/toolbars/solutions-toolbar';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import CSButton from '../inputs/buttons/button';
 import Link from 'next/link';
-import { CalendarMonthOutlined } from '@mui/icons-material';
+import { CalendarMonthOutlined, ShareOutlined } from '@mui/icons-material';
 import '@/styles/modals/stats-modal.scss';
 import { getFormattedDateString } from '@/utils/utils';
 
@@ -17,6 +17,7 @@ interface ICSStatsModalProps {
   daily: DailyCostars;
   solutions: Array<Solution>;
   showStats: boolean;
+  shareFn: (loadingFn?: Dispatch<SetStateAction<boolean>>) => Promise<void>;
 }
 
 export default function CSStatsModal({
@@ -25,9 +26,11 @@ export default function CSStatsModal({
   daily,
   solutions,
   showStats,
+  shareFn,
 }: ICSStatsModalProps) {
   const { score, history, hints, dailyStats, gameType } = useCostarsState();
   const [solutionInd, setSolutionInd] = useState(0);
+  const [shareLoading, setShareLoading] = useState(false);
 
   const numMovies = (score - 1) / 2;
   const numHints = history.reduce(
@@ -111,6 +114,16 @@ export default function CSStatsModal({
             Explore the Daily Archive
           </CSButton>
         </Link>
+        <div className='stats-modal-share-button'>
+          <CSButton
+            secondary
+            onClick={() => shareFn(setShareLoading)}
+            loading={shareLoading}
+          >
+            <ShareOutlined />
+            Share
+          </CSButton>
+        </div>
         <hr />
         <div className='stats-modal-optimal'>
           Here are a few of the{' '}

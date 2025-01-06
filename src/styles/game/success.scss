@@ -28,11 +28,18 @@
 
 .success-buttons-container {
   display: flex;
-  gap: 12px;
-}
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+  gap: 20px;
+  width: 100%;
 
-.success-share-button {
-  button {
+  > :first-child {
+    width: 60%;
+  }
+
+  > :last-child {
+    width: 40%;
     display: flex;
     justify-content: center;
     gap: 6px;
