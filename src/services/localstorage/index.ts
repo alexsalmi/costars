@@ -25,6 +25,13 @@ import {
   lsDeleteFreshStatus,
 } from './freshStatus.localstorage';
 
+import {
+  lsHasDailySave,
+  lsGetDailySave,
+  lsPostDailySave,
+  lsDeleteDailySave,
+} from './dailySave.localstorage';
+
 import { lsGetAuthStatus, lsPostAuthStatus } from './authStatus.localstorage';
 
 export const ls_HasDailyStats = lsHasDailyStats;
@@ -48,3 +55,8 @@ export const ls_DeleteFreshStatus = lsDeleteFreshStatus;
 
 export const ls_GetAuthStatus = lsGetAuthStatus;
 export const ls_PostAuthStatus = lsPostAuthStatus;
+
+export const ls_HasDailySave = lsHasDailySave;
+export const ls_GetDailySave = lsGetDailySave;
+export const ls_PostDailySave = lsPostDailySave;
+export const ls_DeleteDailySave = lsDeleteDailySave;

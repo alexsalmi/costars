@@ -26,6 +26,11 @@ import {
 import { isMigrationPending } from '@/utils/localstorage';
 import { getUser } from '@/services/supabase/auth.service';
 import { getUserSolution } from '@/utils/utils';
+import {
+  ls_DeleteDailySave,
+  ls_GetDailySave,
+  ls_PostDailySave,
+} from '@/services/localstorage';
 
 const useCostarsState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
@@ -96,9 +101,15 @@ const useCostarsState = () => {
       setDailyCostars(daily);
     }
 
+    let dailySave: Solution | null = null;
+
+    if (type === 'daily' && !solution) {
+      dailySave = ls_GetDailySave();
+    }
+
     setTarget(target);
-    setHistory(solution?.solution || [starter]);
-    setHints(solution?.hints || []);
+    setHistory(solution?.solution || dailySave?.solution || [starter]);
+    setHints(solution?.hints || dailySave?.hints || []);
     setUndoCache([]);
     setCompleted(solution !== null);
   };
@@ -113,10 +124,12 @@ const useCostarsState = () => {
       const isTargetMatch =
         target.id === entity.id && target.type == entity.type;
 
-      if (isTargetMatch && gameType === 'daily') updateDailyStats(entity);
+      if (isTargetMatch && gameType === 'daily') {
+        updateDailyStats(entity);
+        ls_DeleteDailySave();
 
-      if (isTargetMatch && gameType === 'daily' && captureEvent)
-        captureEvent('dailyCostarsCompleted');
+        if (captureEvent !== undefined) captureEvent('dailyCostarsCompleted');
+      }
 
       if (isTargetMatch && (gameType === 'daily' || gameType === 'archive'))
         saveSolution(entity);
@@ -129,6 +142,8 @@ const useCostarsState = () => {
 
     setHistory(newHistory);
     setUndoCache([]);
+
+    if (gameType === 'daily') ls_PostDailySave({ solution: newHistory, hints });
 
     if (gameType === 'unlimited') {
       if (history.length >= highScore) incrementHighscore();
@@ -145,7 +160,12 @@ const useCostarsState = () => {
       type: entity.type,
     };
 
-    setHints([...hints, hintData]);
+    const newHints = [...hints, hintData];
+
+    setHints(newHints);
+
+    if (gameType === 'daily')
+      ls_PostDailySave({ solution: history, hints: newHints });
 
     if (gameType === 'unlimited') {
       updateUnlimitedStats(user, history, [...hints, hintData]);

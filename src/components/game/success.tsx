@@ -38,22 +38,21 @@ export default function Success({ daily, solutions }: ISuccessProps) {
   const shareScore = async () => {
     setShareLoading(true);
     let uuid = '';
+    const user = await getUser();
 
-    if (gameType === 'daily' && daily) {
-      const user = await getUser();
-      if (user) {
-        const [solution] = await sb_GetSolutions({
-          user_id: user.id,
-          daily_id: daily.id,
-        });
+    if (user && gameType === 'daily' && daily) {
+      const [solution] = await sb_GetSolutions({
+        user_id: user.id,
+        daily_id: daily.id,
+      });
 
-        uuid = solution.id || '';
-      }
+      uuid = solution.id || '';
     } else {
       uuid = await sb_PostSolutions({
         solution: history,
         hints,
         is_temporary: true,
+        daily_id: daily?.id,
       });
     }
 

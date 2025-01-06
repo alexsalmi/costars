@@ -4,8 +4,8 @@ import CSSearchBar from './search-bar';
 import { useState } from 'react';
 import CSTextDisplay from '../presentation/display';
 import { AutorenewOutlined, CloseOutlined } from '@mui/icons-material';
-import { getRandomPerson } from '@/services/cache.service';
 import '@/styles/inputs/costars-creator.scss';
+import { getRandomPerson } from '@/utils/costars';
 
 interface ICSCostarsCreatorProps {
   target: GameEntity | null;

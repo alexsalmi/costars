@@ -1,0 +1,26 @@
+.image-modal {
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    outline: none;
+  }
+
+  button {
+    position: absolute;
+    align-self: flex-end;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: transparent !important;
+  }
+}

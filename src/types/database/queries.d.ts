@@ -1,4 +1,5 @@
 interface DailyCostarsParams {
+  id?: number;
   date?: string;
   day_number?: number;
   after_date?: string;

@@ -11,10 +11,11 @@ export const sbGetDailyCostars = async (
   if (forCache) supabase = await createClientForCache();
   else supabase = await createClient();
 
-  const { date, day_number, after_date, before_date } = params;
+  const { id, date, day_number, after_date, before_date } = params;
 
   let query = supabase.from('DailyCostars').select();
 
+  if (id) query = query.eq('id', id);
   if (date) query = query.eq('date', date);
   if (day_number) query = query.eq('day_number', day_number);
   if (after_date) query = query.gte('date', after_date);

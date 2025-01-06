@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
-import { getRandomPerson } from '@/services/cache.service';
 
 export async function GET(req: NextRequest) {
   if (
@@ -17,8 +16,6 @@ export async function GET(req: NextRequest) {
 
   revalidateTag('random_pool');
   revalidateTag('trending_people');
-
-  await getRandomPerson();
 
   console.log('----- FINISHED REFRESHING RANDOM POOL -----');
 

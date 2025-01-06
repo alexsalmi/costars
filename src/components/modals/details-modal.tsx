@@ -7,6 +7,7 @@ import CSButton from '../inputs/buttons/button';
 import useCostarsState from '@/store/costars.state';
 import { CircularProgress } from '@mui/material';
 import '@/styles/modals/details-modal.scss';
+import CSEntityImage from '../presentation/entity-image';
 
 interface ICSDetailsModalProps {
   entity: GameEntity;
@@ -99,101 +100,94 @@ export default function CSDetailsModal({
   };
 
   return (
-    <CSModal isOpen={isOpen} close={close}>
-      <div className='details-modal-hero'>
-        <Image
-          className='card-image'
-          src={`https://image.tmdb.org/t/p/w185${entity.image}`}
-          alt={`Picture of ${entity.label}`}
-          width={120}
-          height={180}
-          placeholder='blur'
-          blurDataURL='/placeholder.webp'
-          unoptimized
-        />
-        <div className='details-modal-hero-text'>
-          <h3>{entity.label}</h3>
-          {loading ? (
-            <></>
-          ) : entity.type === 'person' ? (
-            <>
-              <span>{formatDate((details as PersonDetails).birthday)}</span>
-              <span>{(details as PersonDetails).place_of_birth}</span>
-            </>
-          ) : (
-            <>
-              <span>
-                {formatDate((details as MovieDetails).release_date)}・
-                {(details as MovieDetails).runtime} minutes
-              </span>
-              <span>
-                {(details as MovieDetails).genres
-                  ?.map((g) => g.name)
-                  .join('・')}
-              </span>
-            </>
-          )}
+    <>
+      <CSModal isOpen={isOpen} close={close}>
+        <div className='details-modal-hero'>
+          <CSEntityImage entity={entity} unoptimized width={120} height={180} />
+          <div className='details-modal-hero-text'>
+            <h3>{entity.label}</h3>
+            {loading ? (
+              <></>
+            ) : entity.type === 'person' ? (
+              <>
+                <span>{formatDate((details as PersonDetails).birthday)}</span>
+                <span>{(details as PersonDetails).place_of_birth}</span>
+              </>
+            ) : (
+              <>
+                <span>
+                  {formatDate((details as MovieDetails).release_date)}・
+                  {(details as MovieDetails).runtime} minutes
+                </span>
+                <span>
+                  {(details as MovieDetails).genres
+                    ?.map((g) => g.name)
+                    .join('・')}
+                </span>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-      <p className='details-modal-description'>
-        {loading ? (
-          <CircularProgress className='details-modal-spinner' />
-        ) : entity.type === 'person' ? (
-          censorDescription((details as PersonDetails).biography)
-        ) : (
-          (details as MovieDetails).overview
-        )}
-      </p>
-      <div
-        className={`details-modal-credits 
+        <p className='details-modal-description'>
+          {loading ? (
+            <CircularProgress className='details-modal-spinner' />
+          ) : entity.type === 'person' ? (
+            censorDescription((details as PersonDetails).biography)
+          ) : (
+            (details as MovieDetails).overview
+          )}
+        </p>
+        <div
+          className={`details-modal-credits 
 					${hintState === 'revealed' ? 'revealed' : ''}
 				`}
-      >
-        {hintState === 'hidden' ? (
-          <CSButton
-            onClick={() => {
-              if (completed || isSolution) viewCredits();
-              else setHintState('pending');
-            }}
-          >
-            View credits
-          </CSButton>
-        ) : hintState === 'pending' ? (
-          <>
-            <div>
-              Are you sure? Revealing {entity.label + "'s"} credits will use a
-              hint.
-            </div>
-            <CSButton onClick={() => viewCredits()}>
-              Yes, {"I'll"} use a hint
+        >
+          {hintState === 'hidden' ? (
+            <CSButton
+              onClick={() => {
+                if (completed || isSolution) viewCredits();
+                else setHintState('pending');
+              }}
+            >
+              View credits
             </CSButton>
-          </>
-        ) : hintState === 'fetching' ? (
-          <CircularProgress className='details-modal-spinner' />
-        ) : (
-          credits.map((credit) => {
-            return (
-              <span
-                className='details-modal-credit-display'
-                key={credit.id}
-                onClick={() => selectCredit(credit)}
-              >
-                <Image
-                  className='card-image'
-                  src={`https://image.tmdb.org/t/p/w185${credit.image}`}
-                  alt={`Picture of ${credit.label}`}
-                  width={100}
-                  height={150}
-                  placeholder='blur'
-                  blurDataURL='/placeholder.webp'
-                  unoptimized
-                />
-                <span>{credit.label}</span>
-              </span>
-            );
-          })
-        )}
-      </div>
-    </CSModal>
+          ) : hintState === 'pending' ? (
+            <>
+              <div>
+                Are you sure? Revealing {entity.label + "'s"} credits will use a
+                hint.
+              </div>
+              <CSButton onClick={() => viewCredits()}>
+                Yes, {"I'll"} use a hint
+              </CSButton>
+            </>
+          ) : hintState === 'fetching' ? (
+            <CircularProgress className='details-modal-spinner' />
+          ) : (
+            credits.map((credit) => {
+              return (
+                <span
+                  className='details-modal-credit-display'
+                  key={credit.id}
+                  onClick={() => selectCredit(credit)}
+                >
+                  <Image
+                    className='card-image'
+                    src={`https://image.tmdb.org/t/p/w185${credit.image}`}
+                    alt={`Picture of ${credit.label}`}
+                    width={100}
+                    height={150}
+                    placeholder='blur'
+                    blurDataURL='/placeholder.webp'
+                    unoptimized
+                  />
+                  <span>{credit.label}</span>
+                </span>
+              );
+            })
+          )}
+        </div>
+      </CSModal>
+    </>
   );
 }
