@@ -1,4 +1,5 @@
 import {
+  ls_DeleteDailySave,
   ls_DeleteDailyStats,
   ls_DeleteSolutions,
   ls_DeleteUnlimitedStats,
@@ -33,6 +34,7 @@ export function clearStorage() {
   ls_DeleteDailyStats();
   ls_DeleteUnlimitedStats();
   ls_DeleteSolutions();
+  ls_DeleteDailySave();
 }
 
 export function isMigrationPending() {
