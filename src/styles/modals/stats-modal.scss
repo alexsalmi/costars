@@ -80,6 +80,19 @@
   }
 }
 
+.stats-modal-share-button {
+  margin-top: 6px;
+  width: 50%;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 24px;
+  }
+}
+
 .stats-modal-solutions {
   color: var(--text-primary);
   margin-top: -16px;

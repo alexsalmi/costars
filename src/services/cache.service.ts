@@ -171,6 +171,28 @@ export const getDailySolutions = unstable_cache(
   { tags: ['daily_costars'] },
 );
 
+export const getMonthsCostars = unstable_cache(async () => {
+  const date = new Date();
+
+  const start = new Date(date);
+  start.setDate(1);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(date);
+  end.setDate(1);
+  end.setMonth(end.getMonth() + 1);
+  end.setHours(0, 0, 0, 0);
+
+  const forCache = true;
+  return await sb_GetDailyCostars(
+    {
+      after_date: start.toISOString(),
+      before_date: end.toISOString(),
+    },
+    forCache,
+  );
+});
+
 export const getDailyCostarsByMonth = unstable_cache(
   async (month: number, year: number) => {
     const date = new Date(`${year}/${month}/01`);

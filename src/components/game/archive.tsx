@@ -23,20 +23,29 @@ interface IPrevResults {
   date: string;
 }
 
-export default function CSArchive() {
+interface ICSArchiveProps {
+  costars: Array<DailyCostars>;
+}
+
+export default function CSArchive({ costars }: ICSArchiveProps) {
   const [prevResults, setPrevResults] = useState<Array<IPrevResults>>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getPrevResults(dayjs());
+    getPrevResults(costars);
   }, []);
 
-  const getPrevResults = async (date: Dayjs) => {
-    const userDailySolutions = getUserDailySolutions();
-
+  const handleMonthChange = async (date: Dayjs) => {
     setLoading(true);
     const costars =
       (await getDailyCostarsByMonth(date.month() + 1, date.year())) || [];
+
+    getPrevResults(costars);
+    setLoading(false);
+  };
+
+  const getPrevResults = (costars: Array<DailyCostars>) => {
+    const userDailySolutions = getUserDailySolutions();
 
     const results =
       userDailySolutions
@@ -50,7 +59,6 @@ export default function CSArchive() {
         })) || [];
 
     setPrevResults(results);
-    setLoading(false);
   };
 
   const selectDate = (
@@ -83,7 +91,7 @@ export default function CSArchive() {
                 : ['day']
           }
           onChange={selectDate}
-          onMonthChange={getPrevResults}
+          onMonthChange={handleMonthChange}
           minDate={dayjs('01/01/2025')}
           maxDate={dayjs()}
           loading={loading}

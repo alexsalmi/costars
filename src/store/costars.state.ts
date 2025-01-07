@@ -105,6 +105,7 @@ const useCostarsState = () => {
 
     if (type === 'daily' && !solution) {
       dailySave = ls_GetDailySave();
+      if (dailySave?.daily_id !== daily?.id) dailySave = null;
     }
 
     setTarget(target);
@@ -143,7 +144,12 @@ const useCostarsState = () => {
     setHistory(newHistory);
     setUndoCache([]);
 
-    if (gameType === 'daily') ls_PostDailySave({ solution: newHistory, hints });
+    if (gameType === 'daily')
+      ls_PostDailySave({
+        daily_id: dailyCostars?.id,
+        solution: newHistory,
+        hints,
+      });
 
     if (gameType === 'unlimited') {
       if (history.length >= highScore) incrementHighscore();
@@ -165,7 +171,11 @@ const useCostarsState = () => {
     setHints(newHints);
 
     if (gameType === 'daily')
-      ls_PostDailySave({ solution: history, hints: newHints });
+      ls_PostDailySave({
+        daily_id: dailyCostars?.id,
+        solution: history,
+        hints: newHints,
+      });
 
     if (gameType === 'unlimited') {
       updateUnlimitedStats(user, history, [...hints, hintData]);
@@ -190,10 +200,11 @@ const useCostarsState = () => {
   const reset = async () => {
     if (gameType === 'unlimited') {
       setHistory([]);
-      await updateUnlimitedStats(user, [], []);
+      updateUnlimitedStats(user, [], []);
 
-      setUnlimitedStats(await getUnlimitedStats());
+      setUnlimitedStats(getUnlimitedStats());
     } else {
+      ls_DeleteDailySave();
       setHistory(history.slice(-1));
     }
   };

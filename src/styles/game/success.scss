@@ -28,14 +28,22 @@
 
 .success-buttons-container {
   display: flex;
+  margin-top: 16px;
+  width: 330px;
   gap: 12px;
-}
+  max-width: var(--max-width-mobile);
 
-.success-share-button {
   button {
     display: flex;
     justify-content: center;
     gap: 6px;
-    padding: 6px 24px;
+  }
+
+  > :first-child {
+    width: 40%;
+  }
+
+  > :last-child {
+    flex-grow: 1;
   }
 }

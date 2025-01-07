@@ -35,8 +35,8 @@ export default function Success({ daily, solutions }: ISuccessProps) {
     0,
   );
 
-  const shareScore = async () => {
-    setShareLoading(true);
+  const shareScore = async (loadingFn = setShareLoading) => {
+    loadingFn(true);
     let uuid = '';
     const user = await getUser();
 
@@ -56,7 +56,7 @@ export default function Success({ daily, solutions }: ISuccessProps) {
       });
     }
 
-    setShareLoading(false);
+    loadingFn(false);
 
     let label = `${history[0].label} ➡️ ${target.label}\n${getScoreString(history, hints)}\n\nCheck out my solution!`;
 
@@ -77,7 +77,7 @@ export default function Success({ daily, solutions }: ISuccessProps) {
 
   return (
     <>
-      <CSBackButton link={gameType === 'archive' ? '/daily/archive' : '/'} />
+      <CSBackButton />
       <div className='success-container'>
         <div className='success-message-container'>
           <h3>Congratulations!</h3>
@@ -102,12 +102,14 @@ export default function Success({ daily, solutions }: ISuccessProps) {
             )}
           </span>
           <div className='success-buttons-container'>
-            <div className='success-share-button'>
-              <CSButton secondary onClick={shareScore} loading={shareLoading}>
-                <ShareOutlined />
-                Share
-              </CSButton>
-            </div>
+            <CSButton
+              secondary
+              onClick={() => shareScore()}
+              loading={shareLoading}
+            >
+              <ShareOutlined />
+              Share
+            </CSButton>
             {gameType === 'daily' ? (
               <CSButton onClick={() => setStatsOpen(true)}>See Stats</CSButton>
             ) : gameType === 'archive' ? (
@@ -129,6 +131,7 @@ export default function Success({ daily, solutions }: ISuccessProps) {
             daily={daily}
             solutions={solutions!}
             showStats={gameType === 'daily'}
+            shareFn={shareScore}
           />
         ) : (
           <></>
