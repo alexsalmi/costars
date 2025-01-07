@@ -144,7 +144,7 @@ const useCostarsState = () => {
     setHistory(newHistory);
     setUndoCache([]);
 
-    if (gameType === 'daily') ls_PostDailySave({ solution: newHistory, hints });
+    if (gameType === 'daily') ls_PostDailySave({ daily_id: dailyCostars?.id, solution: newHistory, hints });
 
     if (gameType === 'unlimited') {
       if (history.length >= highScore) incrementHighscore();
@@ -166,7 +166,7 @@ const useCostarsState = () => {
     setHints(newHints);
 
     if (gameType === 'daily')
-      ls_PostDailySave({ solution: history, hints: newHints });
+      ls_PostDailySave({ daily_id: dailyCostars?.id, solution: history, hints: newHints });
 
     if (gameType === 'unlimited') {
       updateUnlimitedStats(user, history, [...hints, hintData]);
