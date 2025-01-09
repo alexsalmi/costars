@@ -1,4 +1,6 @@
 .archive-container {
+  width: 100%;
+  min-width: var(--max-width-mobile);
   align-self: center;
   width: 100%;
   display: flex;
@@ -15,6 +17,7 @@
   background-color: var(--background-secondary);
   opacity: 0.9;
   border-radius: 10px;
+  border: 3px solid var(--highlight-primary);
 }
 
 .archive-day-icon {
@@ -29,12 +32,12 @@
   font-weight: 500;
 
   svg {
-    color: var(--highlight-primary);
+    color: var(--theme-primary);
   }
 }
 
 .archive-day-icon.completed {
-  background-color: var(--highlight-secondary);
+  background-color: var(--theme-secondary);
   border-radius: 6px;
 }
 
@@ -49,4 +52,10 @@
   :first-child {
     margin-left: 0;
   }
+}
+
+.archive-legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }

@@ -107,9 +107,16 @@ export default function CSArchive({ costars }: ICSArchiveProps) {
           }}
         />
 
-        <span>
-          <Star /> = Perfect Game
-          <StarBorderOutlined /> = Completed
+        <span className='archive-legend'>
+          <span className={`archive-day-icon completed`}>
+            <Star />
+          </span>
+          <span>= Perfect Game</span>
+          <div style={{ width: '20px' }}></div>
+          <span className={`archive-day-icon completed`}>
+            <StarBorderOutlined />
+          </span>
+          <span>= Completed</span>
         </span>
       </div>
     </LocalizationProvider>

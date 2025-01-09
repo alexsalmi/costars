@@ -6,6 +6,11 @@
   --text-primary: #252e3f;
   --text-secondary: #e39e27;
   --text-faded: rgba(144 156 194 / 50%);
+  --theme-primary: #e39e27;
+  --theme-secondary: #7a2010;
+  --theme-text: #fabb07;
+  --theme-background: #252e3f;
+  --home-text: #fabb07;
   --highlight-primary: #e39e27;
   --highlight-secondary: #7a2010;
   --highlight-text: #fabb07;
@@ -15,10 +20,13 @@
 }
 
 :root.light {
-  --background-primary: #dfe4f5;
+  --background-primary: #f6f7eb;
+  --background-secondary: #cad0e3;
+  --background-faded: rgba(202 208 227 / 60%);
   --text-secondary: #7a2010;
   --highlight-primary: #7a2010;
   --highlight-secondary: #e39e27;
   --highlight-text: #7a2010;
   --highlight-faded: rgb(122 32 16 / 50%);
+  --home-text: #f6f7eb;
 }

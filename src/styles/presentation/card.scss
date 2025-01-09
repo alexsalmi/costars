@@ -86,9 +86,9 @@
 }
 
 .card-container.target {
-  border: 3px solid var(--highlight-primary);
-  background-color: var(--highlight-secondary);
-  color: var(--highlight-text);
+  border: 3px solid var(--theme-primary);
+  background-color: var(--theme-secondary);
+  color: var(--theme-text);
   padding: 6px 12px;
 
   .card-label {
@@ -102,6 +102,10 @@
   .card-hint-icon {
     align-self: flex-end;
     margin-left: 1px;
+  }
+
+  svg {
+    color: var(--theme-text) !important;
   }
 }
 

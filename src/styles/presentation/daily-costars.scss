@@ -51,6 +51,7 @@
   padding: 6px 0;
   text-align: center;
   gap: 6px;
+  color: var(--home-text);
 
   :first-child {
     padding: 0 6px;
@@ -59,11 +60,12 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-left: none;
-    background-color: var(--highlight-secondary);
+    background-color: var(--theme-secondary);
   }
 
   :nth-child(2) {
     font-size: 12px;
+    color: var(--highlight-primary);
   }
 
   :last-child {
@@ -73,7 +75,7 @@
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-right: none;
-    background-color: var(--highlight-secondary);
+    background-color: var(--theme-secondary);
     align-self: stretch;
   }
 }
