@@ -3,7 +3,7 @@
   --background-secondary: #909cc2;
   --background-faded: rgba(144 156 194 / 50%);
   --background-hover: #cad0e3;
-  --text-primary: #07090D;
+  --text-primary: #07090d;
   --text-secondary: #e39e27;
   --text-faded: rgba(144 156 194 / 50%);
   --theme-primary: #e39e27;
@@ -19,14 +19,13 @@
 }
 
 :root.light {
-  --background-primary: #FDF6ED;
-  --background-secondary: #BDC4DB;
+  --background-primary: #fdf6ed;
+  --background-secondary: #bdc4db;
   --background-faded: rgba(176 184 212 / 45%);
   --text-secondary: #7a2010;
-  --theme-primary: #F0B105;
+  --theme-primary: #f0b105;
   --theme-secondary: #902613;
-  --theme-text: #FBC123;
-  --highlight-faded: rgb(122 32 16 / 50%);
+  --theme-text: #fbc123;
   --highlight-primary: #7a2010;
   --highlight-secondary: #e39e27;
   --highlight-text: #7a2010;

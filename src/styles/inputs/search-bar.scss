@@ -5,7 +5,9 @@
   align-items: center;
   color: var(--text-primary);
   background-color: var(--background-secondary);
-  box-shadow: inset 1px 1px 3px var(--highlight-faded), inset -1px -1px 3px var(--highlight-faded);
+  box-shadow:
+    inset 1px 1px 3px var(--highlight-faded),
+    inset -1px -1px 3px var(--highlight-faded);
   border-radius: 5px;
 }
 
@@ -44,7 +46,8 @@ ul {
 
 .search-bar-container.incorrect {
   animation: shake 0.5s;
-  box-shadow: inset 2px 2px mediumvioletred, 
+  box-shadow:
+    inset 2px 2px mediumvioletred,
     inset -2px -2px mediumvioletred,
     inset 2px -2px mediumvioletred,
     inset -2px 2px mediumvioletred;

@@ -76,9 +76,6 @@
     transform: translateY(-90%) translateX(-1px);
     padding: 2px;
     text-align: center;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    border-radius: 3px 3px 5px 5px;
   }
 }
