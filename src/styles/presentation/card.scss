@@ -26,8 +26,8 @@
 
 .card-hint-icon {
   font-size: 12px;
-  background-color: var(--highlight-secondary);
-  border: 2px solid var(--highlight-primary);
+  background-color: var(--theme-secondary);
+  border: 2px solid var(--theme-primary);
   border-radius: 50%;
   height: 22px;
   min-width: 22px;
@@ -41,7 +41,7 @@
   svg {
     height: 12px;
     width: 12px;
-    color: var(--highlight-text) !important;
+    color: var(--theme-text) !important;
   }
 }
 
@@ -110,9 +110,7 @@
 }
 
 .card-container.highlight {
-  border: 3px solid var(--highlight-primary);
-  background-color: var(--background-primary);
-  color: var(--highlight-text);
+  border: 2px solid var(--highlight-primary);
   justify-content: center;
   font-weight: 900;
 

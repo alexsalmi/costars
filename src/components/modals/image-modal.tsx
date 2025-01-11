@@ -18,8 +18,8 @@ export default function CSImageModal({
   if (!isOpen || !entity) return <></>;
 
   return (
-    <Modal open={isOpen} onClose={close} className='image-modal'>
-      <div onClick={close}>
+    <Modal open={isOpen} onClose={close} className='image-modal-container'>
+      <div onClick={close} className='image-modal'>
         <CSButton secondary>
           <CloseOutlined />
         </CSButton>

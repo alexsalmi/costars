@@ -29,7 +29,7 @@
 .details-modal-description {
   font-size: 14px;
   text-align: left;
-  font-weight: 500;
+  font-weight: 550;
 }
 
 .details-modal-credits {
@@ -69,12 +69,16 @@
   cursor: pointer;
 
   span {
-    background-color: var(--background-primary);
+    width: 102px;
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
     font-size: 11px;
-    transform: translateY(-90%);
+    transform: translateY(-90%) translateX(-1px);
     padding: 2px;
     text-align: center;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
   }
 }

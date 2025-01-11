@@ -56,11 +56,12 @@
   :first-child {
     padding: 0 6px;
     margin-right: 12px;
-    border: 2px solid var(--highlight-primary);
+    border: 2px solid var(--theme-primary);
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-left: none;
     background-color: var(--theme-secondary);
+    color: var(--theme-text);
   }
 
   :nth-child(2) {
@@ -71,11 +72,12 @@
   :last-child {
     padding: 0 6px;
     margin-left: 12px;
-    border: 2px solid var(--highlight-primary);
+    border: 2px solid var(--theme-primary);
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-right: none;
     background-color: var(--theme-secondary);
+    color: var(--theme-text);
     align-self: stretch;
   }
 }
