@@ -19,7 +19,7 @@ export default function Solution({ solution, hints, daily }: ISolutionProps) {
     const solutions = getUserDailySolutions();
 
     const hasSolvedSolution =
-      daily?.id !== undefined &&
+      daily?.id === undefined ||
       solutions.some((sol) => sol.daily_id === daily.id);
 
     setModalOpen(!hasSolvedSolution);

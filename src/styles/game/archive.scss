@@ -14,9 +14,10 @@
 .archive-calendar {
   color: var(--text-primary);
   background-color: var(--background-secondary);
-  opacity: 0.9;
   border-radius: 10px;
-  border: 3px solid var(--highlight-primary);
+  box-shadow:
+    inset 2px 2px 3px var(--highlight-faded),
+    inset -2px -2px 3px var(--highlight-faded);
 }
 
 .archive-day-icon {
@@ -31,13 +32,14 @@
   font-weight: 500;
 
   svg {
-    color: var(--theme-primary);
+    color: var(--theme-text);
   }
 }
 
 .archive-day-icon.completed {
   background-color: var(--theme-secondary);
   border-radius: 6px;
+  border: 2px solid var(--theme-primary);
 }
 
 .archive-container > span {

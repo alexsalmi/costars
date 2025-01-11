@@ -15,6 +15,8 @@ export default function CSSpoilerAlertModal({
   close,
   daily,
 }: ICSSpoilerAlertModal) {
+  if (!daily) return <></>;
+
   return (
     <CSModal isOpen={isOpen} className='spoiler-alert-modal'>
       <h3>Spoiler Alert!</h3>
