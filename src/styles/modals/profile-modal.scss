@@ -23,13 +23,14 @@
   }
 }
 
-.profile-modal-why-section {
+.profile-modal-faq-section {
   display: flex;
   flex-direction: column;
   gap: inherit;
-  padding: 0 6px;
-  width: 90%;
-  margin-top: 24px;
+  width: 100%;
+  border-top: 1px groove var(--highlight-primary);
+  margin-top: 28px;
+  padding: 28px 16px 12px;
 
   span {
     text-align: left;
@@ -50,9 +51,9 @@
   align-items: center;
   width: 100%;
   gap: 6px;
-  border-top: 2px solid var(--highlight-primary);
-  margin-top: 24px;
-  padding: 24px 0 12px;
+  border-top: 1px groove var(--highlight-primary);
+  margin-top: 28px;
+  padding: 28px 0 12px;
 
   h4 {
     align-self: flex-start;

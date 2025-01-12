@@ -74,9 +74,9 @@ export default function CSProfileModal({
       close={handleClose}
       className='profile-modal-container'
     >
-      <h3>Profile</h3>
       {user ? (
         <>
+          <h3>Profile</h3>
           <span>
             Signed in as <strong>{user.email}</strong>
           </span>
@@ -123,7 +123,8 @@ export default function CSProfileModal({
         </>
       ) : (
         <>
-          <span>Sign in with one of the below providers:</span>
+          <h3>Sign In</h3>
+          <span>Sign in below to sync your stats accross devices:</span>
           <div className='google-button'>
             <CSButton secondary onClick={() => signInHandler('google')}>
               <Image
@@ -136,7 +137,8 @@ export default function CSProfileModal({
               Sign in with Google
             </CSButton>
           </div>
-          <div className='profile-modal-why-section'>
+          <div className='profile-modal-faq-section'>
+            <h3>FAQs</h3>
             <ExpandableContent label='Why sign in?'>
               <span>
                 Signing in will ensure none of your stats or streaks are lost,
