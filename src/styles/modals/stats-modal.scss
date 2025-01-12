@@ -40,6 +40,8 @@
     border-radius: 0;
     background-color: inherit;
     border-width: 2px;
+    border-color: var(--highlight-primary);
+    color: var(--highlight-text);
 
     :first-child {
       font-size: 20px;
@@ -58,7 +60,7 @@
 
   :nth-child(3) {
     background-color: var(--highlight-primary);
-    color: var(--text-primary);
+    color: var(--background-primary);
   }
 
   :last-child {

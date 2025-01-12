@@ -3,22 +3,32 @@
   --background-secondary: #909cc2;
   --background-faded: rgba(144 156 194 / 50%);
   --background-hover: #cad0e3;
-  --text-primary: #252e3f;
+  --text-primary: #07090d;
   --text-secondary: #e39e27;
   --text-faded: rgba(144 156 194 / 50%);
+  --theme-primary: #e39e27;
+  --theme-secondary: #7a2010;
+  --theme-text: #fabb07;
+  --theme-faded: rgb(122 32 16 / 50%);
   --highlight-primary: #e39e27;
   --highlight-secondary: #7a2010;
   --highlight-text: #fabb07;
-  --highlight-faded: rgb(227 158 39 / 50%);
+  --highlight-faded: rgb(126 86 16 / 50%);
   --max-width-desktop: 770px;
   --max-width-mobile: 425px;
 }
 
 :root.light {
-  --background-primary: #dfe4f5;
+  --background-primary: #fdf6ed;
+  --background-secondary: #bdc4db;
+  --background-faded: rgba(176 184 212 / 45%);
   --text-secondary: #7a2010;
+  --theme-primary: #f0b105;
+  --theme-secondary: #902613;
+  --theme-text: #fbc123;
   --highlight-primary: #7a2010;
   --highlight-secondary: #e39e27;
   --highlight-text: #7a2010;
   --highlight-faded: rgb(122 32 16 / 50%);
+  --home-text: #f6f7eb;
 }

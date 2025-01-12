@@ -1,11 +1,12 @@
 .archive-container {
+  max-width: var(--max-width-mobile);
   align-self: center;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  margin: 12px 0 50px;
+  margin: 32px 0 50px;
   color: var(--highlight-primary);
   text-align: center;
 }
@@ -13,8 +14,10 @@
 .archive-calendar {
   color: var(--text-primary);
   background-color: var(--background-secondary);
-  opacity: 0.9;
   border-radius: 10px;
+  box-shadow:
+    inset 2px 2px 3px var(--highlight-faded),
+    inset -2px -2px 3px var(--highlight-faded);
 }
 
 .archive-day-icon {
@@ -27,15 +30,17 @@
   width: 30px;
   height: 30px;
   font-weight: 500;
+  margin-right: 3px;
 
   svg {
-    color: var(--highlight-primary);
+    color: var(--theme-text);
   }
 }
 
 .archive-day-icon.completed {
-  background-color: var(--highlight-secondary);
+  background-color: var(--theme-secondary);
   border-radius: 6px;
+  border: 2px solid var(--theme-primary);
 }
 
 .archive-container > span {
@@ -49,4 +54,10 @@
   :first-child {
     margin-left: 0;
   }
+}
+
+.archive-legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }

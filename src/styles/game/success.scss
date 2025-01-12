@@ -21,7 +21,8 @@
     font-weight: 900;
   }
 
-  button {
+  a {
+    text-decoration: none;
     width: fit-content;
   }
 }
@@ -30,6 +31,8 @@
   display: flex;
   margin-top: 16px;
   width: 330px;
+  justify-content: center;
+  align-items: center;
   gap: 12px;
   max-width: var(--max-width-mobile);
 
@@ -41,6 +44,10 @@
 
   > :first-child {
     width: 40%;
+
+    > button {
+      width: 100%;
+    }
   }
 
   > :last-child {
