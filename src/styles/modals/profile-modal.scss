@@ -6,12 +6,6 @@
     gap: 10px;
     width: fit-content;
   }
-
-  hr {
-    width: 100%;
-    border-color: var(--highlight-primary);
-    margin: 12px;
-  }
 }
 
 .google-button {
@@ -34,6 +28,8 @@
   flex-direction: column;
   gap: inherit;
   padding: 0 6px;
+  width: 90%;
+  margin-top: 24px;
 
   span {
     text-align: left;
@@ -48,11 +44,19 @@
   margin-top: 24px;
 }
 
-.profile-modal-danger-section {
+.profile-modal-settings-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  width: 100%;
+  gap: 6px;
+  border-top: 2px solid var(--highlight-primary);
+  margin-top: 24px;
+  padding: 24px 0 12px;
+
+  h4 {
+    align-self: flex-start;
+  }
 
   input {
     border: 2px solid var(--highlight-primary);
@@ -64,8 +68,8 @@
   input:focus {
     outline: none;
   }
-}
 
-.profile-modal-danger-section.faded {
-  opacity: 0.8;
+  div {
+    width: 90%;
+  }
 }

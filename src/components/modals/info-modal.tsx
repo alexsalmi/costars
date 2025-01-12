@@ -2,7 +2,7 @@ import { useState } from 'react';
 import CSButton from '../inputs/buttons/button';
 import CSModal from './modal';
 import '@/styles/modals/info-modal.scss';
-import { ExpandLessOutlined, ExpandMoreOutlined } from '@mui/icons-material';
+import ExpandableContent from '../presentation/expandable-content';
 
 interface ICSInfoModalProps {
   isOpen: boolean;
@@ -84,50 +84,56 @@ function HowToContent() {
 function FAQContent() {
   return (
     <>
-      <ExpandableQuestion
-        question='What is Costars?'
-        answer="Costars is a movie trivia game, challenging players to connect two actors by the movies they've starred in and the costars they've worked with."
-      />
-      <ExpandableQuestion
-        question='How often do the Daily Costars update?'
-        answer='A new set of Daily Costars will be available every day at 12:00 AM EST.'
-      />
-      <ExpandableQuestion
-        question='How are the Daily Costars selected?'
-        answer='The Daily Costars are selected randomly from a pool of the 200 most popular actors at the time, according to the TMDB API. The Daily Costars are generated on a weekly basis, and no actors will be reused within that given week. All pairings for a week are sorted by popularity scores of their optimal solutions, so that the difficulty increases as the week progresses. There will never be a repeated Daily Costars pairing.'
-      />
-      <ExpandableQuestion
-        question='How do I use a hint?'
-        answer="To use a hint, click on any movie or actor's card, and you will be given the option to use a hint to view their credits. Please note that any hint used on a movie or actor used in your final solution will count towards your score. If you use a hint and connect a pair of Costars in two movies, it will not count as a Perfect Game."
-      />
-      <ExpandableQuestion
-        question='I want to play more than one game a day, is that possible?'
-        answer='Yes, you can access the archive of Daily Costars by clicking on the calendar icon at the top of the page. You can also play a Custom Game to choose your own pair of actors to connect, which you can also share with your friends.'
-      />
-      <ExpandableQuestion
-        question='Can I play on multiple devices?'
-        answer='Yes, you can play accross multiple devices and keep your streaks going if you create an account with us. To do so, click on the profile icon at the top of the page. We do not collect any personal data other than the email address you choose to identify yourself with. Accounts are only used for syncing your Costars stats and streaks accross devices.'
-      />
+      <ExpandableContent label='What is Costars?'>
+        <span>
+          Costars is a movie trivia game, challenging players to connect two
+          actors by the movies they&apos;ve starred in and the costars
+          they&apos;ve worked with.
+        </span>
+      </ExpandableContent>
+      <ExpandableContent label='How often do the Daily Costars update?'>
+        <span>
+          A new set of Daily Costars will be available every day at 12:00 AM
+          EST.
+        </span>
+      </ExpandableContent>
+      <ExpandableContent label='How are the Daily Costars selected?'>
+        <span>
+          The Daily Costars are selected randomly from a pool of the 200 most
+          popular actors at the time, according to the TMDB API. The Daily
+          Costars are generated on a weekly basis, and no actors will be reused
+          within that given week. All pairings for a week are sorted by
+          popularity scores of their optimal solutions, so that the difficulty
+          increases as the week progresses. There will never be a repeated Daily
+          Costars pairing.
+        </span>
+      </ExpandableContent>
+      <ExpandableContent label='How do I use a hint?'>
+        <span>
+          To use a hint, click on any movie or actor&apos;s card, and you will
+          be given the option to use a hint to view their credits. Please note
+          that any hint used on a movie or actor used in your final solution
+          will count towards your score. If you use a hint and connect a pair of
+          Costars in two movies, it will not count as a Perfect Game.
+        </span>
+      </ExpandableContent>
+      <ExpandableContent label='I want to play more than one game a day, is that possible?'>
+        <span>
+          Yes, you can access the archive of Daily Costars by clicking on the
+          calendar icon at the top of the page. You can also play a Custom Game
+          to choose your own pair of actors to connect, which you can also share
+          with your friends.
+        </span>
+      </ExpandableContent>
+      <ExpandableContent label='Can I play on multiple devices?'>
+        <span>
+          Yes, you can play accross multiple devices and keep your streaks going
+          if you create an account with us. To do so, click on the profile icon
+          at the top of the page. We do not collect any personal data other than
+          the email address you choose to identify yourself with. Accounts are
+          only used for syncing your Costars stats and streaks accross devices.
+        </span>
+      </ExpandableContent>
     </>
-  );
-}
-
-interface IExpandableQuestionProps {
-  question: string;
-  answer: string;
-}
-
-function ExpandableQuestion({ question, answer }: IExpandableQuestionProps) {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <div className='info-modal-expandable-question'>
-      <CSButton secondary onClick={() => setExpanded(!expanded)}>
-        <h4>{question}</h4>
-        {expanded ? <ExpandLessOutlined /> : <ExpandMoreOutlined />}
-      </CSButton>
-      {expanded ? <span>{answer}</span> : ''}
-      <hr />
-    </div>
   );
 }

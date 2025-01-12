@@ -1,0 +1,23 @@
+.expandable-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  > button:first-of-type {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    text-align: left;
+    border-bottom: 2px solid var(--highlight-primary);
+    padding: 6px 3px;
+  }
+
+  > button:hover {
+    background-color: inherit;
+  }
+}

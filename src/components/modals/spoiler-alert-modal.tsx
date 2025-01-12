@@ -23,15 +23,15 @@ export default function CSSpoilerAlertModal({
       <span>
         This solution is for{' '}
         <strong>
-          Daily Costars #{daily!.day_number} (
-          {getFormattedDateString(daily!.date)})
+          Daily Costars #{daily.day_number} (
+          {getFormattedDateString(daily.date)})
         </strong>
         , which you haven&apos;t completed yet.
       </span>
-      <Link href={`/daily/${daily?.day_number}`}>
+      <Link href={`/daily/${daily.day_number}`}>
         <CSButton>
-          Play Daily Costars #{daily!.day_number} (
-          {getFormattedDateString(daily!.date)})
+          Play Daily Costars #{daily.day_number} (
+          {getFormattedDateString(daily.date)})
         </CSButton>
       </Link>
       <CSButton secondary onClick={close}>

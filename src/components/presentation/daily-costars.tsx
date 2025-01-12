@@ -31,7 +31,7 @@ export default function CSDailyCostars({ daily }: ICSDailyCostarsProps) {
         <CSEntityImage entity={daily?.starter} />
         <div className='daily-costars-names'>
           <span>{daily?.starter.label}</span>
-          <span>and</span>
+          <span>to</span>
           <span>{daily?.target.label}</span>
         </div>
         <CSEntityImage entity={daily?.target} />
