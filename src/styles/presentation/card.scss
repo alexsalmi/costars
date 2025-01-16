@@ -1,6 +1,6 @@
 .card-container {
   width: 300px;
-  height: max-content;
+  height: 140px;
   background-color: var(--background-secondary);
   border-radius: 10px;
   padding: 6px 12px;
@@ -9,6 +9,7 @@
   justify-content: space-between;
   align-items: center;
   border: 2px solid var(--background-secondary);
+  transition: height ease-in-out 0.3s;
 
   button {
     padding: 0;
@@ -21,6 +22,16 @@
 
   svg {
     color: var(--highlight-text) !important;
+  }
+
+  img,
+  .entity-image {
+    opacity: 1;
+    align-self: flex-start;
+    transition:
+      height ease 0.4s,
+      width ease 0.4s,
+      opacity ease 0.5s;
   }
 }
 
@@ -70,11 +81,9 @@
 }
 
 .card-container.condensed {
-  height: min-content;
-  flex-direction: row;
+  height: 42px;
   justify-content: space-between;
   align-items: center;
-  padding: 6px;
 
   .card-label {
     max-width: 260px;
@@ -83,13 +92,17 @@
   .card-hint-icon {
     margin: 0;
   }
+
+  img,
+  .entity-image {
+    opacity: 0;
+  }
 }
 
 .card-container.target {
   border: 3px solid var(--theme-primary);
   background-color: var(--theme-secondary);
   color: var(--theme-text);
-  padding: 6px 12px;
 
   .card-label {
     margin-left: 24px;
@@ -119,7 +132,7 @@
 }
 
 .card-container.condensed.reverse {
-  flex-direction: row-reverse;
+  flex-direction: row-reverse !important;
   align-items: flex-start;
 
   .card-hint-icon {
@@ -141,8 +154,6 @@
 
   .card-label {
     display: flex;
-    flex-grow: 1;
-    justify-content: center;
     gap: 6px;
     max-width: 250px;
   }

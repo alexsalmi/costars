@@ -50,11 +50,12 @@ export default function CSCard({
           setIsDetailsOpen(true);
         }}
       >
-        {!condensed && !targetCondensed ? (
-          <CSEntityImage entity={entity} unoptimized />
-        ) : (
-          <></>
-        )}
+        <CSEntityImage
+          entity={entity}
+          height={!condensed && !targetCondensed ? 120 : 1}
+          width={!condensed && !targetCondensed ? 80 : 1}
+          unoptimized
+        />
         <span className='card-label'>
           {target ? <h4>Target:</h4> : ''}
           {entity.label}

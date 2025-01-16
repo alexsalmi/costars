@@ -20,7 +20,11 @@ export default function ExpandableContent({
         <h4>{label}</h4>
         {expanded ? <ExpandLessOutlined /> : <ExpandMoreOutlined />}
       </CSButton>
-      {expanded ? children : <></>}
+      <div
+        className={`expandable-content-children ${expanded ? 'expanded' : ''}`}
+      >
+        {children}
+      </div>
     </div>
   );
 }
