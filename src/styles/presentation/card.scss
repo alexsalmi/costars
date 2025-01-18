@@ -159,11 +159,13 @@
 
   .card-label {
     max-width: 250px;
+    margin-left: 24px;
   }
 
   .card-hint-icon {
     align-self: flex-end;
     margin: 1px 3px;
     margin-left: 32px;
+    margin-right: -24px;
   }
 }
