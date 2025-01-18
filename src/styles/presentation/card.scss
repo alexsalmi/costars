@@ -1,12 +1,11 @@
 .card-container {
   width: 300px;
-  height: 140px;
   background-color: var(--background-secondary);
   border-radius: 10px;
   padding: 6px 12px;
   font-weight: 600;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   border: 2px solid var(--background-secondary);
   transition: height ease-in-out 0.3s;
@@ -29,13 +28,14 @@
     opacity: 1;
     align-self: flex-start;
     transition:
-      height ease 0.4s,
-      width ease 0.4s,
-      opacity ease 0.5s;
+      height ease 0.3s,
+      width ease 0.3s,
+      opacity ease 0.3s;
   }
 }
 
 .card-hint-icon {
+  position: relative;
   font-size: 12px;
   background-color: var(--theme-secondary);
   border: 2px solid var(--theme-primary);
@@ -43,11 +43,12 @@
   height: 22px;
   min-width: 22px;
   margin: 2px -6px;
-  align-self: flex-start;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 900;
+  transition: all ease 0.3s;
+  align-self: flex-start;
 
   svg {
     height: 12px;
@@ -57,7 +58,12 @@
 }
 
 .card-label {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
   padding: 0 12px;
+  transition: margin ease 0.25s;
 }
 
 .card-image-container {
@@ -78,19 +84,17 @@
 
 .card-container.reverse {
   flex-direction: row-reverse;
+
+  .card-label {
+    justify-content: flex-start;
+  }
 }
 
 .card-container.condensed {
-  height: 42px;
-  justify-content: space-between;
   align-items: center;
 
   .card-label {
     max-width: 260px;
-  }
-
-  .card-hint-icon {
-    margin: 0;
   }
 
   img,
@@ -105,7 +109,7 @@
   color: var(--theme-text);
 
   .card-label {
-    margin-left: 24px;
+    margin-left: 0;
   }
 
   .card-expand-icon {
@@ -123,8 +127,14 @@
 }
 
 .card-container.highlight {
-  justify-content: center;
+  justify-content: flex-end;
   font-weight: 900;
+
+  .card-label {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+  }
 
   .card-hint-icon {
     margin-top: 1px;
@@ -133,11 +143,6 @@
 
 .card-container.condensed.reverse {
   flex-direction: row-reverse !important;
-  align-items: flex-start;
-
-  .card-hint-icon {
-    align-self: flex-end;
-  }
 }
 
 @media (hover: hover) {
@@ -153,8 +158,12 @@
   align-items: center;
 
   .card-label {
-    display: flex;
-    gap: 6px;
     max-width: 250px;
+  }
+
+  .card-hint-icon {
+    align-self: flex-end;
+    margin: 1px 3px;
+    margin-left: 32px;
   }
 }

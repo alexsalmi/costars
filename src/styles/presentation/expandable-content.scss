@@ -30,15 +30,13 @@
   z-index: 0;
   max-height: 0;
   user-select: none; /* Standard */
-  transition:
-    200ms all ease,
-    opacity 200ms ease;
+  transition: 300ms all ease;
 }
 
 .expandable-content-children.expanded {
   z-index: auto;
   opacity: 1;
   height: auto;
-  max-height: 200px;
+  max-height: 500px;
   user-select: auto; /* Standard */
 }
