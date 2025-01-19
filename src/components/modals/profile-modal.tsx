@@ -59,8 +59,6 @@ export default function CSProfileModal({
 
     const error = await deleteAccount();
 
-    console.log(error);
-
     if (!error) {
       ls_PostAuthStatus('false');
       clearStorage();

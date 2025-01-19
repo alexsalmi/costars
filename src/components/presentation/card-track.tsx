@@ -35,8 +35,6 @@ export default function CSCardTrack({
   const cardsToDisplay = cards || history;
   const hintsToDisplay = propHints || hints;
 
-  console.log(carouselCards);
-
   return (
     <div
       className={`card-track-container ${!showPrompt ? 'no-prompt' : ''} ${fullHeight ? 'full-height' : ''}`}
