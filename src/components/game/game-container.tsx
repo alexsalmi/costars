@@ -1,6 +1,6 @@
 'use client';
 import CSSearchBar from '@/components/inputs/search-bar';
-import CSGameToolbar from '@/components/inputs/toolbars/game-toolbar';
+import CSGameToolbar from '@/components/inputs/game-toolbar';
 import CSCardTrack from '@/components/presentation/card-track';
 import CSTextDisplay from '@/components/presentation/display';
 import useCostarsState from '@/store/costars.state';

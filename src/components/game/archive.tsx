@@ -56,10 +56,13 @@ export default function CSArchive({ costars }: ICSArchiveProps) {
             (acc, curr) => acc + (curr.type === 'movie' ? 1 : 0),
             0,
           ),
-          hints: res.hints?.reduce(
-            (acc, curr) => acc + (res.solution.some(entity => entity.id === curr.id) ? 1 : 0),
-            0,
-          ) || 0,
+          hints:
+            res.hints?.reduce(
+              (acc, curr) =>
+                acc +
+                (res.solution.some((entity) => entity.id === curr.id) ? 1 : 0),
+              0,
+            ) || 0,
           date: costars.find((c) => c.id === res.daily_id)!.date,
         })) || [];
 
@@ -137,11 +140,11 @@ function DayIcon(
     (!props.outsideCurrentMonth &&
       prevResults.find((sol) => dayjs(sol.date).isSame(day))?.score) ||
     0;
-    
+
   const hints =
-  (!props.outsideCurrentMonth &&
-    prevResults.find((sol) => dayjs(sol.date).isSame(day))?.hints) ||
-  0;
+    (!props.outsideCurrentMonth &&
+      prevResults.find((sol) => dayjs(sol.date).isSame(day))?.hints) ||
+    0;
 
   return (
     <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day}>

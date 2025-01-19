@@ -17,18 +17,6 @@
   }
 }
 
-.cs-solutions-toolbar {
-  button {
-    border: 3px solid var(--highlight-primary) !important;
-  }
-
-  :first-child {
-    svg {
-      padding: 0;
-    }
-  }
-}
-
 .cs-toolbar > :first-child {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;

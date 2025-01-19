@@ -95,15 +95,9 @@
   }
 }
 
-.stats-modal-solutions {
-  color: var(--text-primary);
-  margin-top: -16px;
-
-  > div:first-child {
-    transform: translateY(50%);
-  }
-
-  > div:last-child {
-    padding-top: 24px;
-  }
+.stats-modal-optimal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
 }

@@ -3,6 +3,7 @@
   max-width: var(--max-width-mobile);
   min-height: 20em;
   max-height: 60vh;
+  color: var(--text-primary);
   box-shadow:
     inset 2px 2px 3px var(--highlight-faded),
     inset -2px -2px 3px var(--highlight-faded);
@@ -13,7 +14,7 @@
   flex-direction: column;
   gap: 12px;
   flex-grow: 1;
-  overflow-y: auto;
+  overflow: hidden auto;
 }
 
 .card-track-container.full-height {
@@ -32,4 +33,65 @@
   font-size: 14px;
   font-weight: 600;
   text-align: center;
+}
+
+.card-track-carousel-container {
+  max-width: 324px;
+  height: 432px;
+  margin: 0 -12px;
+
+  ul {
+    display: flex;
+    background-color: transparent;
+    list-style: none;
+  }
+
+  li {
+    width: 324px !important;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 0 12px;
+    }
+  }
+}
+
+.card-track-carousel-arrow {
+  width: min-content;
+  position: absolute;
+  transition: transform ease 0.2s;
+
+  button {
+    border-radius: 10px;
+    background-color: var(--background-faded);
+    padding: 16px 2px;
+    display: flex;
+    justify-content: center;
+  }
+
+  :first-child {
+    svg {
+      padding: 0;
+    }
+  }
+}
+
+.card-track-carousel-arrow.right {
+  transform: translate(calc(324px - 25%), calc(-216px - 50%));
+}
+
+.card-track-carousel-arrow.left {
+  transform: translate(-75%, calc(-216px - 50%));
+}
+
+@media (hover: hover) {
+  .card-track-carousel-arrow.right:hover {
+    transform: translate(calc(324px - 15%), calc(-216px - 50%));
+  }
+
+  .card-track-carousel-arrow.left:hover {
+    transform: translate(-85%, calc(-216px - 50%));
+  }
 }
