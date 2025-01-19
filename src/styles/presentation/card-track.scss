@@ -65,7 +65,6 @@
 
   button {
     border-radius: 10px;
-    background-color: var(--background-faded);
     padding: 16px 2px;
     display: flex;
     justify-content: center;
@@ -79,19 +78,19 @@
 }
 
 .card-track-carousel-arrow.right {
-  transform: translate(calc(324px - 25%), calc(-216px - 50%));
+  transform: translate(calc(324px - 67%), calc(-216px - 50%));
 }
 
 .card-track-carousel-arrow.left {
-  transform: translate(-75%, calc(-216px - 50%));
+  transform: translate(-33%, calc(-216px - 50%));
 }
 
 @media (hover: hover) {
   .card-track-carousel-arrow.right:hover {
-    transform: translate(calc(324px - 15%), calc(-216px - 50%));
+    transform: translate(calc(324px - 50%), calc(-216px - 50%));
   }
 
   .card-track-carousel-arrow.left:hover {
-    transform: translate(-85%, calc(-216px - 50%));
+    transform: translate(-50%, calc(-216px - 50%));
   }
 }
