@@ -26,6 +26,9 @@
 .expandable-content-children {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  text-align: left;
   opacity: 0;
   z-index: 0;
   max-height: 0;

@@ -117,8 +117,7 @@
   }
 
   .card-hint-icon {
-    align-self: flex-end;
-    margin-left: 1px;
+    margin: 95px 0 0 1px;
   }
 
   svg {
@@ -163,9 +162,6 @@
   }
 
   .card-hint-icon {
-    align-self: flex-end;
-    margin: 1px 3px;
-    margin-left: 32px;
-    margin-right: -24px;
+    margin: 0 -24px auto 32px;
   }
 }

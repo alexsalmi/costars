@@ -30,7 +30,6 @@
   width: 30px;
   height: 30px;
   font-weight: 500;
-  margin-right: 3px;
 
   svg {
     color: var(--theme-text);
@@ -60,4 +59,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
+
+  .archive-day-icon {
+    margin-right: 3px;
+  }
 }

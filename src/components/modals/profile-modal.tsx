@@ -100,9 +100,10 @@ export default function CSProfileModal({
               ) : (
                 <>
                   <span>
-                    <strong>NOTE:</strong> deleting your account is{' '}
-                    <strong>PERMANENT.</strong> All of your Costars data and
-                    stats will be lost forever.
+                    <strong>NOTE:</strong> deleting your account is <strong>PERMANENT.</strong>
+                  </span>
+                  <span>
+                    All of your Costars data and stats will be lost forever.
                   </span>
                   <span>
                     To confirm your account deletion, please type{' '}
