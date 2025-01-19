@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
   revalidateTag('daily_costars');
   revalidatePath('/');
   revalidatePath('/daily');
+  revalidatePath('/daily/archive');
   revalidatePath('/admin');
 
   console.log('----- FINISHED REFRESHING COSTARS -----');
