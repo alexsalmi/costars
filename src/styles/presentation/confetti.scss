@@ -14,6 +14,7 @@
     transform: translateY(-100%) rotate(0deg);
     opacity: 1;
   }
+
   100% {
     transform: translateY(67vh) rotate(360deg);
     opacity: 0;
@@ -25,6 +26,7 @@
     transform: translateY(-100%) rotate(0deg);
     opacity: 1;
   }
+
   100% {
     transform: translateY(67vh) rotate(-360deg);
     opacity: 0;
@@ -36,7 +38,6 @@
   width: 10px;
   height: 20px;
   background: var(--confetti-color, red);
-  opacity: 0.9;
   opacity: 0;
 }
 
@@ -60,30 +61,35 @@
 /* Randomize confetti properties */
 .confetti-piece:nth-child(1) {
   left: 10%;
+
   --confetti-color: #ff6347;
   --fall-duration: 3s;
 }
 
 .confetti-piece:nth-child(2) {
   left: 25%;
+
   --confetti-color: #ffa500;
   --fall-duration: 5s;
 }
 
 .confetti-piece:nth-child(3) {
   left: 40%;
+
   --confetti-color: #32cd32;
   --fall-duration: 4.5s;
 }
 
 .confetti-piece:nth-child(4) {
   left: 60%;
+
   --confetti-color: #1e90ff;
   --fall-duration: 3.5s;
 }
 
 .confetti-piece:nth-child(5) {
   left: 80%;
+
   --confetti-color: #ff69b4;
   --fall-duration: 6s;
 }
