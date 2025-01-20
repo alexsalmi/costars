@@ -64,8 +64,8 @@ export default function CSCardTrack({
             customRightArrow={<CarouselArrow direction='right' />}
             showDots={false}
             minimumTouchDrag={25}
-            customTransition='transform 100ms ease'
-            transitionDuration={100}
+            customTransition='transform 200ms ease'
+            transitionDuration={200}
           >
             {carouselCards.map((cards, ind) => {
               const trimmedCards = cards.slice(1, cards.length - 1);
