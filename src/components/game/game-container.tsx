@@ -44,7 +44,7 @@ export default function CSGameContainer({
 
   useEffect(() => {
     initGame(type, initPeople, daily);
-  }, [score, highScore]);
+  }, []);
 
   useEffect(() => {
     if (gameType !== 'unlimited' || score < highScore) return;

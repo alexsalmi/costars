@@ -11,6 +11,7 @@ import { getScoreString } from '@/utils/utils';
 import { sb_GetSolutions, sb_PostSolutions } from '@/services/supabase';
 import '@/styles/game/success.scss';
 import { getUser } from '@/services/supabase/auth.service';
+import CSConfetti from '../presentation/confetti';
 
 interface ISuccessProps {
   daily?: DailyCostars;
@@ -137,6 +138,11 @@ export default function Success({ daily, solutions }: ISuccessProps) {
           <></>
         )}
       </div>
+      {gameType === 'daily' ? (
+        <CSConfetti stars={numMovies === 2 && numHints === 0} />
+      ) : (
+        <></>
+      )}
     </>
   );
 }
