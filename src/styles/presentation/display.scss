@@ -7,3 +7,29 @@
   font-weight: 600;
   overflow: hidden;
 }
+
+.text-display-container.animate {
+  animation: ease-in-out display-animation 0.5s;
+}
+
+@keyframes display-animation {
+  0% {
+    box-shadow: none;
+  }
+
+  50% {
+    box-shadow:
+      1px 1px 3px var(--background-primary),
+      -1px -1px 3px var(--background-primary),
+      1px -1px 3px var(--background-primary),
+      -1px 1px 3px var(--background-primary),
+      5px 5px 10px var(--theme-primary),
+      -5px -5px 10px var(--theme-primary),
+      5px -5px 10px var(--theme-primary),
+      -5px 5px 10px var(--theme-primary);
+  }
+
+  100% {
+    box-shadow: none;
+  }
+}

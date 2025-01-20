@@ -38,10 +38,20 @@ export default function CSGameContainer({
   const plausible = usePlausible();
 
   const [condenseAllCards, setCondenseAllCards] = useState(false);
+  const [animateHighScore, setAnimateHighScore] = useState<
+    'pre-load' | 'pending' | 'animated'
+  >('pre-load');
 
   useEffect(() => {
     initGame(type, initPeople, daily);
-  }, []);
+  }, [score, highScore]);
+
+  useEffect(() => {
+    if (gameType !== 'unlimited' || score < highScore) return;
+
+    if (animateHighScore === 'pre-load') setAnimateHighScore('pending');
+    else if (animateHighScore === 'pending') setAnimateHighScore('animated');
+  }, [score, highScore]);
 
   const onSubmit = async (value: GameEntity) => {
     addEntity(
@@ -66,7 +76,9 @@ export default function CSGameContainer({
       {gameType === 'unlimited' ? (
         <div className='game-scores'>
           <CSTextDisplay>Current Score: {score}</CSTextDisplay>
-          <CSTextDisplay>High Score: {highScore}</CSTextDisplay>
+          <CSTextDisplay animate={animateHighScore === 'animated'}>
+            High Score: {highScore}
+          </CSTextDisplay>
         </div>
       ) : (
         <div className='game-target'>
