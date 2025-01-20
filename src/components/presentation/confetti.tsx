@@ -23,7 +23,7 @@ export default function CSConfetti({ stars }: ICSConfettiProps) {
     }
   }, []);
 
-  const width = typeof window === 'undefined' ? 50 : window.innerWidth;
+  const width = typeof window === 'undefined' ? 100 : window.innerWidth;
   const arr = Array(Math.floor(width / 10)).fill(0);
 
   return (
