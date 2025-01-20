@@ -24,7 +24,7 @@ export default function CSConfetti({ stars }: ICSConfettiProps) {
   }, []);
 
   const width = typeof window === 'undefined' ? 50 : window.innerWidth;
-  const arr = Array(Math.floor(width / 15)).fill(0);
+  const arr = Array(Math.floor(width / 10)).fill(0);
 
   return (
     <div className='confetti-container'>
