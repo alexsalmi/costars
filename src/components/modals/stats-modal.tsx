@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { CalendarMonthOutlined, ShareOutlined } from '@mui/icons-material';
 import '@/styles/modals/stats-modal.scss';
 import { getFormattedDateString } from '@/utils/utils';
+import { getUserDailySolutions } from '@/services/userdata.service';
 
 interface ICSStatsModalProps {
   isOpen: boolean;
@@ -30,6 +31,7 @@ export default function CSStatsModal({
   const { score, history, hints, dailyStats, gameType } = useCostarsState();
   const [shareLoading, setShareLoading] = useState(false);
 
+  const userDailySolutions = getUserDailySolutions();
   const numMovies = (score - 1) / 2;
   const numHints = history.reduce(
     (acc, curr) =>
@@ -39,6 +41,17 @@ export default function CSStatsModal({
         : 0),
     0,
   );
+  const average = (
+    userDailySolutions.reduce(
+      (acc, curr) =>
+        acc +
+        curr.solution.reduce(
+          (acc, curr) => acc + (curr.type === 'movie' ? 1 : 0),
+          0,
+        ),
+      0,
+    ) / userDailySolutions.length
+  ).toPrecision(3);
 
   return (
     <CSModal isOpen={isOpen} close={close}>
@@ -78,17 +91,8 @@ export default function CSStatsModal({
               <span>Days Played</span>
             </CSTextDisplay>
             <CSTextDisplay>
-              <span>
-                {dailyStats
-                  ? Math.round(
-                      (dailyStats!.optimal_solutions! /
-                        dailyStats!.days_played!) *
-                        100,
-                    )
-                  : 0}
-                %
-              </span>
-              <span>Perfect Games</span>
+              <span>{average}</span>
+              <span>Average Score</span>
             </CSTextDisplay>
             <CSTextDisplay>
               <span>{dailyStats?.optimal_solutions}</span>

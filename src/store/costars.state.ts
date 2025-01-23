@@ -192,7 +192,12 @@ const useCostarsState = () => {
   };
 
   const updateDailyStats = async (value: GameEntity) => {
-    await updateDailyStatsStorage(user, [value, ...history].reverse(), hints);
+    updateDailyStatsStorage(
+      user,
+      [value, ...history].reverse(),
+      hints,
+      dailyCostars?.day_number || 0,
+    );
     setDailyStats(getDailyStats());
   };
 

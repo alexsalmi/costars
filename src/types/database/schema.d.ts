@@ -70,8 +70,7 @@ type Database = {
           optimal_solutions: number;
           user_id: string;
           updated_at: string;
-          last_played?: string;
-          last_played_id?: number;
+          last_played?: number;
         };
         Insert: {
           current_streak?: number;
@@ -80,8 +79,7 @@ type Database = {
           id?: number;
           optimal_solutions?: number;
           user_id?: string;
-          last_played?: string;
-          last_played_id?: number;
+          last_played?: number;
           updated_at?: string;
         };
         Update: {
@@ -91,8 +89,7 @@ type Database = {
           id?: number;
           optimal_solutions?: number;
           user_id?: string;
-          last_played?: string;
-          last_played_id?: number;
+          last_played?: number;
           updated_at?: string;
         };
         Relationships: [];

@@ -16,7 +16,7 @@ const CSTooltip = styled(({ className, ...props }: TooltipProps) => (
           {
             name: 'offset',
             options: {
-              offset: [98, -10],
+              offset: [0, -10],
             },
           },
         ],

@@ -37,18 +37,9 @@ export default function CSGameToolbar({
   return (
     <>
       <div className='cs-toolbar'>
-        <CSTooltip
-          title='Click on any actor or movie to use a hint and see their credits'
-          disableFocusListener
-          enterTouchDelay={10}
-          leaveTouchDelay={3000}
-        >
-          <span>
-            <CSButton secondary>
-              <QuestionMarkOutlined />
-            </CSButton>
-          </span>
-        </CSTooltip>
+        <CSButton onClick={openModal} secondary>
+          <ReplayOutlined />
+        </CSButton>
         <CSButton
           secondary
           disabled={history.length < 1}
@@ -56,9 +47,18 @@ export default function CSGameToolbar({
         >
           {condensed ? <UnfoldMoreOutlined /> : <UnfoldLessOutlined />}
         </CSButton>
-        <CSButton onClick={openModal}>
-          <ReplayOutlined />
-        </CSButton>
+        <CSTooltip
+          title='Click on any actor or movie to use a hint and see their credits'
+          disableFocusListener
+          enterTouchDelay={10}
+          leaveTouchDelay={3000}
+        >
+          <span>
+            <CSButton>
+              <QuestionMarkOutlined />
+            </CSButton>
+          </span>
+        </CSTooltip>
         <CSButton
           secondary
           disabled={
