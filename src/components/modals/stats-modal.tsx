@@ -46,9 +46,20 @@ export default function CSStatsModal({
       (acc, curr) =>
         acc +
         curr.solution.reduce(
-          (acc, curr) => acc + (curr.type === 'movie' ? 1 : 0),
+          (acc, currSol) => acc + (currSol.type === 'movie' ? 1 : 0),
           0,
-        ),
+        ) +
+        (curr.hints?.reduce(
+          (acc, currHint) =>
+            acc +
+            (curr.solution.some(
+              (entity) =>
+                entity.type === currHint.type && entity.id === currHint.id,
+            )
+              ? 0.5
+              : 0),
+          0,
+        ) || 0),
       0,
     ) / userDailySolutions.length
   ).toPrecision(3);
