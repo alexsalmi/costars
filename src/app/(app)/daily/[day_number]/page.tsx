@@ -14,5 +14,3 @@ export default async function DailyArchivePage({
     </Suspense>
   );
 }
-
-export const experimental_ppr = true;
