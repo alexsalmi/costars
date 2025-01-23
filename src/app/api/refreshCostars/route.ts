@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
+import { getDayNumber } from '@/utils/utils';
 
 export async function GET(req: NextRequest) {
   if (
-    process.env.NODE_ENV === 'production' &&
+    process.env.IS_PRODUCTION === 'true' &&
     req.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`
   ) {
     return NextResponse.json(
@@ -17,7 +18,12 @@ export async function GET(req: NextRequest) {
   revalidateTag('daily_costars');
   revalidatePath('/');
   revalidatePath('/daily');
+  revalidatePath('/daily/archive');
   revalidatePath('/admin');
+
+  const day_number = getDayNumber(new Date().toISOString());
+  revalidatePath(`/daily/${day_number}`);
+  revalidatePath(`/daily/${day_number - 1}`);
 
   console.log('----- FINISHED REFRESHING COSTARS -----');
 

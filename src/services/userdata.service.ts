@@ -1,4 +1,3 @@
-import { getTodaysCostars, getYesterdaysCostars } from './cache.service';
 import {
   sb_GetDailyStats,
   sb_GetSolutions,
@@ -38,15 +37,12 @@ export const getDailyStats = (): DailyStats => {
   return ls_GetDailyStats()!;
 };
 
-export const updateDailyStats = async (
+export const updateDailyStats = (
   user: UserInfo,
   solution: Array<GameEntity>,
   hints: Array<Hint>,
+  day_number: number,
 ) => {
-  const yesterdaysCostars = await getYesterdaysCostars();
-
-  if (!yesterdaysCostars) return;
-
   const dailyStats: DailyStats = getDailyStats();
 
   // Update days played
@@ -66,7 +62,7 @@ export const updateDailyStats = async (
   if (score === 2 && hints.length === 0) dailyStats.optimal_solutions!++;
 
   // Update current streak
-  if (dailyStats.last_played_id === yesterdaysCostars?.id)
+  if (dailyStats.last_played === day_number - 1)
     dailyStats.current_streak = (dailyStats.current_streak || 0) + 1;
   else dailyStats.current_streak = 1;
 
@@ -75,8 +71,7 @@ export const updateDailyStats = async (
     dailyStats.highest_streak = dailyStats.current_streak;
 
   // Updated last played data
-  dailyStats.last_played = new Date().toUTCString();
-  dailyStats.last_played_id = (await getTodaysCostars())!.id;
+  dailyStats.last_played = day_number;
 
   if (user) sb_UpdateDailyStats(dailyStats);
 

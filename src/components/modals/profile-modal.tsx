@@ -59,8 +59,6 @@ export default function CSProfileModal({
 
     const error = await deleteAccount();
 
-    console.log(error);
-
     if (!error) {
       ls_PostAuthStatus('false');
       clearStorage();
@@ -101,8 +99,10 @@ export default function CSProfileModal({
                 <>
                   <span>
                     <strong>NOTE:</strong> deleting your account is{' '}
-                    <strong>PERMANENT.</strong> All of your Costars data and
-                    stats will be lost forever.
+                    <strong>PERMANENT.</strong>
+                  </span>
+                  <span>
+                    All of your Costars data and stats will be lost forever.
                   </span>
                   <span>
                     To confirm your account deletion, please type{' '}

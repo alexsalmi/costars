@@ -31,6 +31,7 @@ import {
   ls_GetDailySave,
   ls_PostDailySave,
 } from '@/services/localstorage';
+import { getCredits } from '@/services/tmdb.service';
 
 const useCostarsState = () => {
   const [gameType, setGameType] = useAtom(gameTypeAtom);
@@ -115,7 +116,7 @@ const useCostarsState = () => {
     setCompleted(solution !== null);
   };
 
-  const addEntity = (
+  const addEntity = async (
     entity: GameEntity,
     captureEvent?: (eventName: string) => void,
   ) => {
@@ -143,6 +144,12 @@ const useCostarsState = () => {
 
     setHistory(newHistory);
     setUndoCache([]);
+
+    newHistory[0].credits = (await getCredits(entity.id, entity.type)).map(
+      (credit) => credit.id,
+    );
+
+    setHistory(newHistory);
 
     if (gameType === 'daily')
       ls_PostDailySave({
@@ -185,7 +192,12 @@ const useCostarsState = () => {
   };
 
   const updateDailyStats = async (value: GameEntity) => {
-    await updateDailyStatsStorage(user, [value, ...history].reverse(), hints);
+    updateDailyStatsStorage(
+      user,
+      [value, ...history].reverse(),
+      hints,
+      dailyCostars?.day_number || 0,
+    );
     setDailyStats(getDailyStats());
   };
 

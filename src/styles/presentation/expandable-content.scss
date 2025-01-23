@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  overflow: hidden;
 
   > button:first-of-type {
     width: 100%;
@@ -14,9 +15,31 @@
     text-align: left;
     border-bottom: 2px solid var(--highlight-primary);
     padding: 6px 3px;
+    z-index: 1500;
   }
 
   > button:hover {
     background-color: inherit;
   }
+}
+
+.expandable-content-children {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  text-align: left;
+  opacity: 0;
+  z-index: 0;
+  max-height: 0;
+  user-select: none; /* Standard */
+  transition: 300ms all ease;
+}
+
+.expandable-content-children.expanded {
+  z-index: auto;
+  opacity: 1;
+  height: auto;
+  max-height: 500px;
+  user-select: auto; /* Standard */
 }

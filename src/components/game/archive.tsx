@@ -20,6 +20,7 @@ import '@/styles/game/archive.scss';
 
 interface IPrevResults {
   score: number;
+  hints: number;
   date: string;
 }
 
@@ -55,6 +56,13 @@ export default function CSArchive({ costars }: ICSArchiveProps) {
             (acc, curr) => acc + (curr.type === 'movie' ? 1 : 0),
             0,
           ),
+          hints:
+            res.hints?.reduce(
+              (acc, curr) =>
+                acc +
+                (res.solution.some((entity) => entity.id === curr.id) ? 1 : 0),
+              0,
+            ) || 0,
           date: costars.find((c) => c.id === res.daily_id)!.date,
         })) || [];
 
@@ -133,10 +141,15 @@ function DayIcon(
       prevResults.find((sol) => dayjs(sol.date).isSame(day))?.score) ||
     0;
 
+  const hints =
+    (!props.outsideCurrentMonth &&
+      prevResults.find((sol) => dayjs(sol.date).isSame(day))?.hints) ||
+    0;
+
   return (
     <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day}>
       <div className={`archive-day-icon ${score ? 'completed' : ''}`}>
-        {score === 2 ? (
+        {score === 2 && hints === 0 ? (
           <Star />
         ) : score ? (
           <StarBorderOutlined />

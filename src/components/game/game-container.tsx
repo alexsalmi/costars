@@ -1,12 +1,11 @@
 'use client';
 import CSSearchBar from '@/components/inputs/search-bar';
-import CSGameToolbar from '@/components/inputs/toolbars/game-toolbar';
+import CSGameToolbar from '@/components/inputs/game-toolbar';
 import CSCardTrack from '@/components/presentation/card-track';
 import CSTextDisplay from '@/components/presentation/display';
 import useCostarsState from '@/store/costars.state';
 import CSCard from '../presentation/card';
-import { useEffect, useState } from 'react';
-import { getCredits } from '@/services/tmdb.service';
+import { useEffect, useRef, useState } from 'react';
 import Success from './success';
 import CSBackButton from '../inputs/buttons/back-button';
 import '@/styles/game/game-container.scss';
@@ -34,28 +33,63 @@ export default function CSGameContainer({
     completed,
     initGame,
     addEntity,
+    undo,
+    redo,
   } = useCostarsState();
   const plausible = usePlausible();
 
+  const [initializing, setInitializing] = useState(true);
   const [condenseAllCards, setCondenseAllCards] = useState(false);
+  const [animateHighScore, setAnimateHighScore] = useState(false);
+  const [cardAnimation, setCardAnimation] = useState<
+    '' | 'slide-in' | 'slide-out'
+  >('');
+  const initialHighScore = useRef<null | number>(null);
 
   useEffect(() => {
-    initGame(type, initPeople, daily);
+    initGame(type, initPeople, daily).then(() => setInitializing(false));
   }, []);
 
+  useEffect(() => {
+    let high = initialHighScore.current;
+    if (!high) {
+      initialHighScore.current = highScore;
+      high = highScore;
+    }
+
+    if (gameType !== 'unlimited' || score <= high) return;
+
+    setAnimateHighScore(true);
+  }, [score]);
+
   const onSubmit = async (value: GameEntity) => {
-    addEntity(
-      {
-        ...value,
-        credits: (await getCredits(value.id, value.type)).map(
-          (credit) => credit.id,
-        ),
-      },
-      plausible,
-    );
+    addEntity(value, plausible);
+    setCardAnimation('slide-in');
+
+    setTimeout(async () => {
+      setCardAnimation('');
+    }, 300);
   };
 
-  if (gameType !== 'unlimited' && completed) {
+  const onUndo = () => {
+    setCardAnimation('slide-out');
+
+    setTimeout(() => {
+      setCardAnimation('');
+      undo();
+    }, 300);
+  };
+
+  const onRedo = () => {
+    redo();
+    setCardAnimation('slide-in');
+
+    setTimeout(() => {
+      setCardAnimation('');
+    }, 300);
+  };
+
+  if (gameType !== 'unlimited' && completed && !initializing) {
     return <Success daily={daily} solutions={solutions} />;
   }
 
@@ -66,7 +100,9 @@ export default function CSGameContainer({
       {gameType === 'unlimited' ? (
         <div className='game-scores'>
           <CSTextDisplay>Current Score: {score}</CSTextDisplay>
-          <CSTextDisplay>High Score: {highScore}</CSTextDisplay>
+          <CSTextDisplay animate={animateHighScore}>
+            High Score: {highScore}
+          </CSTextDisplay>
         </div>
       ) : (
         <div className='game-target'>
@@ -84,8 +120,14 @@ export default function CSGameContainer({
         <CSGameToolbar
           condensed={condenseAllCards}
           setCondensed={setCondenseAllCards}
+          undo={onUndo}
+          redo={onRedo}
         />
-        <CSCardTrack showPrompt condenseAll={condenseAllCards} />
+        <CSCardTrack
+          showPrompt
+          condenseAll={condenseAllCards}
+          cardAnimation={cardAnimation}
+        />
       </div>
     </div>
   );

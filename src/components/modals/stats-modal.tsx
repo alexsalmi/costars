@@ -3,13 +3,13 @@ import CSModal from './modal';
 import useCostarsState from '@/store/costars.state';
 import CSTextDisplay from '../presentation/display';
 import CSCardTrack from '../presentation/card-track';
-import CSSolutionsToolbar from '../inputs/toolbars/solutions-toolbar';
 import { Dispatch, SetStateAction, useState } from 'react';
 import CSButton from '../inputs/buttons/button';
 import Link from 'next/link';
 import { CalendarMonthOutlined, ShareOutlined } from '@mui/icons-material';
 import '@/styles/modals/stats-modal.scss';
 import { getFormattedDateString } from '@/utils/utils';
+import { getUserDailySolutions } from '@/services/userdata.service';
 
 interface ICSStatsModalProps {
   isOpen: boolean;
@@ -29,9 +29,9 @@ export default function CSStatsModal({
   shareFn,
 }: ICSStatsModalProps) {
   const { score, history, hints, dailyStats, gameType } = useCostarsState();
-  const [solutionInd, setSolutionInd] = useState(0);
   const [shareLoading, setShareLoading] = useState(false);
 
+  const userDailySolutions = getUserDailySolutions();
   const numMovies = (score - 1) / 2;
   const numHints = history.reduce(
     (acc, curr) =>
@@ -41,6 +41,17 @@ export default function CSStatsModal({
         : 0),
     0,
   );
+  const average = (
+    userDailySolutions.reduce(
+      (acc, curr) =>
+        acc +
+        curr.solution.reduce(
+          (acc, curr) => acc + (curr.type === 'movie' ? 1 : 0),
+          0,
+        ),
+      0,
+    ) / userDailySolutions.length
+  ).toPrecision(3);
 
   return (
     <CSModal isOpen={isOpen} close={close}>
@@ -80,17 +91,8 @@ export default function CSStatsModal({
               <span>Days Played</span>
             </CSTextDisplay>
             <CSTextDisplay>
-              <span>
-                {dailyStats
-                  ? Math.round(
-                      (dailyStats!.optimal_solutions! /
-                        dailyStats!.days_played!) *
-                        100,
-                    )
-                  : 0}
-                %
-              </span>
-              <span>Perfect Games</span>
+              <span>{average}</span>
+              <span>Average Score</span>
             </CSTextDisplay>
             <CSTextDisplay>
               <span>{dailyStats?.optimal_solutions}</span>
@@ -126,23 +128,15 @@ export default function CSStatsModal({
         </div>
         <hr />
         <div className='stats-modal-optimal'>
-          Here are a few of the{' '}
-          <strong>{daily.num_solutions} different ways</strong> to connect{' '}
-          <strong>{daily.starter.label}</strong> and{' '}
-          <strong>{daily.target.label}</strong> in 2 movies:
-        </div>
-        <div className='stats-modal-solutions'>
-          <CSSolutionsToolbar
-            leftClick={() => setSolutionInd(solutionInd - 1)}
-            rightClick={() => setSolutionInd(solutionInd + 1)}
-            leftDisabled={solutionInd === 0}
-            rightDisabled={solutionInd === (solutions.length || 1) - 1}
-          />
+          <span>
+            Here are a few of the{' '}
+            <strong>{daily.num_solutions} different ways</strong> to connect{' '}
+            <strong>{daily.starter.label}</strong> and{' '}
+            <strong>{daily.target.label}</strong> in 2 movies:
+          </span>
           <CSCardTrack
-            cards={solutions[solutionInd].solution}
-            hideHints
+            carouselCards={solutions.map((sol) => sol.solution)}
             fullHeight
-            condenseEnds
           />
         </div>
       </div>

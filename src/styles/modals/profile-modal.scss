@@ -55,22 +55,20 @@
   margin-top: 28px;
   padding: 28px 0 12px;
 
-  h4 {
-    align-self: flex-start;
-  }
-
   input {
+    width: 100%;
     border: 2px solid var(--highlight-primary);
     background-color: var(--background-faded);
     border-radius: 5px;
     padding: 3px 6px;
+    margin: 12px 0;
   }
 
   input:focus {
     outline: none;
   }
 
-  div {
-    width: 90%;
+  > div {
+    width: 95%;
   }
 }

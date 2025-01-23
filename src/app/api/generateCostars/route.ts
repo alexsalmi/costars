@@ -10,7 +10,6 @@ import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
   if (
-    process.env.NODE_ENV === 'production' &&
     req.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`
   ) {
     return NextResponse.json(

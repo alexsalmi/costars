@@ -1,4 +1,4 @@
-import CSButton from '../buttons/button';
+import CSButton from './buttons/button';
 import {
   QuestionMarkOutlined,
   ReplayOutlined,
@@ -8,21 +8,25 @@ import {
   RedoOutlined,
 } from '@mui/icons-material';
 import useCostarsState from '@/store/costars.state';
-import CSResetModal from '../../modals/reset-modal';
+import CSResetModal from '../modals/reset-modal';
 import { useState } from 'react';
-import CSTooltip from '../../presentation/tooltip';
+import CSTooltip from '../presentation/tooltip';
 import '@/styles/inputs/toolbar.scss';
 
 interface ICSGameToolbarProps {
   condensed: boolean;
   setCondensed: (val: boolean) => void;
+  undo: () => void;
+  redo: () => void;
 }
 
 export default function CSGameToolbar({
   condensed,
   setCondensed,
+  undo,
+  redo,
 }: ICSGameToolbarProps) {
-  const { history, gameType, undoCache, undo, redo } = useCostarsState();
+  const { history, gameType, undoCache } = useCostarsState();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -33,18 +37,9 @@ export default function CSGameToolbar({
   return (
     <>
       <div className='cs-toolbar'>
-        <CSTooltip
-          title='Click on any actor or movie to use a hint and see their credits'
-          disableFocusListener
-          enterTouchDelay={10}
-          leaveTouchDelay={3000}
-        >
-          <span>
-            <CSButton secondary>
-              <QuestionMarkOutlined />
-            </CSButton>
-          </span>
-        </CSTooltip>
+        <CSButton onClick={openModal} secondary>
+          <ReplayOutlined />
+        </CSButton>
         <CSButton
           secondary
           disabled={history.length < 1}
@@ -52,9 +47,18 @@ export default function CSGameToolbar({
         >
           {condensed ? <UnfoldMoreOutlined /> : <UnfoldLessOutlined />}
         </CSButton>
-        <CSButton onClick={openModal}>
-          <ReplayOutlined />
-        </CSButton>
+        <CSTooltip
+          title='Click on any actor or movie to use a hint and see their credits'
+          disableFocusListener
+          enterTouchDelay={10}
+          leaveTouchDelay={3000}
+        >
+          <span>
+            <CSButton>
+              <QuestionMarkOutlined />
+            </CSButton>
+          </span>
+        </CSTooltip>
         <CSButton
           secondary
           disabled={

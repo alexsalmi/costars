@@ -1,4 +1,10 @@
-import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
+import {
+  styled,
+  Tooltip,
+  tooltipClasses,
+  TooltipProps,
+  Zoom,
+} from '@mui/material';
 
 const CSTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip
@@ -10,11 +16,14 @@ const CSTooltip = styled(({ className, ...props }: TooltipProps) => (
           {
             name: 'offset',
             options: {
-              offset: [98, -10],
+              offset: [0, -10],
             },
           },
         ],
       },
+    }}
+    slots={{
+      transition: Zoom,
     }}
   />
 ))(() => ({
