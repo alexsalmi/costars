@@ -30,10 +30,11 @@ interface ICSArchiveProps {
 
 export default function CSArchive({ costars }: ICSArchiveProps) {
   const [prevResults, setPrevResults] = useState<Array<IPrevResults>>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getPrevResults(costars);
+    setLoading(false);
   }, []);
 
   const handleMonthChange = async (date: Dayjs) => {

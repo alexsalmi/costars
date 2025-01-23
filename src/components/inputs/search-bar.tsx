@@ -59,9 +59,9 @@ export default function CSSearchBar({ onSubmit }: ICSSearchBar) {
   return (
     <div
       className={`
-			search-bar-container
+			search-bar-container 
 			${options.length > 0 ? 'open ' : ''}
-			${error ? 'incorrect' : ''}
+			${error ? 'incorrect ' : ''}
 		`}
     >
       <SearchOutlined className='search-bar-icon' />
@@ -79,7 +79,7 @@ export default function CSSearchBar({ onSubmit }: ICSSearchBar) {
         filterOptions={(options) => options}
         onChange={async (e, value) => submit(value)}
         renderInput={(params) => (
-          <TextField {...params} placeholder='Search...' />
+          <TextField {...params} placeholder={'Search...'} />
         )}
         getOptionDisabled={(option) =>
           history.find(

@@ -1,18 +1,13 @@
-import CSGameContainer from '@/components/game/game-container';
-import { getTodaysCostars, getTodaysSolutions } from '@/services/cache.service';
+import { Suspense } from 'react';
+import DailyGame from './daily-game';
+import CSGameContainerSkeleton from '@/components/skeletons/game-container-skeleton';
 
-export default async function DailyGame() {
-  const daily = await getTodaysCostars();
-  if (!daily) throw Error('Error getting Costars');
-
-  const solutions = await getTodaysSolutions();
-
+export default async function DailyPage() {
   return (
-    <CSGameContainer
-      type='daily'
-      initPeople={[daily.target, daily.starter]}
-      daily={daily}
-      solutions={solutions}
-    />
+    <Suspense fallback={<CSGameContainerSkeleton />}>
+      <DailyGame />
+    </Suspense>
   );
 }
+
+export const experimental_ppr = true;

@@ -1,18 +1,17 @@
-import Solution from '@/components/game/solution';
-import { sb_GetDailyCostars, sb_GetSolutions } from '@/services/supabase';
-import '@/styles/pages/solution.scss';
+import CSSolutionSkeleton from '@/components/skeletons/solution-skeleton';
+import { Suspense } from 'react';
+import SolutionPage from './solution-page';
 
 interface ISolutionProps {
   params: Promise<{ uuid: string }>;
 }
 
-export default async function SolutionPage({ params }: ISolutionProps) {
-  const uuid = (await params).uuid;
-
-  const { solution, hints, daily_id } = (await sb_GetSolutions({ uuid }))[0];
-  let daily: DailyCostars | undefined;
-
-  if (daily_id) daily = (await sb_GetDailyCostars({ id: daily_id }))![0];
-
-  return <Solution solution={solution} hints={hints || []} daily={daily} />;
+export default async function Solution({ params }: ISolutionProps) {
+  return (
+    <Suspense fallback={<CSSolutionSkeleton />}>
+      <SolutionPage params={params} />
+    </Suspense>
+  );
 }
+
+export const experimental_ppr = true;

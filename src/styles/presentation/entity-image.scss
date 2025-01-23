@@ -1,3 +1,11 @@
 .entity-image {
   border-radius: 5px;
 }
+
+.entity-image.skeleton {
+  opacity: 0.75;
+  width: 80px;
+  height: 120px;
+  border-radius: 5px;
+  border: 2px solid var(--highlight-primary);
+}
