@@ -3,7 +3,7 @@ import { revalidatePath, revalidateTag } from 'next/cache';
 
 export async function GET(req: NextRequest) {
   if (
-    process.env.NODE_ENV === 'production' &&
+    process.env.IS_PRODUCTION === 'true' &&
     req.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`
   ) {
     return NextResponse.json(
