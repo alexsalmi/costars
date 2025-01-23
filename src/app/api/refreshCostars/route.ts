@@ -20,6 +20,8 @@ export async function GET(req: NextRequest) {
   revalidatePath('/daily/archive');
   revalidatePath('/admin');
 
+  for (let num = 1; num < 24; num++) revalidatePath(`/daily/${num}`);
+
   console.log('----- FINISHED REFRESHING COSTARS -----');
 
   return NextResponse.json({ ok: true });
