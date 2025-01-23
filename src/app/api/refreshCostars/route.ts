@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
+import { getDayNumber } from '@/utils/utils';
 
 export async function GET(req: NextRequest) {
   if (
@@ -20,7 +21,9 @@ export async function GET(req: NextRequest) {
   revalidatePath('/daily/archive');
   revalidatePath('/admin');
 
-  for (let num = 1; num < 24; num++) revalidatePath(`/daily/${num}`);
+  const day_number = getDayNumber(new Date().toISOString());
+  revalidatePath(`/daily/${day_number}`);
+  revalidatePath(`/daily/${day_number - 1}`);
 
   console.log('----- FINISHED REFRESHING COSTARS -----');
 
