@@ -5,7 +5,7 @@ import CSCardTrack from '@/components/presentation/card-track';
 import CSTextDisplay from '@/components/presentation/display';
 import useCostarsState from '@/store/costars.state';
 import CSCard from '../presentation/card';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Success from './success';
 import CSBackButton from '../inputs/buttons/back-button';
 import '@/styles/game/game-container.scss';
@@ -40,23 +40,27 @@ export default function CSGameContainer({
 
   const [initializing, setInitializing] = useState(true);
   const [condenseAllCards, setCondenseAllCards] = useState(false);
-  const [animateHighScore, setAnimateHighScore] = useState<
-    'pre-load' | 'pending' | 'animated'
-  >('pre-load');
+  const [animateHighScore, setAnimateHighScore] = useState(false);
   const [cardAnimation, setCardAnimation] = useState<
     '' | 'slide-in' | 'slide-out'
   >('');
+  const initialHighScore = useRef<null | number>(null);
 
   useEffect(() => {
     initGame(type, initPeople, daily).then(() => setInitializing(false));
   }, []);
 
   useEffect(() => {
-    if (gameType !== 'unlimited' || score < highScore) return;
+    let high = initialHighScore.current;
+    if (!high) {
+      initialHighScore.current = highScore;
+      high = highScore;
+    }
 
-    if (animateHighScore === 'pre-load') setAnimateHighScore('pending');
-    else if (animateHighScore === 'pending') setAnimateHighScore('animated');
-  }, [score, highScore]);
+    if (gameType !== 'unlimited' || score <= high) return;
+
+    setAnimateHighScore(true);
+  }, [score]);
 
   const onSubmit = async (value: GameEntity) => {
     addEntity(value, plausible);
@@ -96,7 +100,7 @@ export default function CSGameContainer({
       {gameType === 'unlimited' ? (
         <div className='game-scores'>
           <CSTextDisplay>Current Score: {score}</CSTextDisplay>
-          <CSTextDisplay animate={animateHighScore === 'animated'}>
+          <CSTextDisplay animate={animateHighScore}>
             High Score: {highScore}
           </CSTextDisplay>
         </div>
