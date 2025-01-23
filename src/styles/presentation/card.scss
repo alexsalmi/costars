@@ -9,6 +9,7 @@
   align-items: center;
   border: 2px solid var(--background-secondary);
   transition: height ease-in-out 0.3s;
+  --animation-height: 100%;
 
   button {
     padding: 0;
@@ -92,6 +93,7 @@
 
 .card-container.condensed {
   align-items: center;
+  --animation-height: 40px;
 
   .card-label {
     max-width: 260px;
@@ -163,5 +165,65 @@
 
   .card-hint-icon {
     margin: 0 -24px auto 32px;
+  }
+}
+
+.card-container.slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+.card-container.slide-in:first-of-type {
+  animation: slide-in-first-card 0.3s ease-out;
+}
+
+.card-container.slide-out {
+  animation: slide-out 0.3s ease-out;
+}
+
+.card-container.slide-out:first-of-type {
+  animation: slide-out-first-card 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateY(calc(0px - var(--animation-height, 100%)));
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-first-card {
+  0% {
+    transform: translateY(calc(0px - var(--animation-height, 100%)));
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 100%;
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(calc(0px - var(--animation-height, 100%)));
+  }
+}
+
+@keyframes slide-out-first-card {
+  0% {
+    transform: translateY(0);
+    opacity: 100%;
+  }
+
+  100% {
+    transform: translateY(calc(0px - var(--animation-height, 100%)));
+    opacity: 0;
   }
 }

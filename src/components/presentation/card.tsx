@@ -20,6 +20,7 @@ interface ICSCardProps {
   hintUsed?: boolean;
   hideHints?: boolean;
   highlight?: boolean;
+  animation?: '' | 'slide-in' | 'slide-out';
 }
 
 export default function CSCard({
@@ -30,6 +31,7 @@ export default function CSCard({
   hintUsed,
   hideHints,
   highlight,
+  animation,
 }: ICSCardProps) {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -44,6 +46,7 @@ export default function CSCard({
 					${target ? 'target ' : ''}
 					${condensed || targetCondensed ? 'condensed ' : ''}
 					${highlight ? 'highlight ' : ''}
+          ${animation}
 				`}
         onClick={(e) => {
           e.stopPropagation();

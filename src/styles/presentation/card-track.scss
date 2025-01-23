@@ -27,8 +27,12 @@
 
 .card-track-prompt {
   width: 300px;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: var(--background-faded);
-  padding: 6px 12px;
+  padding: 0 12px;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 600;

@@ -17,6 +17,7 @@ interface ICSCardTrackProps {
   fullHeight?: boolean;
   condenseAll?: boolean;
   condenseEnds?: boolean;
+  cardAnimation?: '' | 'slide-in' | 'slide-out';
   carouselCards?: Array<Array<GameEntity>>;
 }
 
@@ -28,6 +29,7 @@ export default function CSCardTrack({
   fullHeight,
   condenseAll,
   condenseEnds,
+  cardAnimation,
   carouselCards,
 }: ICSCardTrackProps) {
   const { history, hints, current } = useCostarsState();
@@ -109,6 +111,7 @@ export default function CSCardTrack({
               highlight={
                 condenseEnds && (ind === 0 || ind === cardsToDisplay.length - 1)
               }
+              animation={cardAnimation}
             />
           );
         })

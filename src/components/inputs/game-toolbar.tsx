@@ -16,13 +16,17 @@ import '@/styles/inputs/toolbar.scss';
 interface ICSGameToolbarProps {
   condensed: boolean;
   setCondensed: (val: boolean) => void;
+  undo: () => void;
+  redo: () => void;
 }
 
 export default function CSGameToolbar({
   condensed,
   setCondensed,
+  undo,
+  redo,
 }: ICSGameToolbarProps) {
-  const { history, gameType, undoCache, undo, redo } = useCostarsState();
+  const { history, gameType, undoCache } = useCostarsState();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {

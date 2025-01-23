@@ -17,14 +17,14 @@ export default function CSConfetti({ stars }: ICSConfettiProps) {
       confetti.style.left = `${Math.random() * 100}%`;
       confetti.style.setProperty(
         '--fall-duration',
-        `${Math.random() * 3 + 3}s`,
+        `${Math.random() * 3 + 2.5}s`,
       );
       confetti.style.setProperty('--confetti-color', getRandomColor());
     }
   }, []);
 
   const width = typeof window === 'undefined' ? 100 : window.innerWidth;
-  const arr = Array(Math.floor(width / 10)).fill(0);
+  const arr = Array(Math.floor(width / 5)).fill(0);
 
   return (
     <div className='confetti-container'>

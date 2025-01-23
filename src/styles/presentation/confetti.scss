@@ -49,47 +49,11 @@
 }
 
 .confetti-piece.left {
-  animation: confetti-fall var(--fall-duration, 3s) ease-in;
-  animation-delay: calc(var(--fall-duration, 3s) - 2s);
+  animation: confetti-fall var(--fall-duration) ease-in;
+  animation-delay: calc(var(--fall-duration) - 3s);
 }
 
 .confetti-piece.right {
-  animation: confetti-fall-reverse var(--fall-duration, 3s) ease-in;
-  animation-delay: calc(var(--fall-duration, 3s) - 2s);
-}
-
-/* Randomize confetti properties */
-.confetti-piece:nth-child(1) {
-  left: 10%;
-
-  --confetti-color: #ff6347;
-  --fall-duration: 2s;
-}
-
-.confetti-piece:nth-child(2) {
-  left: 25%;
-
-  --confetti-color: #ffa500;
-  --fall-duration: 4s;
-}
-
-.confetti-piece:nth-child(3) {
-  left: 40%;
-
-  --confetti-color: #32cd32;
-  --fall-duration: 3.5s;
-}
-
-.confetti-piece:nth-child(4) {
-  left: 60%;
-
-  --confetti-color: #1e90ff;
-  --fall-duration: 2.5s;
-}
-
-.confetti-piece:nth-child(5) {
-  left: 80%;
-
-  --confetti-color: #ff69b4;
-  --fall-duration: 3s;
+  animation: confetti-fall-reverse var(--fall-duration) ease-in;
+  animation-delay: calc(var(--fall-duration) - 3s);
 }
