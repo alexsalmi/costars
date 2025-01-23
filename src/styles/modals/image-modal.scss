@@ -14,6 +14,12 @@
 }
 
 .image-modal {
+  border-radius: 5px;
+
+  img {
+    border-radius: 5px;
+  }
+
   button {
     position: absolute;
     align-self: flex-end;
