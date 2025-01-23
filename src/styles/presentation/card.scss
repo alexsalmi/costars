@@ -9,6 +9,7 @@
   align-items: center;
   border: 2px solid var(--background-secondary);
   transition: height ease-in-out 0.3s;
+
   --animation-height: 100%;
 
   button {
@@ -93,6 +94,7 @@
 
 .card-container.condensed {
   align-items: center;
+
   --animation-height: 40px;
 
   .card-label {
@@ -202,7 +204,7 @@
 
   100% {
     transform: translateY(0);
-    opacity: 100%;
+    opacity: 1;
   }
 }
 
@@ -219,7 +221,7 @@
 @keyframes slide-out-first-card {
   0% {
     transform: translateY(0);
-    opacity: 100%;
+    opacity: 1;
   }
 
   100% {
