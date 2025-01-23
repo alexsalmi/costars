@@ -41,7 +41,7 @@ export default function CSCardTrack({
 
   return (
     <div
-      className={`card-track-container ${!showPrompt ? 'no-prompt' : ''} ${shimmer ? 'shimmer' : ''}`}
+      className={`card-track-container ${!showPrompt ? 'no-prompt' : ''} ${fullHeight ? 'full-height' : ''} ${shimmer ? 'shimmer' : ''}`}
     >
       {showPrompt ? (
         <span className='card-track-prompt'>
