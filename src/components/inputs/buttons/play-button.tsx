@@ -11,7 +11,6 @@ interface ICSPlayButtonProps {
 
 export default function CSPlayButton({ daily }: ICSPlayButtonProps) {
   const [solution, setSolution] = useState<Solution | null>(null);
-  const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
     const userDailySolutions = getUserDailySolutions();
@@ -21,13 +20,12 @@ export default function CSPlayButton({ daily }: ICSPlayButtonProps) {
     );
 
     setSolution(solution || null);
-    setInitializing(false);
   }, [daily]);
 
   return (
     <Link href='/daily'>
       <CSButton>
-        {!initializing && solution
+        {solution
           ? getScoreString(solution.solution, solution.hints!)
           : 'Play!'}
       </CSButton>
