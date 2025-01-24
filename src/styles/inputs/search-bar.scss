@@ -102,5 +102,6 @@ ul {
 
 .search-bar-container.skeleton {
   height: 42px;
-  width: 425px;
+  width: 100%;
+  max-width: var(--max-width-mobile);
 }
