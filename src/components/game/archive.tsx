@@ -77,6 +77,8 @@ export default function CSArchive({ costars }: ICSArchiveProps) {
   ) => {
     if (!date || selectedView !== 'day') return;
 
+    if (date.isSame(dayjs(), 'date')) redirect('/daily', RedirectType.push);
+
     const day_number = getDayNumber(date.toISOString());
 
     redirect(`/daily/${day_number}`, RedirectType.push);

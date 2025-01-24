@@ -13,5 +13,3 @@ export default async function CustomGamePage({ params }: ICustomGameProps) {
     </Suspense>
   );
 }
-
-export const experimental_ppr = true;

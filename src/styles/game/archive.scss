@@ -18,6 +18,10 @@
   box-shadow:
     inset 2px 2px 3px var(--highlight-faded),
     inset -2px -2px 3px var(--highlight-faded);
+
+  button:focus {
+    background-color: transparent !important;
+  }
 }
 
 .archive-day-icon {
@@ -63,4 +67,12 @@
   .archive-day-icon {
     margin-right: 3px;
   }
+}
+
+.archive-calendar.skeleton {
+  opacity: 0.75;
+  width: 320px;
+  height: 336px;
+  align-self: center;
+  padding-top: 96px;
 }

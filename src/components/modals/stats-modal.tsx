@@ -71,7 +71,7 @@ export default function CSStatsModal({
           <h3>Daily Costars #{daily.day_number}</h3>
           <span>
             {gameType === 'daily'
-              ? 'You connected today&apos;s costars in '
+              ? "You connected today's costars in "
               : `You connected the ${getFormattedDateString(daily.date)} costars in `}
             <strong>{numMovies} movies</strong>
             {numHints > 0 ? (

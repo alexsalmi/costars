@@ -13,5 +13,3 @@ export default async function Solution({ params }: ISolutionProps) {
     </Suspense>
   );
 }
-
-export const experimental_ppr = true;
