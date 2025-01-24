@@ -1,36 +1,15 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Costars
 
-## Getting Started
+A web game challenging players to connect two random actors by the movies they've been in and the costars they've worked with, with new pairs becoming available every day! Also includes two additional game modes, one to connect a custom pair of actors, and the other to connect actors and movies for as long as possible.
 
-First, run the development server:
+Publically available at [costarsgame.com](https://costarsgame.com)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Background
+The idea for this project came from my fiance and I brainstorming ideas for new daily puzzle games in the vein of [Wordle](https://www.nytimes.com/games/wordle/index.html) or [HoopGrids](https://www.hoopgrids.com/). We are both very interested in film, so we wanted to come up with something in that category, similar to [Movie Grid](https://moviegrid.io/) or [Framed](https://framed.wtf/). Eventually Erin came up with a game inspired by [Six Degrees of Kevin Bacon](https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon), where players must connect two new actors every day. After a few months of work, her idea eventually became Costars! The game has been operational and providing new pairings every day since January 1st 2025, please feel free to go to [costarsgame.com](https://costarsgame.com) and give it a try for yourself!
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Technologies Used
+- Language - [Typescript](https://www.typescriptlang.org/)
+- Framework - [Next JS](https://nextjs.org/)
+- Deployment - [Vercel](https://vercel.com/)
+- Database - [Supabase](https://supabase.com/)
+- Movie API - [TMDB](https://www.themoviedb.org/)
