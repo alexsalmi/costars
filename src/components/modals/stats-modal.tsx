@@ -69,14 +69,10 @@ export default function CSStatsModal({
       <div className='stats-modal-container'>
         <div className='stats-modal-recap'>
           <h3>Daily Costars #{daily.day_number}</h3>
-          {gameType === 'daily' ? (
-            <span>You connected today&apos;s costars in</span>
-          ) : (
-            <span>
-              You connected the {getFormattedDateString(daily.date)} costars in
-            </span>
-          )}
           <span>
+            {gameType === 'daily'
+              ? 'You connected today&apos;s costars in '
+              : `You connected the ${getFormattedDateString(daily.date)} costars in `}
             <strong>{numMovies} movies</strong>
             {numHints > 0 ? (
               <>
@@ -86,7 +82,7 @@ export default function CSStatsModal({
                 </strong>
               </>
             ) : (
-              <span>.</span>
+              '.'
             )}
           </span>
           {numMovies === 2 && numHints === 0 ? (

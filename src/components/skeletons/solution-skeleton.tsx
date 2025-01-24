@@ -8,7 +8,7 @@ export default function CSSolutionSkeleton() {
       <CSBackButton />
       <div className='solution-page-container skeleton'>
         <h3>Loading...</h3>
-        <CardTrack cards={[]} shimmer fullHeight />
+        <CardTrack cards={[]} shimmer />
       </div>
     </>
   );

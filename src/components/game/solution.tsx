@@ -13,7 +13,8 @@ interface ISolutionProps {
 }
 
 export default function Solution({ solution, hints, daily }: ISolutionProps) {
-  const [modalOpen, setModalOpen] = useState(true);
+  const [initializing, setInitializing] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const solutions = getUserDailySolutions();
@@ -23,6 +24,7 @@ export default function Solution({ solution, hints, daily }: ISolutionProps) {
       solutions.some((sol) => sol.daily_id === daily.id);
 
     setModalOpen(!hasSolvedSolution);
+    setInitializing(false);
   }, []);
 
   return (
@@ -39,7 +41,11 @@ export default function Solution({ solution, hints, daily }: ISolutionProps) {
             {solution[0].label} to {solution[solution.length - 1].label}{' '}
           </h3>
         )}
-        {!modalOpen ? <CardTrack cards={solution} hints={hints} /> : <></>}
+        <CardTrack
+          cards={initializing || modalOpen ? [] : solution}
+          hints={hints}
+          shimmer={initializing}
+        />
       </div>
       <CSSpoilerAlertModal
         isOpen={modalOpen}
