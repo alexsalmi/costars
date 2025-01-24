@@ -27,9 +27,11 @@ export default function CSPlayButton({ daily }: ICSPlayButtonProps) {
   return (
     <Link href='/daily'>
       <CSButton>
-        {!initializing && solution
-          ? getScoreString(solution.solution, solution.hints!)
-          : 'Play!'}
+        {initializing
+          ? ' '
+          : solution
+            ? getScoreString(solution.solution, solution.hints!)
+            : 'Play!'}
       </CSButton>
     </Link>
   );
