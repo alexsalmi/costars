@@ -8,12 +8,12 @@
   flex-grow: 1;
   gap: 24px;
   color: var(--highlight-text);
-  padding: 32px;
 
   hr {
     width: 100%;
     max-width: var(--max-width-mobile);
     border-color: var(--highlight-primary);
+    margin: 12px 0;
   }
 }
 
