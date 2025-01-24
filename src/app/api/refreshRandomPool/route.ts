@@ -18,7 +18,6 @@ export async function GET(req: NextRequest) {
   revalidateTag('trending_people');
 
   getRandomPerson();
-  getRandomPerson();
 
   console.log('----- FINISHED REFRESHING RANDOM POOL -----');
 

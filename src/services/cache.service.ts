@@ -6,26 +6,51 @@ import { sb_GetDailyCostars, sb_GetSolutions } from './supabase';
 export const getRandomPool = unstable_cache(
   async () => {
     console.log('----- Refreshing Random Pool -----');
-    const POOL_SIZE = 200;
+    const POOL_SIZE = 300;
     const pool = [] as Array<GameEntity>;
 
-    let page = 1;
     let iteration = 0;
 
-    while (pool.length < POOL_SIZE && iteration < 100) {
-      const trending = (await getTrending(page)).filter(
+    while (pool.length < POOL_SIZE && iteration < 5) {
+      console.log(`ITERATION: ${iteration + 1}`);
+
+      const trendingPromises: Promise<Array<Person>>[] = [];
+      for (let page = iteration * 50 + 1; page <= (iteration + 1) * 50; page++)
+        trendingPromises.push(getTrending(page));
+
+      const trendingResults = ([] as Person[]).concat(
+        ...(await Promise.all(trendingPromises)),
+      );
+
+      console.log(`Fetched ${trendingResults.length} trending people.`);
+
+      const trending = trendingResults.filter(
         (person) =>
           person.popularity > 30 && person.known_for_department === 'Acting',
       );
 
-      const promises = [] as Array<Promise<Array<MovieCredit>>>;
+      console.log(
+        `Initial filter - Filtered down to ${trending.length} people.`,
+      );
 
-      for (const person of trending)
-        promises.push(
+      let creditsPromises = [] as Array<Promise<Array<MovieCredit>>>;
+      const creditsArr = [] as MovieCredit[][];
+
+      console.log(`Getting credits...`);
+      for (const person of trending) {
+        creditsPromises.push(
           getCredits(person.id, 'person') as Promise<Array<MovieCredit>>,
         );
 
-      const creditsArr = await Promise.all(promises);
+        if (creditsPromises.length > 50) {
+          creditsArr.push(...(await Promise.all(creditsPromises)));
+          creditsPromises = [];
+        }
+      }
+
+      creditsArr.push(...(await Promise.all(creditsPromises)));
+
+      console.log(`Finished getting credits`);
 
       const entities = [] as Array<GameEntity>;
 
@@ -46,10 +71,10 @@ export const getRandomPool = unstable_cache(
           popularity: trending[i].popularity,
         });
       }
+      console.log(`Final filter - Filtered down to ${entities.length} people.`);
 
       pool.push(...entities);
-      console.log('Pool size: ' + pool.length);
-      page++;
+      console.log(`Pool size: ${pool.length}\n`);
       iteration++;
     }
 
