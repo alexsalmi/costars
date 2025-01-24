@@ -1,13 +1,8 @@
-import CSArchiveSkeleton from '@/components/skeletons/archive-skeleton';
-import { Suspense } from 'react';
-import ArchivePage from './archive-page';
+import CSArchive from '@/components/game/archive';
+import { getMonthsCostars } from '@/services/cache.service';
 
-export default async function Archive() {
-  return (
-    <Suspense fallback={<CSArchiveSkeleton />}>
-      <ArchivePage />
-    </Suspense>
-  );
+export default async function ArchivePage() {
+  const costars = await getMonthsCostars();
+
+  return <CSArchive costars={costars || []} />;
 }
-
-export const experimental_ppr = true;
