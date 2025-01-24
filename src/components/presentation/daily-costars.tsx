@@ -1,28 +1,11 @@
-'use client';
-import Link from 'next/link';
-import CSButton from '../inputs/buttons/button';
-import { getScoreString } from '@/utils/utils';
-import { useEffect, useState } from 'react';
-import { getUserDailySolutions } from '@/services/userdata.service';
 import '@/styles/presentation/daily-costars.scss';
 import CSEntityImage from './entity-image';
+import { getTodaysCostars } from '@/services/cache.service';
+import CSPlayButton from '../inputs/buttons/play-button';
 
-interface ICSDailyCostarsProps {
-  daily?: DailyCostars;
-}
-
-export default function CSDailyCostars({ daily }: ICSDailyCostarsProps) {
-  const [solution, setSolution] = useState<Solution | null>(null);
-
-  useEffect(() => {
-    const userDailySolutions = getUserDailySolutions();
-
-    const solution = userDailySolutions.find(
-      (sol) => sol.daily_id === daily?.id,
-    );
-
-    setSolution(solution || null);
-  }, [daily]);
+export default async function CSDailyCostars() {
+  const daily = await getTodaysCostars();
+  if (!daily) throw Error("Couldn't get Costars");
 
   return (
     <div className='daily-costars-container'>
@@ -36,13 +19,7 @@ export default function CSDailyCostars({ daily }: ICSDailyCostarsProps) {
         </div>
         <CSEntityImage entity={daily?.target} />
       </div>
-      <Link href='/daily'>
-        <CSButton>
-          {solution
-            ? getScoreString(solution.solution, solution.hints!)
-            : 'Play!'}
-        </CSButton>
-      </Link>
+      <CSPlayButton daily={daily} />
     </div>
   );
 }

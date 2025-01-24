@@ -7,9 +7,13 @@ interface ISolutionProps {
 }
 
 export default async function SolutionPage({ params }: ISolutionProps) {
-  const uuid = (await params).uuid;
+  const { uuid } = await params;
 
-  const { solution, hints, daily_id } = (await sb_GetSolutions({ uuid }))[0];
+  const solutions = await sb_GetSolutions({ uuid });
+
+  if (!solutions || solutions.length === 0) throw Error('Invalid solution');
+
+  const { solution, hints, daily_id } = solutions[0];
   let daily: DailyCostars | undefined;
 
   if (daily_id) daily = (await sb_GetDailyCostars({ id: daily_id }))![0];

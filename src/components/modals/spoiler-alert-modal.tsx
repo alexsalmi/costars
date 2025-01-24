@@ -8,12 +8,14 @@ interface ICSSpoilerAlertModal {
   isOpen: boolean;
   close: () => void;
   daily?: DailyCostars;
+  isToday: boolean;
 }
 
 export default function CSSpoilerAlertModal({
   isOpen,
   close,
   daily,
+  isToday,
 }: ICSSpoilerAlertModal) {
   if (!daily) return <></>;
 
@@ -22,16 +24,22 @@ export default function CSSpoilerAlertModal({
       <h3>Spoiler Alert!</h3>
       <span>
         This solution is for{' '}
-        <strong>
-          Daily Costars #{daily.day_number} (
-          {getFormattedDateString(daily.date)})
-        </strong>
+        {isToday ? (
+          <strong>Today&apos;s Daily Costars</strong>
+        ) : (
+          <strong>
+            Daily Costars #{daily.day_number} (
+            {getFormattedDateString(daily.date)})
+          </strong>
+        )}
         , which you haven&apos;t completed yet.
       </span>
-      <Link href={`/daily/${daily.day_number}`}>
+      <Link href={isToday ? `/daily` : `/daily/${daily.day_number}`}>
         <CSButton>
-          Play Daily Costars #{daily.day_number} (
-          {getFormattedDateString(daily.date)})
+          {isToday
+            ? "Play Today's Daily Costars"
+            : `Play Daily Costars #${daily.day_number} (
+          ${getFormattedDateString(daily.date)})`}
         </CSButton>
       </Link>
       <CSButton secondary onClick={close}>

@@ -2,11 +2,21 @@
 import CSButton from './button';
 import { KeyboardArrowLeftOutlined } from '@mui/icons-material';
 import '@/styles/inputs/back-button.scss';
+import { redirect, RedirectType } from 'next/navigation';
 
-export default function CSBackButton() {
+interface ICSBackButtonProps {
+  link?: string;
+}
+
+export default function CSBackButton({ link }: ICSBackButtonProps) {
+  const handleClick = () => {
+    if (link) redirect(link, RedirectType.push);
+    else window.history.back();
+  };
+
   return (
     <div className='back-button-container'>
-      <CSButton secondary onClick={() => window.history.back()}>
+      <CSButton secondary onClick={handleClick}>
         <KeyboardArrowLeftOutlined />
         Back
       </CSButton>

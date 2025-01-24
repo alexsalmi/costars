@@ -102,29 +102,33 @@ export default function Success({ daily, solutions }: ISuccessProps) {
               <span>!</span>
             )}
           </span>
-          <div className='success-buttons-container'>
-            <CSButton
-              secondary
-              onClick={() => shareScore()}
-              loading={shareLoading}
-            >
-              <ShareOutlined />
-              Share
-            </CSButton>
-            {gameType === 'daily' ? (
-              <CSButton onClick={() => setStatsOpen(true)}>See Stats</CSButton>
-            ) : gameType === 'archive' ? (
-              <CSButton onClick={() => setStatsOpen(true)}>
-                See Solutions
-              </CSButton>
-            ) : (
-              <Link href='/custom'>
-                <CSButton>New Game</CSButton>
-              </Link>
-            )}
-          </div>
         </div>
-        <CSCardTrack condenseEnds />
+        <div className='success-buttons-container'>
+          <CSButton
+            secondary
+            onClick={() => shareScore()}
+            loading={shareLoading}
+          >
+            <ShareOutlined />
+            Share
+          </CSButton>
+          {gameType === 'daily' ? (
+            <CSButton onClick={() => setStatsOpen(true)}>See Stats</CSButton>
+          ) : gameType === 'archive' ? (
+            <CSButton onClick={() => setStatsOpen(true)}>
+              See Solutions
+            </CSButton>
+          ) : (
+            <Link href='/custom'>
+              <CSButton>New Game</CSButton>
+            </Link>
+          )}
+        </div>
+        <hr />
+        <div className='success-solution-container'>
+          <h3>Your Solution:</h3>
+          <CSCardTrack condenseEnds />
+        </div>
         {daily && statsOpen ? (
           <CSStatsModal
             isOpen={statsOpen}

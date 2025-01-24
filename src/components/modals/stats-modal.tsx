@@ -46,9 +46,20 @@ export default function CSStatsModal({
       (acc, curr) =>
         acc +
         curr.solution.reduce(
-          (acc, curr) => acc + (curr.type === 'movie' ? 1 : 0),
+          (acc, currSol) => acc + (currSol.type === 'movie' ? 1 : 0),
           0,
-        ),
+        ) +
+        (curr.hints?.reduce(
+          (acc, currHint) =>
+            acc +
+            (curr.solution.some(
+              (entity) =>
+                entity.type === currHint.type && entity.id === currHint.id,
+            )
+              ? 0.5
+              : 0),
+          0,
+        ) || 0),
       0,
     ) / userDailySolutions.length
   ).toPrecision(3);
@@ -58,14 +69,10 @@ export default function CSStatsModal({
       <div className='stats-modal-container'>
         <div className='stats-modal-recap'>
           <h3>Daily Costars #{daily.day_number}</h3>
-          {gameType === 'daily' ? (
-            <span>You connected today&apos;s costars in</span>
-          ) : (
-            <span>
-              You connected the {getFormattedDateString(daily.date)} costars in
-            </span>
-          )}
           <span>
+            {gameType === 'daily'
+              ? "You connected today's costars in "
+              : `You connected the ${getFormattedDateString(daily.date)} costars in `}
             <strong>{numMovies} movies</strong>
             {numHints > 0 ? (
               <>
@@ -75,7 +82,7 @@ export default function CSStatsModal({
                 </strong>
               </>
             ) : (
-              <span>.</span>
+              '.'
             )}
           </span>
           {numMovies === 2 && numHints === 0 ? (

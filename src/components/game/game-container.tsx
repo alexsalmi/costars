@@ -10,6 +10,7 @@ import Success from './success';
 import CSBackButton from '../inputs/buttons/back-button';
 import '@/styles/game/game-container.scss';
 import { usePlausible } from 'next-plausible';
+import CSGameContainerSkeleton from '../skeletons/game-container-skeleton';
 
 interface ICSGameContainerProps {
   type: GameType;
@@ -92,6 +93,8 @@ export default function CSGameContainer({
   if (gameType !== 'unlimited' && completed && !initializing) {
     return <Success daily={daily} solutions={solutions} />;
   }
+
+  if (initializing) return <CSGameContainerSkeleton />;
 
   return (
     <div className='game-container'>

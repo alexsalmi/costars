@@ -78,3 +78,26 @@ footer {
 h3 {
   text-decoration: underline;
 }
+
+.shimmer {
+  opacity: 0.75;
+  background: linear-gradient(
+    -50deg,
+    var(--background-faded) 30%,
+    var(--background-secondary) 50%,
+    var(--background-faded) 70%
+  );
+  background-size: 300%;
+  background-position-x: 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  from {
+    background-position-x: 100%;
+  }
+
+  to {
+    background-position-x: -50%;
+  }
+}

@@ -1,14 +1,20 @@
 .archive-container {
-  max-width: var(--max-width-mobile);
   align-self: center;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  margin: 32px 0 50px;
-  color: var(--highlight-primary);
+  color: var(--highlight-text);
   text-align: center;
+
+  h3 {
+    margin-top: -24px;
+  }
+
+  span {
+    max-width: var(--max-width-mobile);
+  }
 }
 
 .archive-calendar {
@@ -18,6 +24,10 @@
   box-shadow:
     inset 2px 2px 3px var(--highlight-faded),
     inset -2px -2px 3px var(--highlight-faded);
+
+  button:focus {
+    background-color: transparent !important;
+  }
 }
 
 .archive-day-icon {
@@ -63,4 +73,12 @@
   .archive-day-icon {
     margin-right: 3px;
   }
+}
+
+.archive-calendar.skeleton {
+  opacity: 0.75;
+  width: 320px;
+  height: 336px;
+  align-self: center;
+  padding-top: 96px;
 }

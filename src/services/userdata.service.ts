@@ -144,6 +144,42 @@ export const postSolution = (
 /* ----- END OF SOLUTIONS ----- */
 
 /* ----- DATA MIGRATION ----- */
+export const syncUserData = async () => {
+  const user = await getUser();
+
+  if (!user) return;
+
+  const ls_dailyStats = ls_GetDailyStats();
+  const ls_unlimitedStats = ls_GetUnlimitedStats();
+
+  const dailyStatsPromise = sb_GetDailyStats({ user_id: user.id });
+  const unlimitedStatsPromise = sb_GetUnlimitedStats({ user_id: user.id });
+
+  const [sb_dailyStats, sb_unlimitedStats] = await Promise.all([
+    dailyStatsPromise,
+    unlimitedStatsPromise,
+  ]);
+
+  if (
+    ls_dailyStats?.updated_at === sb_dailyStats?.updated_at &&
+    ls_unlimitedStats?.updated_at === sb_unlimitedStats?.updated_at
+  ) {
+    return;
+  }
+
+  ls_PostDailyStats(sb_dailyStats!);
+  ls_PostUnlimitedStats(sb_unlimitedStats!);
+
+  await sb_GetSolutions({
+    user_id: user.id,
+    all_daily: true,
+  }).then((solutions) => {
+    ls_PostSolutions(solutions);
+  });
+
+  window.location.reload();
+};
+
 export const migrateFromLStoSB = async () => {
   const user = await getUser();
 

@@ -99,3 +99,9 @@ ul {
     transform: translateX(1px);
   }
 }
+
+.search-bar-container.skeleton {
+  height: 42px;
+  width: 100%;
+  max-width: var(--max-width-mobile);
+}

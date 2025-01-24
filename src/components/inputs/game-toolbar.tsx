@@ -1,3 +1,4 @@
+'use client';
 import CSButton from './buttons/button';
 import {
   QuestionMarkOutlined,

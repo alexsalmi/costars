@@ -17,6 +17,7 @@ import { StarBorderOutlined, Star } from '@mui/icons-material';
 import { getDailyCostarsByMonth } from '@/services/cache.service';
 import { getUserDailySolutions } from '@/services/userdata.service';
 import '@/styles/game/archive.scss';
+import CSBackButton from '../inputs/buttons/back-button';
 
 interface IPrevResults {
   score: number;
@@ -30,10 +31,11 @@ interface ICSArchiveProps {
 
 export default function CSArchive({ costars }: ICSArchiveProps) {
   const [prevResults, setPrevResults] = useState<Array<IPrevResults>>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getPrevResults(costars);
+    setLoading(false);
   }, []);
 
   const handleMonthChange = async (date: Dayjs) => {
@@ -76,6 +78,8 @@ export default function CSArchive({ costars }: ICSArchiveProps) {
   ) => {
     if (!date || selectedView !== 'day') return;
 
+    if (date.isSame(dayjs(), 'date')) redirect('/daily', RedirectType.push);
+
     const day_number = getDayNumber(date.toISOString());
 
     redirect(`/daily/${day_number}`, RedirectType.push);
@@ -84,6 +88,7 @@ export default function CSArchive({ costars }: ICSArchiveProps) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className='archive-container'>
+        <CSBackButton />
         <h3>Archive</h3>
         <span>
           Select any day in the calendar to match an old pair of daily costars!

@@ -19,6 +19,7 @@ interface ICSCardTrackProps {
   condenseEnds?: boolean;
   cardAnimation?: '' | 'slide-in' | 'slide-out';
   carouselCards?: Array<Array<GameEntity>>;
+  shimmer?: boolean;
 }
 
 export default function CSCardTrack({
@@ -31,6 +32,7 @@ export default function CSCardTrack({
   condenseEnds,
   cardAnimation,
   carouselCards,
+  shimmer,
 }: ICSCardTrackProps) {
   const { history, hints, current } = useCostarsState();
 
@@ -39,7 +41,7 @@ export default function CSCardTrack({
 
   return (
     <div
-      className={`card-track-container ${!showPrompt ? 'no-prompt' : ''} ${fullHeight ? 'full-height' : ''}`}
+      className={`card-track-container ${!showPrompt ? 'no-prompt' : ''} ${fullHeight ? 'full-height' : ''} ${shimmer ? 'shimmer' : ''}`}
     >
       {showPrompt ? (
         <span className='card-track-prompt'>

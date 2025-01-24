@@ -23,7 +23,6 @@ import {
   updateUnlimitedStats,
   postSolution,
 } from '@/services/userdata.service';
-import { isMigrationPending } from '@/utils/localstorage';
 import { getUser } from '@/services/supabase/auth.service';
 import { getUserSolution } from '@/utils/utils';
 import {
@@ -51,8 +50,6 @@ const useCostarsState = () => {
 
   // Actions
   const bootstrapUserState = () => {
-    if (isMigrationPending()) return;
-
     getUser().then((res) => setUser(res));
 
     const localDailyStats = getDailyStats();

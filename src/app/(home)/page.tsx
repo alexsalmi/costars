@@ -1,9 +1,27 @@
-import Home from './home';
-import { getTodaysCostars } from '@/services/cache.service';
+import logo from '@/../public/costars_primary_logo.png';
+import Image from 'next/image';
+import Link from 'next/link';
+import CSButton from '@/components/inputs/buttons/button';
+import '@/styles/pages/home.scss';
+import { Suspense } from 'react';
+import CSDailyCostarsSkeleton from '@/components/skeletons/daily-costars-skeleton';
+import CSDailyCostars from '@/components/presentation/daily-costars';
 
-export default async function Index() {
-  const daily = await getTodaysCostars();
-  if (!daily) throw Error("Couldn't get Costars");
-
-  return <Home daily={daily} />;
+export default async function Home() {
+  return (
+    <div className='home-page'>
+      <Image priority src={logo} alt='Costars logo' height={80} />
+      <Suspense fallback={<CSDailyCostarsSkeleton />}>
+        <CSDailyCostars />
+      </Suspense>
+      <div className='home-page-button-container'>
+        <Link href='/custom'>
+          <CSButton secondary>Custom Game</CSButton>
+        </Link>
+        <Link href='/unlimited'>
+          <CSButton secondary>Unlimited</CSButton>
+        </Link>
+      </div>
+    </div>
+  );
 }
