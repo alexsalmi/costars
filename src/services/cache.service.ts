@@ -88,7 +88,6 @@ export const getRandomPool = unstable_cache(
 
 export const getTodaysCostars = unstable_cache(
   async () => {
-    console.log('TODAY');
     const forCache = true;
     const costars = await sb_GetDailyCostars(
       {
