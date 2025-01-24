@@ -8,13 +8,7 @@
   flex-grow: 1;
   gap: 24px;
   color: var(--highlight-text);
-  border-radius: 25px;
   padding: 32px;
-  box-shadow:
-    5px 5px 10px var(--highlight-faded),
-    -5px -5px 10px var(--highlight-faded),
-    5px -5px 10px var(--highlight-faded),
-    -5px 5px 10px var(--highlight-faded);
 
   hr {
     width: 100%;
