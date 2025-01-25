@@ -73,7 +73,16 @@ export const updateDailyStats = (
   // Updated last played data
   dailyStats.last_played = day_number;
 
-  if (user) sb_UpdateDailyStats(dailyStats);
+  if (user) {
+    sb_UpdateDailyStats(dailyStats).then((res) =>
+      ls_PostDailyStats({
+        ...dailyStats,
+        updated_at: res.data
+          ? res.data[0].updated_at
+          : new Date().toISOString(),
+      }),
+    );
+  }
 
   ls_PostDailyStats(dailyStats);
   ls_DeleteFreshStatus();
@@ -107,7 +116,16 @@ export const updateUnlimitedStats = (
   unlimitedStats.history = history;
   unlimitedStats.hints = hints;
 
-  if (user) sb_UpdateUnlimitedStats(unlimitedStats);
+  if (user) {
+    sb_UpdateUnlimitedStats(unlimitedStats).then((res) =>
+      ls_PostUnlimitedStats({
+        ...unlimitedStats,
+        updated_at: res.data
+          ? res.data[0].updated_at
+          : new Date().toISOString(),
+      }),
+    );
+  }
 
   ls_PostUnlimitedStats(unlimitedStats);
   ls_DeleteFreshStatus();
@@ -144,9 +162,7 @@ export const postSolution = (
 /* ----- END OF SOLUTIONS ----- */
 
 /* ----- DATA MIGRATION ----- */
-export const syncUserData = async () => {
-  const user = await getUser();
-
+export const syncUserData = async (user: UserInfo) => {
   if (!user) return;
 
   const ls_dailyStats = ls_GetDailyStats();

@@ -1,6 +1,6 @@
 'use server';
 import { createClient, createClientForCache } from '@/utils/supabase';
-import { SupabaseClient } from '@supabase/supabase-js';
+import { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js';
 import { getUser } from './auth.service';
 
 export const sbGetDailyStats = async (
@@ -39,11 +39,14 @@ export const sbPostDailyStats = async (
   return data![0];
 };
 
-export const sbUpdateDailyStats = async (dailyStats: DailyStats) => {
+export const sbUpdateDailyStats = async (
+  dailyStats: DailyStats,
+): Promise<PostgrestSingleResponse<Array<DailyStats>>> => {
   const supabase = await createClient();
 
   return await supabase
     .from('DailyStats')
     .update(dailyStats)
-    .eq('id', dailyStats.id);
+    .eq('id', dailyStats.id)
+    .select('updated_at');
 };

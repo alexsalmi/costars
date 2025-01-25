@@ -10,7 +10,6 @@ import { ShareOutlined } from '@mui/icons-material';
 import { getScoreString } from '@/utils/utils';
 import { sb_GetSolutions, sb_PostSolutions } from '@/services/supabase';
 import '@/styles/game/success.scss';
-import { getUser } from '@/services/supabase/auth.service';
 import CSConfetti from '../presentation/confetti';
 
 interface ISuccessProps {
@@ -19,7 +18,7 @@ interface ISuccessProps {
 }
 
 export default function Success({ daily, solutions }: ISuccessProps) {
-  const { history, target, score, hints, gameType } = useCostarsState();
+  const { history, target, score, hints, gameType, user } = useCostarsState();
 
   const [shareLoading, setShareLoading] = useState(false);
   const [statsOpen, setStatsOpen] = useState(
@@ -39,7 +38,6 @@ export default function Success({ daily, solutions }: ISuccessProps) {
   const shareScore = async (loadingFn = setShareLoading) => {
     loadingFn(true);
     let uuid = '';
-    const user = await getUser();
 
     if (user && gameType === 'daily' && daily) {
       const [solution] = await sb_GetSolutions({

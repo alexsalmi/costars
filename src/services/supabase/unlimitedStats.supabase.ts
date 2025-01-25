@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase';
+import { PostgrestSingleResponse } from '@supabase/supabase-js';
 
 export const sbGetUnlimitedStats = async (
   params: UnlimitedStatsParams,
@@ -32,11 +33,12 @@ export const sbPostUnlimitedStats = async (
 
 export const sbUpdateUnlimitedStats = async (
   unlimitedStats: UnlimitedStats,
-) => {
+): Promise<PostgrestSingleResponse<Array<UnlimitedStats>>> => {
   const supabase = await createClient();
 
   return await supabase
     .from('UnlimitedStats')
     .update(unlimitedStats)
-    .eq('id', unlimitedStats.id);
+    .eq('id', unlimitedStats.id)
+    .select('updated_at');
 };
