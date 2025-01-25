@@ -22,6 +22,7 @@ import {
   getUnlimitedStats,
   updateUnlimitedStats,
   postSolution,
+  syncUserData,
 } from '@/services/userdata.service';
 import { getUser } from '@/services/supabase/auth.service';
 import { getUserSolution } from '@/utils/utils';
@@ -50,13 +51,16 @@ const useCostarsState = () => {
 
   // Actions
   const bootstrapUserState = () => {
-    getUser().then((res) => setUser(res));
-
     const localDailyStats = getDailyStats();
     setDailyStats(localDailyStats);
 
     const localUnlimitedStats = getUnlimitedStats();
     setUnlimitedStats(localUnlimitedStats);
+
+    getUser().then((user) => {
+      setUser(user);
+      syncUserData(user);
+    });
   };
 
   const resetGameState = () => {

@@ -1,26 +1,20 @@
 'use client';
 import { getUserDailySolutions } from '@/services/userdata.service';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import CSButton from './button';
 import { getScoreString } from '@/utils/utils';
+import { useRef } from 'react';
 
 interface ICSPlayButtonProps {
   daily: DailyCostars;
 }
 
 export default function CSPlayButton({ daily }: ICSPlayButtonProps) {
-  const [solution, setSolution] = useState<Solution | null>(null);
+  const userDailySolutions = useRef(getUserDailySolutions());
 
-  useEffect(() => {
-    const userDailySolutions = getUserDailySolutions();
-
-    const solution = userDailySolutions.find(
-      (sol) => sol.daily_id === daily?.id,
-    );
-
-    setSolution(solution || null);
-  }, [daily]);
+  const solution = userDailySolutions.current.find(
+    (sol) => sol.daily_id === daily?.id,
+  );
 
   return (
     <Link href='/daily'>
