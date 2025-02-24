@@ -26,7 +26,7 @@ export const getRandomPool = unstable_cache(
 
       const trending = trendingResults.filter(
         (person) =>
-          person.popularity > 30 && person.known_for_department === 'Acting',
+          person.popularity > 1 && person.known_for_department === 'Acting',
       );
 
       console.log(
