@@ -104,7 +104,7 @@ const filterResults = (
 
   return results.filter(
     (a) =>
-      a.popularity > 5 &&
+      a.popularity > 1 &&
       !(<Movie | MovieCredit>a).genre_ids?.some((g) => BANNED_GENRES.has(g)) &&
       !(
         (<Movie | MovieCredit>a).release_date !== undefined &&
