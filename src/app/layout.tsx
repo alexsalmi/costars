@@ -38,7 +38,6 @@ export default function RootLayout({
           selfHosted
           trackOutboundLinks
           taggedEvents
-          enabled
         />
       </head>
       <body className='app'>
