@@ -34,7 +34,7 @@ export default function RootLayout({
       <head>
         <PlausibleProvider
           domain='costarsgame.com'
-          customDomain={process.env.PLAUSIBLE_DOMAIN}
+          customDomain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
           selfHosted
           trackOutboundLinks
           taggedEvents
