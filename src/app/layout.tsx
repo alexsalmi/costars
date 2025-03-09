@@ -46,11 +46,9 @@ export default function RootLayout({
           <AppRouterCacheProvider>
             <StoreProvider>
               <InitStateProvider>
-                <div>
-                  {process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
-                </div>
+                <div>{process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}</div>
                 {children}
-                </InitStateProvider>
+              </InitStateProvider>
             </StoreProvider>
           </AppRouterCacheProvider>
         </ThemeProvider>
