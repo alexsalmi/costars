@@ -45,10 +45,7 @@ export default function RootLayout({
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <AppRouterCacheProvider>
             <StoreProvider>
-              <InitStateProvider>
-                <div>{process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}</div>
-                {children}
-              </InitStateProvider>
+              <InitStateProvider>{children}</InitStateProvider>
             </StoreProvider>
           </AppRouterCacheProvider>
         </ThemeProvider>
