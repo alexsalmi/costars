@@ -102,9 +102,10 @@ const filterResults = (
   const BANNED_MOVIES = new Set([126314]);
   const BANNED_GENRES = new Set([99]);
 
+  if (!results) return [];
+
   return results.filter(
     (a) =>
-      a.popularity > 1 &&
       !(<Movie | MovieCredit>a).genre_ids?.some((g) => BANNED_GENRES.has(g)) &&
       !(
         (<Movie | MovieCredit>a).release_date !== undefined &&

@@ -103,7 +103,7 @@ function FAQContent() {
           popular actors at the time, according to the TMDB API. The Daily
           Costars are generated on a weekly basis, and no actors will be reused
           within that given week. All pairings for a week are sorted by
-          popularity scores of their optimal solutions, so that the difficulty
+          the number of optimal solutions, so that the difficulty
           increases as the week progresses. There will never be a repeated Daily
           Costars pairing.
         </span>

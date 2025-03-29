@@ -2,10 +2,9 @@ import CSGameContainer from '@/components/game/game-container';
 import { getTodaysCostars, getTodaysSolutions } from '@/services/cache.service';
 
 export default async function DailyGame() {
-  const daily = await getTodaysCostars();
-  if (!daily) throw Error('Error getting Costars');
-
-  const solutions = await getTodaysSolutions();
+  const [daily, solutions] = await Promise.all([getTodaysCostars(), getTodaysSolutions()]);
+  
+  if (!daily || !solutions) throw Error('Error getting Costars');
 
   return (
     <CSGameContainer
