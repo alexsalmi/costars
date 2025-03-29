@@ -6,7 +6,7 @@ import { sb_GetDailyCostars, sb_GetSolutions } from './supabase';
 export const getRandomPool = unstable_cache(
   async () => {
     console.log('----- Refreshing Random Pool -----');
-    const POOL_SIZE = 300;
+    const POOL_SIZE = 200;
     const pool = [] as Array<GameEntity>;
 
     let iteration = 0;
@@ -15,7 +15,7 @@ export const getRandomPool = unstable_cache(
       console.log(`ITERATION: ${iteration + 1}`);
 
       const trendingPromises: Promise<Array<Person>>[] = [];
-      for (let page = iteration * 50 + 1; page <= (iteration + 1) * 50; page++)
+      for (let page = iteration * 10 + 1; page <= (iteration + 1) * 10; page++)
         trendingPromises.push(getTrending(page));
 
       const trendingResults = ([] as Person[]).concat(
@@ -25,8 +25,7 @@ export const getRandomPool = unstable_cache(
       console.log(`Fetched ${trendingResults.length} trending people.`);
 
       const trending = trendingResults.filter(
-        (person) =>
-          person.popularity > 1 && person.known_for_department === 'Acting',
+        (person) => person.known_for_department === 'Acting',
       );
 
       console.log(

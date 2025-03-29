@@ -60,21 +60,7 @@ export async function GET(req: Request) {
   }
 
   // Sort the costars pairings by the number of solutions
-  costars = costars.sort(
-    (a, b) =>
-      b.solutions.reduce(
-        (acc, solution) =>
-          acc +
-          solution.reduce((acc2, entity) => acc2 + (entity.popularity || 0), 0),
-        0,
-      ) -
-      a.solutions.reduce(
-        (acc, solution) =>
-          acc +
-          solution.reduce((acc2, entity) => acc2 + (entity.popularity || 0), 0),
-        0,
-      ),
-  );
+  costars = costars.sort((a, b) => b.num_solutions - a.num_solutions);
 
   console.log('----- Saving costars to DB -----');
 
