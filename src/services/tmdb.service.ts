@@ -31,6 +31,8 @@ export const search = async (
     labels.add(label);
   }
 
+  const set = new Set();
+
   return filtered
     .sort((a, b) => b.popularity - a.popularity)
     .map((a) => {
@@ -44,6 +46,11 @@ export const search = async (
             : label,
         image: (<Person>a).profile_path || (<Movie>a).poster_path,
       };
+    })
+    .filter((entity) => {
+      if (set.has(entity.label)) return false;
+      set.add(entity.label);
+      return true;
     });
 };
 
@@ -106,6 +113,7 @@ const filterResults = (
 
   return results.filter(
     (a) =>
+      a.popularity > 0.1 &&
       !(<Movie | MovieCredit>a).genre_ids?.some((g) => BANNED_GENRES.has(g)) &&
       !(
         (<Movie | MovieCredit>a).release_date !== undefined &&
