@@ -2,7 +2,7 @@
 
 A web game challenging players to connect two random actors by the movies they've been in and the costars they've worked with, with new pairs becoming available every day! Also includes two additional game modes, one to connect a custom pair of actors, and the other to connect actors and movies for as long as possible.
 
-Publically available at [costarsgame.com](https://costarsgame.com)
+Publicly available at [costarsgame.com](https://costarsgame.com)
 
 ## Background
 
