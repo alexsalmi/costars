@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang='en' className={quicksand.className}>
       <head>
-        <Script defer src="http://10.0.0.150:3000/script.js" data-website-id="de2c01bc-8c6f-479e-9613-7bec03256315"></script>
+        <Script defer src="/init-script.js" data-website-id="de2c01bc-8c6f-479e-9613-7bec03256315"></Script>
       </head>
       <body className='app'>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
