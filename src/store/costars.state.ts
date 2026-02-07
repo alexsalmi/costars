@@ -117,9 +117,7 @@ const useCostarsState = () => {
     setCompleted(solution !== null);
   };
 
-  const addEntity = async (
-    entity: GameEntity,
-  ) => {
+  const addEntity = async (entity: GameEntity) => {
     let newHistory = [entity, ...history];
 
     if (gameType !== 'unlimited') {

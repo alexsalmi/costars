@@ -8,7 +8,7 @@ import '@/styles/variables.scss';
 import '@/styles/global.scss';
 import ThemeProvider from '@/components/layouts/providers/theme-provider';
 import InitStateProvider from '@/components/layouts/providers/init-state-provider';
-import Script from "next/script";
+import Script from 'next/script';
 
 const quicksand = Quicksand({
   subsets: ['latin'],
@@ -32,7 +32,11 @@ export default function RootLayout({
   return (
     <html lang='en' className={quicksand.className}>
       <head>
-        <Script defer src="/init-script.js" data-website-id="de2c01bc-8c6f-479e-9613-7bec03256315"></Script>
+        <Script
+          defer
+          src='/init-script.js'
+          data-website-id='de2c01bc-8c6f-479e-9613-7bec03256315'
+        ></Script>
       </head>
       <body className='app'>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
