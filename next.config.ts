@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/init-script.js',
-        destination: `${process.env.NEXT_PUBLIC_UMAMI_DOMAIN}/init-script.js`,
+        destination: `${process.env.NEXT_PUBLIC_UMAMI_DOMAIN}/script.js`,
       },
       {
         source: '/api/event', // Or '/api/event/' if you have `trailingSlash: true` in this config
