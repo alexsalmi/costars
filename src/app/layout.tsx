@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import PlausibleProvider from 'next-plausible';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { Provider as StoreProvider } from 'jotai';
@@ -9,6 +8,7 @@ import '@/styles/variables.scss';
 import '@/styles/global.scss';
 import ThemeProvider from '@/components/layouts/providers/theme-provider';
 import InitStateProvider from '@/components/layouts/providers/init-state-provider';
+import Script from "next/script";
 
 const quicksand = Quicksand({
   subsets: ['latin'],
@@ -32,13 +32,7 @@ export default function RootLayout({
   return (
     <html lang='en' className={quicksand.className}>
       <head>
-        <PlausibleProvider
-          domain='costarsgame.com'
-          customDomain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
-          selfHosted
-          trackOutboundLinks
-          taggedEvents
-        />
+        <Script defer src="http://10.0.0.150:3000/script.js" data-website-id="de2c01bc-8c6f-479e-9613-7bec03256315"></script>
       </head>
       <body className='app'>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>

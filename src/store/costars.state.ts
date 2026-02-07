@@ -119,7 +119,6 @@ const useCostarsState = () => {
 
   const addEntity = async (
     entity: GameEntity,
-    captureEvent?: (eventName: string) => void,
   ) => {
     let newHistory = [entity, ...history];
 
@@ -130,8 +129,6 @@ const useCostarsState = () => {
       if (isTargetMatch && gameType === 'daily') {
         updateDailyStats(entity);
         ls_DeleteDailySave();
-
-        if (captureEvent !== undefined) captureEvent('dailyCostarsCompleted');
       }
 
       if (isTargetMatch && (gameType === 'daily' || gameType === 'archive'))

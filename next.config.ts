@@ -1,5 +1,4 @@
 import type { NextConfig } from 'next';
-import { withPlausibleProxy } from 'next-plausible';
 
 const nextConfig: NextConfig = {
   images: {
@@ -25,19 +24,15 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: '/js/script.outbound-links.tagged-events.js',
-        destination: `${process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}/js/script.outbound-links.tagged-events.js`,
+        source: '/init-script.js',
+        destination: `${process.env.NEXT_PUBLIC_UMAMI_DOMAIN}/init-script.js`,
       },
       {
         source: '/api/event', // Or '/api/event/' if you have `trailingSlash: true` in this config
-        destination: `${process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}/api/event`,
-      },
-      {
-        source: '/proxy/api/event', // Or '/api/event/' if you have `trailingSlash: true` in this config
-        destination: `${process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}/api/event`,
+        destination: `${process.env.NEXT_PUBLIC_UMAMI_DOMAIN}/api/event`,
       },
     ];
   },
 };
 
-export default withPlausibleProxy()(nextConfig);
+export default nextConfig;

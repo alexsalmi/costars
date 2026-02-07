@@ -9,7 +9,6 @@ import { useEffect, useRef, useState } from 'react';
 import Success from './success';
 import CSBackButton from '../inputs/buttons/back-button';
 import '@/styles/game/game-container.scss';
-import { usePlausible } from 'next-plausible';
 import CSGameContainerSkeleton from '../skeletons/game-container-skeleton';
 
 interface ICSGameContainerProps {
@@ -37,7 +36,6 @@ export default function CSGameContainer({
     undo,
     redo,
   } = useCostarsState();
-  const plausible = usePlausible();
 
   const [initializing, setInitializing] = useState(true);
   const [condenseAllCards, setCondenseAllCards] = useState(false);
@@ -64,7 +62,7 @@ export default function CSGameContainer({
   }, [score]);
 
   const onSubmit = async (value: GameEntity) => {
-    addEntity(value, plausible);
+    addEntity(value);
     setCardAnimation('slide-in');
 
     setTimeout(async () => {
