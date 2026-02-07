@@ -3,7 +3,6 @@ import { useState } from 'react';
 import CSCostarsCreator from '../inputs/costars-creator';
 import CSButton from '../inputs/buttons/button';
 import { Input } from '@mui/material';
-import { revalidatePath } from 'next/cache';
 import { getDayNumber } from '@/utils/utils';
 import {
   sb_DeleteSolutions,
@@ -77,7 +76,6 @@ export default function CSCostarsEditor({ costars }: ICSCostarsEditorProps) {
     );
 
     setEditing(false);
-    revalidatePath('/admin');
     window.location.reload();
   };
 
